@@ -43,8 +43,8 @@ apis:
     baseURL: https://api.hetzner.cloud/v1
     tags:
       - Cloud
-      - Servers
       - Infrastructure
+      - Servers
     properties:
       - type: Documentation
         url: https://docs.hetzner.cloud/
