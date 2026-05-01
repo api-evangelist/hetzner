@@ -15,9 +15,28 @@ tags:
 url: >-
   https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/apis.yml
 created: '2025-02-09'
-modified: '2026-03-16'
+modified: '2026-04-28'
 specificationVersion: '0.19'
 apis:
+  - aid: hetzner:hetzner-cloud-api
+    name: Hetzner Cloud API
+    description: >-
+      The Hetzner Cloud API allows managing cloud servers, load balancers,
+      networks, firewalls, volumes, and other cloud resources programmatically.
+    humanURL: https://docs.hetzner.cloud/
+    baseURL: https://api.hetzner.cloud/v1
+    tags:
+      - Cloud
+      - Infrastructure
+      - Servers
+    properties:
+      - type: Documentation
+        url: https://docs.hetzner.cloud/
+      - type: OpenAPI
+        url: >-
+          https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/openapi/hetzner-openapi.yml
+      - type: Getting Started
+        url: https://docs.hetzner.cloud/#getting-started
   - aid: hetzner:hetzner-dns-api
     name: Hetzner DNS API
     description: >-
@@ -34,24 +53,6 @@ apis:
         url: https://dns.hetzner.com/api-docs
       - type: Authentication
         url: https://dns.hetzner.com/api-docs#section/Authentication
-  - aid: hetzner:hetzner-cloud-api
-    name: Hetzner Cloud API
-    description: >-
-      The Hetzner Cloud API allows managing cloud servers, load balancers,
-      networks, firewalls, volumes, and other cloud resources programmatically.
-    humanURL: https://docs.hetzner.cloud/
-    baseURL: https://api.hetzner.cloud/v1
-    tags:
-      - Cloud
-      - Infrastructure
-      - Servers
-    properties:
-      - type: Documentation
-        url: https://docs.hetzner.cloud/
-      - type: OpenAPI
-        url: https://docs.hetzner.cloud/spec.json
-      - type: Getting Started
-        url: https://docs.hetzner.cloud/#getting-started
 common:
   - type: Website
     url: https://www.hetzner.com/

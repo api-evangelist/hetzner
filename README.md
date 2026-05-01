@@ -5,9 +5,9 @@ Hetzner Online is a German hosting provider offering cloud servers, dedicated se
 
 ## Scope
 
-- **Type:** Index 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+- **Type:** Index
+- **Position:** Consuming
+- **Access:** 3rd-Party
 
 ## Tags:
 
@@ -15,16 +15,34 @@ Hetzner Online is a German hosting provider offering cloud servers, dedicated se
 
 ## Timestamps
 
-- **Created:** 2025-02-09 
-- **Modified:** 2026-03-16 
+- **Created:** 2025-02-09
+- **Modified:** 2026-04-28
 
 ## APIs
+
+### Hetzner Cloud API
+The Hetzner Cloud API allows managing cloud servers, load balancers, networks, firewalls, volumes, and other cloud resources programmatically.
+
+**Human URL:** [https://docs.hetzner.cloud/](https://docs.hetzner.cloud/)
+
+**Base URL:** `https://api.hetzner.cloud/v1`
+
+#### Tags:
+
+ - Cloud, Infrastructure, Servers
+
+#### Properties
+
+- [Documentation](https://docs.hetzner.cloud/)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/openapi/hetzner-openapi.yml)
+- [Getting Started](https://docs.hetzner.cloud/#getting-started)
 
 ### Hetzner DNS API
 The Hetzner DNS API provides programmatic access to manage DNS zones, records, and configurations for domains hosted with Hetzner's DNS service.
 
 **Human URL:** [https://dns.hetzner.com/api-docs](https://dns.hetzner.com/api-docs)
 
+**Base URL:** `https://dns.hetzner.com/api/v1`
 
 #### Tags:
 
@@ -34,22 +52,6 @@ The Hetzner DNS API provides programmatic access to manage DNS zones, records, a
 
 - [Documentation](https://dns.hetzner.com/api-docs)
 - [Authentication](https://dns.hetzner.com/api-docs#section/Authentication)
-
-### Hetzner Cloud API
-The Hetzner Cloud API allows managing cloud servers, load balancers, networks, firewalls, volumes, and other cloud resources programmatically.
-
-**Human URL:** [https://docs.hetzner.cloud/](https://docs.hetzner.cloud/)
-
-
-#### Tags:
-
- - Cloud, Servers, Infrastructure
-
-#### Properties
-
-- [Documentation](https://docs.hetzner.cloud/)
-- [OpenAPI](https://docs.hetzner.cloud/spec.json)
-- [Getting Started](https://docs.hetzner.cloud/#getting-started)
 
 ## Common Properties
 

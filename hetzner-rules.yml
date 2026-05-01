@@ -1,0 +1,79 @@
+aid: hetzner
+name: Hetzner Rules
+description: >-
+  Operational rules and guardrails for working with the Hetzner Cloud API and
+  Hetzner DNS API. Codifies authentication, rate-limit handling, scope of
+  resources that can be created or destroyed, and write-action policies for
+  agents and integrations.
+modified: '2026-04-28'
+rules:
+  - id: hetzner-auth-bearer
+    name: Bearer Token Authentication
+    description: >-
+      All requests to the Hetzner Cloud API must include a valid API token via
+      the Authorization header (Bearer scheme). Tokens are project-scoped and
+      must never be embedded in source control or logs.
+    applies_to:
+      - hetzner:hetzner-cloud-api
+    severity: required
+  - id: hetzner-dns-auth-token
+    name: DNS API Token Authentication
+    description: >-
+      Requests to the Hetzner DNS API must include the Auth-API-Token header
+      with a valid DNS API token. Tokens are account-scoped and must be
+      protected as secrets.
+    applies_to:
+      - hetzner:hetzner-dns-api
+    severity: required
+  - id: hetzner-rate-limits
+    name: Respect Rate Limits
+    description: >-
+      Honor the RateLimit-* response headers and back off on HTTP 429
+      responses. Implement exponential backoff with jitter and avoid retry
+      storms.
+    applies_to:
+      - hetzner:hetzner-cloud-api
+      - hetzner:hetzner-dns-api
+    severity: required
+  - id: hetzner-destructive-confirm
+    name: Confirm Destructive Actions
+    description: >-
+      Deleting servers, volumes, networks, load balancers, firewalls, primary
+      IPs, or DNS zones requires explicit user confirmation. Agents must not
+      issue DELETE requests against billable or production-tagged resources
+      without authorization.
+    applies_to:
+      - hetzner:hetzner-cloud-api
+      - hetzner:hetzner-dns-api
+    severity: required
+  - id: hetzner-cost-awareness
+    name: Cost-Generating Resources
+    description: >-
+      Server, load balancer, volume, primary IP, and floating IP creation
+      generate ongoing costs. Agents must surface estimated cost and require
+      confirmation before provisioning these resources.
+    applies_to:
+      - hetzner:hetzner-cloud-api
+    severity: required
+  - id: hetzner-pagination
+    name: Use Pagination
+    description: >-
+      List endpoints return paginated results. Always honor `page` and
+      `per_page` parameters and follow the `meta.pagination` data instead of
+      assuming a single page.
+    applies_to:
+      - hetzner:hetzner-cloud-api
+      - hetzner:hetzner-dns-api
+    severity: recommended
+  - id: hetzner-dns-zone-isolation
+    name: DNS Zone Isolation
+    description: >-
+      DNS record changes must be scoped to the intended zone. Bulk record
+      operations should be validated against the target zone_id before
+      submission.
+    applies_to:
+      - hetzner:hetzner-dns-api
+    severity: required
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
