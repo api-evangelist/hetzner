@@ -35,7 +35,7 @@ apis:
       - type: OpenAPI
         url: >-
           https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/openapi/hetzner-openapi.yml
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.hetzner.cloud/#getting-started
   - aid: hetzner:hetzner-dns-api
     name: Hetzner DNS API
@@ -58,19 +58,19 @@ common:
     url: https://www.hetzner.com/
   - type: Documentation
     url: https://docs.hetzner.com/
-  - type: Sign Up
+  - type: SignUp
     url: https://accounts.hetzner.com/signUp
   - type: Login
     url: https://accounts.hetzner.com/login
-  - type: Status
+  - type: StatusPage
     url: https://status.hetzner.com/
   - type: Support
     url: https://www.hetzner.com/support
   - type: Pricing
     url: https://www.hetzner.com/cloud
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.hetzner.com/legal/privacy-policy
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://www.hetzner.com/legal/terms-and-conditions
 maintainers:
   - FN: Kin Lane
