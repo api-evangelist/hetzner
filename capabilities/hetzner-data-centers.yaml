@@ -1,0 +1,139 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Data Centers
+  description: 'Hetzner Cloud API — Data Centers. 2 operations. Lead operation: List Data Centers. Self-contained Naftiko
+    capability covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Data Centers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-data-centers
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Data Centers business capability. Self-contained, no shared references.
+    resources:
+    - name: datacenters
+      path: /datacenters
+      operations:
+      - name: listdatacenters
+        method: GET
+        description: List Data Centers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter resources by their name.
+        - name: sort
+          in: query
+          type: array
+          description: Sort resources by field and direction. May be used multiple times.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+    - name: datacenters-id
+      path: /datacenters/{id}
+      operations:
+      - name: getdatacenter
+        method: GET
+        description: Get a Data Center
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Data Center.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-data-centers-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Data Centers. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/datacenters
+      name: datacenters
+      description: REST surface for datacenters.
+      operations:
+      - method: GET
+        name: listdatacenters
+        description: List Data Centers
+        call: hetzner-data-centers.listdatacenters
+        with:
+          name: rest.name
+          sort: rest.sort
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datacenters/{id}
+      name: datacenters-id
+      description: REST surface for datacenters-id.
+      operations:
+      - method: GET
+        name: getdatacenter
+        description: Get a Data Center
+        call: hetzner-data-centers.getdatacenter
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-data-centers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Data Centers. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-data-centers
+      description: List Data Centers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-data-centers.listdatacenters
+      with:
+        name: tools.name
+        sort: tools.sort
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-data-center
+      description: Get a Data Center
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-data-centers.getdatacenter
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

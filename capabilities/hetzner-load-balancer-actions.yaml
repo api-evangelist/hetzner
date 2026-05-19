@@ -1,0 +1,883 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Load Balancer Actions
+  description: 'Hetzner Cloud API — Load Balancer Actions. 17 operations. Lead operation: List Actions. Self-contained Naftiko
+    capability covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Load Balancer Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-load-balancer-actions
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Load Balancer Actions business capability. Self-contained, no shared references.
+    resources:
+    - name: load_balancers-actions
+      path: /load_balancers/actions
+      operations:
+      - name: listloadbalancersactions
+        method: GET
+        description: List Actions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: query
+          type: array
+          description: Filter the actions by ID. May be used multiple times.
+        - name: sort
+          in: query
+          type: array
+          description: Sort actions by field and direction. May be used multiple times.
+        - name: status
+          in: query
+          type: array
+          description: Filter the actions by status. May be used multiple times.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+    - name: load_balancers-actions-id
+      path: /load_balancers/actions/{id}
+      operations:
+      - name: getloadbalancersaction
+        method: GET
+        description: Get an Action
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Action.
+          required: true
+    - name: load_balancers-id-actions
+      path: /load_balancers/{id}/actions
+      operations:
+      - name: listloadbalanceractions
+        method: GET
+        description: List Actions for a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: sort
+          in: query
+          type: array
+          description: Sort actions by field and direction. May be used multiple times.
+        - name: status
+          in: query
+          type: array
+          description: Filter the actions by status. May be used multiple times.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+    - name: load_balancers-id-actions-add_service
+      path: /load_balancers/{id}/actions/add_service
+      operations:
+      - name: addloadbalancerservice
+        method: POST
+        description: Add Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-add_target
+      path: /load_balancers/{id}/actions/add_target
+      operations:
+      - name: addloadbalancertarget
+        method: POST
+        description: Add Target
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-attach_to_network
+      path: /load_balancers/{id}/actions/attach_to_network
+      operations:
+      - name: attachloadbalancertonetwork
+        method: POST
+        description: Attach a Load Balancer to a Network
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-change_algorithm
+      path: /load_balancers/{id}/actions/change_algorithm
+      operations:
+      - name: changeloadbalanceralgorithm
+        method: POST
+        description: Change Algorithm
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-change_dns_ptr
+      path: /load_balancers/{id}/actions/change_dns_ptr
+      operations:
+      - name: changeloadbalancerdnsptr
+        method: POST
+        description: Change reverse DNS entry for this Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-change_protection
+      path: /load_balancers/{id}/actions/change_protection
+      operations:
+      - name: changeloadbalancerprotection
+        method: POST
+        description: Change Load Balancer Protection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-change_type
+      path: /load_balancers/{id}/actions/change_type
+      operations:
+      - name: changeloadbalancertype
+        method: POST
+        description: Change the Type of a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-delete_service
+      path: /load_balancers/{id}/actions/delete_service
+      operations:
+      - name: deleteloadbalancerservice
+        method: POST
+        description: Delete Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-detach_from_network
+      path: /load_balancers/{id}/actions/detach_from_network
+      operations:
+      - name: detachloadbalancerfromnetwork
+        method: POST
+        description: Detach a Load Balancer from a Network
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-disable_public_interface
+      path: /load_balancers/{id}/actions/disable_public_interface
+      operations:
+      - name: disableloadbalancerpublicinterface
+        method: POST
+        description: Disable the public interface of a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+    - name: load_balancers-id-actions-enable_public_interface
+      path: /load_balancers/{id}/actions/enable_public_interface
+      operations:
+      - name: enableloadbalancerpublicinterface
+        method: POST
+        description: Enable the public interface of a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+    - name: load_balancers-id-actions-remove_target
+      path: /load_balancers/{id}/actions/remove_target
+      operations:
+      - name: removeloadbalancertarget
+        method: POST
+        description: Remove Target
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-update_service
+      path: /load_balancers/{id}/actions/update_service
+      operations:
+      - name: updateloadbalancerservice
+        method: POST
+        description: Update Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id-actions-action_id
+      path: /load_balancers/{id}/actions/{action_id}
+      operations:
+      - name: getloadbalanceraction
+        method: GET
+        description: Get an Action for a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: action_id
+          in: path
+          type: integer
+          description: ID of the Action.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-load-balancer-actions-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Load Balancer Actions. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/load-balancers/actions
+      name: load-balancers-actions
+      description: REST surface for load_balancers-actions.
+      operations:
+      - method: GET
+        name: listloadbalancersactions
+        description: List Actions
+        call: hetzner-load-balancer-actions.listloadbalancersactions
+        with:
+          id: rest.id
+          sort: rest.sort
+          status: rest.status
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/actions/{id}
+      name: load-balancers-actions-id
+      description: REST surface for load_balancers-actions-id.
+      operations:
+      - method: GET
+        name: getloadbalancersaction
+        description: Get an Action
+        call: hetzner-load-balancer-actions.getloadbalancersaction
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions
+      name: load-balancers-id-actions
+      description: REST surface for load_balancers-id-actions.
+      operations:
+      - method: GET
+        name: listloadbalanceractions
+        description: List Actions for a Load Balancer
+        call: hetzner-load-balancer-actions.listloadbalanceractions
+        with:
+          id: rest.id
+          sort: rest.sort
+          status: rest.status
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/add-service
+      name: load-balancers-id-actions-add-service
+      description: REST surface for load_balancers-id-actions-add_service.
+      operations:
+      - method: POST
+        name: addloadbalancerservice
+        description: Add Service
+        call: hetzner-load-balancer-actions.addloadbalancerservice
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/add-target
+      name: load-balancers-id-actions-add-target
+      description: REST surface for load_balancers-id-actions-add_target.
+      operations:
+      - method: POST
+        name: addloadbalancertarget
+        description: Add Target
+        call: hetzner-load-balancer-actions.addloadbalancertarget
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/attach-to-network
+      name: load-balancers-id-actions-attach-to-network
+      description: REST surface for load_balancers-id-actions-attach_to_network.
+      operations:
+      - method: POST
+        name: attachloadbalancertonetwork
+        description: Attach a Load Balancer to a Network
+        call: hetzner-load-balancer-actions.attachloadbalancertonetwork
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/change-algorithm
+      name: load-balancers-id-actions-change-algorithm
+      description: REST surface for load_balancers-id-actions-change_algorithm.
+      operations:
+      - method: POST
+        name: changeloadbalanceralgorithm
+        description: Change Algorithm
+        call: hetzner-load-balancer-actions.changeloadbalanceralgorithm
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/change-dns-ptr
+      name: load-balancers-id-actions-change-dns-ptr
+      description: REST surface for load_balancers-id-actions-change_dns_ptr.
+      operations:
+      - method: POST
+        name: changeloadbalancerdnsptr
+        description: Change reverse DNS entry for this Load Balancer
+        call: hetzner-load-balancer-actions.changeloadbalancerdnsptr
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/change-protection
+      name: load-balancers-id-actions-change-protection
+      description: REST surface for load_balancers-id-actions-change_protection.
+      operations:
+      - method: POST
+        name: changeloadbalancerprotection
+        description: Change Load Balancer Protection
+        call: hetzner-load-balancer-actions.changeloadbalancerprotection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/change-type
+      name: load-balancers-id-actions-change-type
+      description: REST surface for load_balancers-id-actions-change_type.
+      operations:
+      - method: POST
+        name: changeloadbalancertype
+        description: Change the Type of a Load Balancer
+        call: hetzner-load-balancer-actions.changeloadbalancertype
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/delete-service
+      name: load-balancers-id-actions-delete-service
+      description: REST surface for load_balancers-id-actions-delete_service.
+      operations:
+      - method: POST
+        name: deleteloadbalancerservice
+        description: Delete Service
+        call: hetzner-load-balancer-actions.deleteloadbalancerservice
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/detach-from-network
+      name: load-balancers-id-actions-detach-from-network
+      description: REST surface for load_balancers-id-actions-detach_from_network.
+      operations:
+      - method: POST
+        name: detachloadbalancerfromnetwork
+        description: Detach a Load Balancer from a Network
+        call: hetzner-load-balancer-actions.detachloadbalancerfromnetwork
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/disable-public-interface
+      name: load-balancers-id-actions-disable-public-interface
+      description: REST surface for load_balancers-id-actions-disable_public_interface.
+      operations:
+      - method: POST
+        name: disableloadbalancerpublicinterface
+        description: Disable the public interface of a Load Balancer
+        call: hetzner-load-balancer-actions.disableloadbalancerpublicinterface
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/enable-public-interface
+      name: load-balancers-id-actions-enable-public-interface
+      description: REST surface for load_balancers-id-actions-enable_public_interface.
+      operations:
+      - method: POST
+        name: enableloadbalancerpublicinterface
+        description: Enable the public interface of a Load Balancer
+        call: hetzner-load-balancer-actions.enableloadbalancerpublicinterface
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/remove-target
+      name: load-balancers-id-actions-remove-target
+      description: REST surface for load_balancers-id-actions-remove_target.
+      operations:
+      - method: POST
+        name: removeloadbalancertarget
+        description: Remove Target
+        call: hetzner-load-balancer-actions.removeloadbalancertarget
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/update-service
+      name: load-balancers-id-actions-update-service
+      description: REST surface for load_balancers-id-actions-update_service.
+      operations:
+      - method: POST
+        name: updateloadbalancerservice
+        description: Update Service
+        call: hetzner-load-balancer-actions.updateloadbalancerservice
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/actions/{action-id}
+      name: load-balancers-id-actions-action-id
+      description: REST surface for load_balancers-id-actions-action_id.
+      operations:
+      - method: GET
+        name: getloadbalanceraction
+        description: Get an Action for a Load Balancer
+        call: hetzner-load-balancer-actions.getloadbalanceraction
+        with:
+          id: rest.id
+          action_id: rest.action_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-load-balancer-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Load Balancer Actions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: list-actions
+      description: List Actions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancer-actions.listloadbalancersactions
+      with:
+        id: tools.id
+        sort: tools.sort
+        status: tools.status
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-action
+      description: Get an Action
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancer-actions.getloadbalancersaction
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-actions-load-balancer
+      description: List Actions for a Load Balancer
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancer-actions.listloadbalanceractions
+      with:
+        id: tools.id
+        sort: tools.sort
+        status: tools.status
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-service
+      description: Add Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.addloadbalancerservice
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-target
+      description: Add Target
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.addloadbalancertarget
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: attach-load-balancer-network
+      description: Attach a Load Balancer to a Network
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.attachloadbalancertonetwork
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-algorithm
+      description: Change Algorithm
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.changeloadbalanceralgorithm
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-reverse-dns-entry-this
+      description: Change reverse DNS entry for this Load Balancer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.changeloadbalancerdnsptr
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-load-balancer-protection
+      description: Change Load Balancer Protection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.changeloadbalancerprotection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-type-load-balancer
+      description: Change the Type of a Load Balancer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.changeloadbalancertype
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-service
+      description: Delete Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.deleteloadbalancerservice
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: detach-load-balancer-network
+      description: Detach a Load Balancer from a Network
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.detachloadbalancerfromnetwork
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: disable-public-interface-load-balancer
+      description: Disable the public interface of a Load Balancer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.disableloadbalancerpublicinterface
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: enable-public-interface-load-balancer
+      description: Enable the public interface of a Load Balancer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.enableloadbalancerpublicinterface
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-target
+      description: Remove Target
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.removeloadbalancertarget
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-service
+      description: Update Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancer-actions.updateloadbalancerservice
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-action-load-balancer
+      description: Get an Action for a Load Balancer
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancer-actions.getloadbalanceraction
+      with:
+        id: tools.id
+        action_id: tools.action_id
+      outputParameters:
+      - type: object
+        mapping: $.

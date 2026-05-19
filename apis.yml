@@ -1,77 +1,133 @@
 aid: hetzner
 name: Hetzner
-description: >-
-  Hetzner Online is a German hosting provider offering cloud servers, dedicated
-  servers, and domain services. Hetzner provides a Cloud API for programmatic
-  management of cloud resources, as well as a DNS API for managing DNS zones
-  and records.
+description: Hetzner Online is a German hosting provider offering cloud servers, dedicated servers, and domain services. Hetzner
+  provides a Cloud API for programmatic management of cloud resources, as well as a DNS API for managing DNS zones and records.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Cloud Hosting
-  - DNS
-  - Infrastructure
-  - Servers
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/apis.yml
+- Cloud Hosting
+- DNS
+- Infrastructure
+- Servers
+url: https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/apis.yml
 created: '2025-02-09'
-modified: '2026-04-28'
+modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: hetzner:hetzner-cloud-api
-    name: Hetzner Cloud API
-    description: >-
-      The Hetzner Cloud API allows managing cloud servers, load balancers,
-      networks, firewalls, volumes, and other cloud resources programmatically.
-    humanURL: https://docs.hetzner.cloud/
-    baseURL: https://api.hetzner.cloud/v1
-    tags:
-      - Cloud
-      - Infrastructure
-      - Servers
-    properties:
-      - type: Documentation
-        url: https://docs.hetzner.cloud/
-      - type: OpenAPI
-        url: >-
-          https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/openapi/hetzner-openapi.yml
-      - type: GettingStarted
-        url: https://docs.hetzner.cloud/#getting-started
-  - aid: hetzner:hetzner-dns-api
-    name: Hetzner DNS API
-    description: >-
-      The Hetzner DNS API provides programmatic access to manage DNS zones,
-      records, and configurations for domains hosted with Hetzner's DNS
-      service.
-    humanURL: https://dns.hetzner.com/api-docs
-    baseURL: https://dns.hetzner.com/api/v1
-    tags:
-      - DNS
-      - Domain Management
-    properties:
-      - type: Documentation
-        url: https://dns.hetzner.com/api-docs
-      - type: Authentication
-        url: https://dns.hetzner.com/api-docs#section/Authentication
-common:
-  - type: Website
-    url: https://www.hetzner.com/
+- aid: hetzner:hetzner-cloud-api
+  name: Hetzner Cloud API
+  description: The Hetzner Cloud API allows managing cloud servers, load balancers, networks, firewalls, volumes, and other
+    cloud resources programmatically.
+  humanURL: https://docs.hetzner.cloud/
+  baseURL: https://api.hetzner.cloud/v1
+  tags:
+  - Cloud
+  - Infrastructure
+  - Servers
+  properties:
   - type: Documentation
-    url: https://docs.hetzner.com/
-  - type: SignUp
-    url: https://accounts.hetzner.com/signUp
-  - type: Login
-    url: https://accounts.hetzner.com/login
-  - type: StatusPage
-    url: https://status.hetzner.com/
-  - type: Support
-    url: https://www.hetzner.com/support
-  - type: Pricing
-    url: https://www.hetzner.com/cloud
-  - type: PrivacyPolicy
-    url: https://www.hetzner.com/legal/privacy-policy
-  - type: TermsOfService
-    url: https://www.hetzner.com/legal/terms-and-conditions
+    url: https://docs.hetzner.cloud/
+  - type: OpenAPI
+    url: https://raw.githubusercontent.com/api-evangelist/hetzner/refs/heads/main/openapi/hetzner-openapi.yml
+  - type: GettingStarted
+    url: https://docs.hetzner.cloud/#getting-started
+  - type: NaftikoCapability
+    url: capabilities/hetzner-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-certificate-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-certificates.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-data-centers.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-firewall-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-firewalls.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-floating-ip-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-floating-ips.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-isos.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-image-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-images.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-load-balancer-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-load-balancer-types.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-load-balancers.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-locations.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-network-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-networks.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-placement-groups.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-pricing.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-primary-ip-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-primary-ips.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-ssh-keys.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-server-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-server-types.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-servers.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-volume-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-volumes.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-zone-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-zone-rrset-actions.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-zone-rrsets.yaml
+  - type: NaftikoCapability
+    url: capabilities/hetzner-zones.yaml
+- aid: hetzner:hetzner-dns-api
+  name: Hetzner DNS API
+  description: The Hetzner DNS API provides programmatic access to manage DNS zones, records, and configurations for domains
+    hosted with Hetzner's DNS service.
+  humanURL: https://dns.hetzner.com/api-docs
+  baseURL: https://dns.hetzner.com/api/v1
+  tags:
+  - DNS
+  - Domain Management
+  properties:
+  - type: Documentation
+    url: https://dns.hetzner.com/api-docs
+  - type: Authentication
+    url: https://dns.hetzner.com/api-docs#section/Authentication
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/hetzner-online
+- type: Website
+  url: https://www.hetzner.com/
+- type: Documentation
+  url: https://docs.hetzner.com/
+- type: SignUp
+  url: https://accounts.hetzner.com/signUp
+- type: Login
+  url: https://accounts.hetzner.com/login
+- type: StatusPage
+  url: https://status.hetzner.com/
+- type: Support
+  url: https://www.hetzner.com/support
+- type: Pricing
+  url: https://www.hetzner.com/cloud
+- type: PrivacyPolicy
+  url: https://www.hetzner.com/legal/privacy-policy
+- type: TermsOfService
+  url: https://www.hetzner.com/legal/terms-and-conditions
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

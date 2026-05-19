@@ -1,0 +1,1303 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Server Actions
+  description: 'Hetzner Cloud API — Server Actions. 27 operations. Lead operation: List Actions. Self-contained Naftiko capability
+    covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Server Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-server-actions
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Server Actions business capability. Self-contained, no shared references.
+    resources:
+    - name: servers-actions
+      path: /servers/actions
+      operations:
+      - name: listserversactions
+        method: GET
+        description: List Actions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: query
+          type: array
+          description: Filter the actions by ID. May be used multiple times.
+        - name: sort
+          in: query
+          type: array
+          description: Sort actions by field and direction. May be used multiple times.
+        - name: status
+          in: query
+          type: array
+          description: Filter the actions by status. May be used multiple times.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+    - name: servers-actions-id
+      path: /servers/actions/{id}
+      operations:
+      - name: getserversaction
+        method: GET
+        description: Get an Action
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Action.
+          required: true
+    - name: servers-id-actions
+      path: /servers/{id}/actions
+      operations:
+      - name: listserveractions
+        method: GET
+        description: List Actions for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: sort
+          in: query
+          type: array
+          description: Sort actions by field and direction. May be used multiple times.
+        - name: status
+          in: query
+          type: array
+          description: Filter the actions by status. May be used multiple times.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+    - name: servers-id-actions-add_to_placement_group
+      path: /servers/{id}/actions/add_to_placement_group
+      operations:
+      - name: addservertoplacementgroup
+        method: POST
+        description: Add a Server to a Placement Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-attach_iso
+      path: /servers/{id}/actions/attach_iso
+      operations:
+      - name: attachserveriso
+        method: POST
+        description: Attach an ISO to a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-attach_to_network
+      path: /servers/{id}/actions/attach_to_network
+      operations:
+      - name: attachservertonetwork
+        method: POST
+        description: Attach a Server to a Network
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-change_alias_ips
+      path: /servers/{id}/actions/change_alias_ips
+      operations:
+      - name: changeserveraliasips
+        method: POST
+        description: Change alias IPs of a Network
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-change_dns_ptr
+      path: /servers/{id}/actions/change_dns_ptr
+      operations:
+      - name: changeserverdnsptr
+        method: POST
+        description: Change reverse DNS entry for this Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-change_protection
+      path: /servers/{id}/actions/change_protection
+      operations:
+      - name: changeserverprotection
+        method: POST
+        description: Change Server Protection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-change_type
+      path: /servers/{id}/actions/change_type
+      operations:
+      - name: changeservertype
+        method: POST
+        description: Change the Type of a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-create_image
+      path: /servers/{id}/actions/create_image
+      operations:
+      - name: createserverimage
+        method: POST
+        description: Create Image from a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-detach_from_network
+      path: /servers/{id}/actions/detach_from_network
+      operations:
+      - name: detachserverfromnetwork
+        method: POST
+        description: Detach a Server from a Network
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-detach_iso
+      path: /servers/{id}/actions/detach_iso
+      operations:
+      - name: detachserveriso
+        method: POST
+        description: Detach an ISO from a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-disable_backup
+      path: /servers/{id}/actions/disable_backup
+      operations:
+      - name: disableserverbackup
+        method: POST
+        description: Disable Backups for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-disable_rescue
+      path: /servers/{id}/actions/disable_rescue
+      operations:
+      - name: disableserverrescue
+        method: POST
+        description: Disable Rescue Mode for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-enable_backup
+      path: /servers/{id}/actions/enable_backup
+      operations:
+      - name: enableserverbackup
+        method: POST
+        description: Enable and Configure Backups for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-enable_rescue
+      path: /servers/{id}/actions/enable_rescue
+      operations:
+      - name: enableserverrescue
+        method: POST
+        description: Enable Rescue Mode for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-poweroff
+      path: /servers/{id}/actions/poweroff
+      operations:
+      - name: poweroffserver
+        method: POST
+        description: Power off a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-poweron
+      path: /servers/{id}/actions/poweron
+      operations:
+      - name: poweronserver
+        method: POST
+        description: Power on a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-reboot
+      path: /servers/{id}/actions/reboot
+      operations:
+      - name: rebootserver
+        method: POST
+        description: Soft-reboot a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-rebuild
+      path: /servers/{id}/actions/rebuild
+      operations:
+      - name: rebuildserver
+        method: POST
+        description: Rebuild a Server from an Image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id-actions-remove_from_placement_group
+      path: /servers/{id}/actions/remove_from_placement_group
+      operations:
+      - name: removeserverfromplacementgroup
+        method: POST
+        description: Remove from Placement Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-request_console
+      path: /servers/{id}/actions/request_console
+      operations:
+      - name: requestserverconsole
+        method: POST
+        description: Request Console for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-reset
+      path: /servers/{id}/actions/reset
+      operations:
+      - name: resetserver
+        method: POST
+        description: Reset a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-reset_password
+      path: /servers/{id}/actions/reset_password
+      operations:
+      - name: resetserverpassword
+        method: POST
+        description: Reset root Password of a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-shutdown
+      path: /servers/{id}/actions/shutdown
+      operations:
+      - name: shutdownserver
+        method: POST
+        description: Shutdown a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-actions-action_id
+      path: /servers/{id}/actions/{action_id}
+      operations:
+      - name: getserveraction
+        method: GET
+        description: Get an Action for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: action_id
+          in: path
+          type: integer
+          description: ID of the Action.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-server-actions-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Server Actions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/servers/actions
+      name: servers-actions
+      description: REST surface for servers-actions.
+      operations:
+      - method: GET
+        name: listserversactions
+        description: List Actions
+        call: hetzner-server-actions.listserversactions
+        with:
+          id: rest.id
+          sort: rest.sort
+          status: rest.status
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/actions/{id}
+      name: servers-actions-id
+      description: REST surface for servers-actions-id.
+      operations:
+      - method: GET
+        name: getserversaction
+        description: Get an Action
+        call: hetzner-server-actions.getserversaction
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions
+      name: servers-id-actions
+      description: REST surface for servers-id-actions.
+      operations:
+      - method: GET
+        name: listserveractions
+        description: List Actions for a Server
+        call: hetzner-server-actions.listserveractions
+        with:
+          id: rest.id
+          sort: rest.sort
+          status: rest.status
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/add-to-placement-group
+      name: servers-id-actions-add-to-placement-group
+      description: REST surface for servers-id-actions-add_to_placement_group.
+      operations:
+      - method: POST
+        name: addservertoplacementgroup
+        description: Add a Server to a Placement Group
+        call: hetzner-server-actions.addservertoplacementgroup
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/attach-iso
+      name: servers-id-actions-attach-iso
+      description: REST surface for servers-id-actions-attach_iso.
+      operations:
+      - method: POST
+        name: attachserveriso
+        description: Attach an ISO to a Server
+        call: hetzner-server-actions.attachserveriso
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/attach-to-network
+      name: servers-id-actions-attach-to-network
+      description: REST surface for servers-id-actions-attach_to_network.
+      operations:
+      - method: POST
+        name: attachservertonetwork
+        description: Attach a Server to a Network
+        call: hetzner-server-actions.attachservertonetwork
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/change-alias-ips
+      name: servers-id-actions-change-alias-ips
+      description: REST surface for servers-id-actions-change_alias_ips.
+      operations:
+      - method: POST
+        name: changeserveraliasips
+        description: Change alias IPs of a Network
+        call: hetzner-server-actions.changeserveraliasips
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/change-dns-ptr
+      name: servers-id-actions-change-dns-ptr
+      description: REST surface for servers-id-actions-change_dns_ptr.
+      operations:
+      - method: POST
+        name: changeserverdnsptr
+        description: Change reverse DNS entry for this Server
+        call: hetzner-server-actions.changeserverdnsptr
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/change-protection
+      name: servers-id-actions-change-protection
+      description: REST surface for servers-id-actions-change_protection.
+      operations:
+      - method: POST
+        name: changeserverprotection
+        description: Change Server Protection
+        call: hetzner-server-actions.changeserverprotection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/change-type
+      name: servers-id-actions-change-type
+      description: REST surface for servers-id-actions-change_type.
+      operations:
+      - method: POST
+        name: changeservertype
+        description: Change the Type of a Server
+        call: hetzner-server-actions.changeservertype
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/create-image
+      name: servers-id-actions-create-image
+      description: REST surface for servers-id-actions-create_image.
+      operations:
+      - method: POST
+        name: createserverimage
+        description: Create Image from a Server
+        call: hetzner-server-actions.createserverimage
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/detach-from-network
+      name: servers-id-actions-detach-from-network
+      description: REST surface for servers-id-actions-detach_from_network.
+      operations:
+      - method: POST
+        name: detachserverfromnetwork
+        description: Detach a Server from a Network
+        call: hetzner-server-actions.detachserverfromnetwork
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/detach-iso
+      name: servers-id-actions-detach-iso
+      description: REST surface for servers-id-actions-detach_iso.
+      operations:
+      - method: POST
+        name: detachserveriso
+        description: Detach an ISO from a Server
+        call: hetzner-server-actions.detachserveriso
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/disable-backup
+      name: servers-id-actions-disable-backup
+      description: REST surface for servers-id-actions-disable_backup.
+      operations:
+      - method: POST
+        name: disableserverbackup
+        description: Disable Backups for a Server
+        call: hetzner-server-actions.disableserverbackup
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/disable-rescue
+      name: servers-id-actions-disable-rescue
+      description: REST surface for servers-id-actions-disable_rescue.
+      operations:
+      - method: POST
+        name: disableserverrescue
+        description: Disable Rescue Mode for a Server
+        call: hetzner-server-actions.disableserverrescue
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/enable-backup
+      name: servers-id-actions-enable-backup
+      description: REST surface for servers-id-actions-enable_backup.
+      operations:
+      - method: POST
+        name: enableserverbackup
+        description: Enable and Configure Backups for a Server
+        call: hetzner-server-actions.enableserverbackup
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/enable-rescue
+      name: servers-id-actions-enable-rescue
+      description: REST surface for servers-id-actions-enable_rescue.
+      operations:
+      - method: POST
+        name: enableserverrescue
+        description: Enable Rescue Mode for a Server
+        call: hetzner-server-actions.enableserverrescue
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/poweroff
+      name: servers-id-actions-poweroff
+      description: REST surface for servers-id-actions-poweroff.
+      operations:
+      - method: POST
+        name: poweroffserver
+        description: Power off a Server
+        call: hetzner-server-actions.poweroffserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/poweron
+      name: servers-id-actions-poweron
+      description: REST surface for servers-id-actions-poweron.
+      operations:
+      - method: POST
+        name: poweronserver
+        description: Power on a Server
+        call: hetzner-server-actions.poweronserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/reboot
+      name: servers-id-actions-reboot
+      description: REST surface for servers-id-actions-reboot.
+      operations:
+      - method: POST
+        name: rebootserver
+        description: Soft-reboot a Server
+        call: hetzner-server-actions.rebootserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/rebuild
+      name: servers-id-actions-rebuild
+      description: REST surface for servers-id-actions-rebuild.
+      operations:
+      - method: POST
+        name: rebuildserver
+        description: Rebuild a Server from an Image
+        call: hetzner-server-actions.rebuildserver
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/remove-from-placement-group
+      name: servers-id-actions-remove-from-placement-group
+      description: REST surface for servers-id-actions-remove_from_placement_group.
+      operations:
+      - method: POST
+        name: removeserverfromplacementgroup
+        description: Remove from Placement Group
+        call: hetzner-server-actions.removeserverfromplacementgroup
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/request-console
+      name: servers-id-actions-request-console
+      description: REST surface for servers-id-actions-request_console.
+      operations:
+      - method: POST
+        name: requestserverconsole
+        description: Request Console for a Server
+        call: hetzner-server-actions.requestserverconsole
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/reset
+      name: servers-id-actions-reset
+      description: REST surface for servers-id-actions-reset.
+      operations:
+      - method: POST
+        name: resetserver
+        description: Reset a Server
+        call: hetzner-server-actions.resetserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/reset-password
+      name: servers-id-actions-reset-password
+      description: REST surface for servers-id-actions-reset_password.
+      operations:
+      - method: POST
+        name: resetserverpassword
+        description: Reset root Password of a Server
+        call: hetzner-server-actions.resetserverpassword
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/shutdown
+      name: servers-id-actions-shutdown
+      description: REST surface for servers-id-actions-shutdown.
+      operations:
+      - method: POST
+        name: shutdownserver
+        description: Shutdown a Server
+        call: hetzner-server-actions.shutdownserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/actions/{action-id}
+      name: servers-id-actions-action-id
+      description: REST surface for servers-id-actions-action_id.
+      operations:
+      - method: GET
+        name: getserveraction
+        description: Get an Action for a Server
+        call: hetzner-server-actions.getserveraction
+        with:
+          id: rest.id
+          action_id: rest.action_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-server-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Server Actions. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-actions
+      description: List Actions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-server-actions.listserversactions
+      with:
+        id: tools.id
+        sort: tools.sort
+        status: tools.status
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-action
+      description: Get an Action
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-server-actions.getserversaction
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-actions-server
+      description: List Actions for a Server
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-server-actions.listserveractions
+      with:
+        id: tools.id
+        sort: tools.sort
+        status: tools.status
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-server-placement-group
+      description: Add a Server to a Placement Group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.addservertoplacementgroup
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: attach-iso-server
+      description: Attach an ISO to a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.attachserveriso
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: attach-server-network
+      description: Attach a Server to a Network
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.attachservertonetwork
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-alias-ips-network
+      description: Change alias IPs of a Network
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.changeserveraliasips
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-reverse-dns-entry-this
+      description: Change reverse DNS entry for this Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.changeserverdnsptr
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-server-protection
+      description: Change Server Protection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.changeserverprotection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-type-server
+      description: Change the Type of a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.changeservertype
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-image-server
+      description: Create Image from a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.createserverimage
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: detach-server-network
+      description: Detach a Server from a Network
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.detachserverfromnetwork
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: detach-iso-server
+      description: Detach an ISO from a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.detachserveriso
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: disable-backups-server
+      description: Disable Backups for a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.disableserverbackup
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: disable-rescue-mode-server
+      description: Disable Rescue Mode for a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.disableserverrescue
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: enable-and-configure-backups-server
+      description: Enable and Configure Backups for a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.enableserverbackup
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: enable-rescue-mode-server
+      description: Enable Rescue Mode for a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.enableserverrescue
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: power-off-server
+      description: Power off a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.poweroffserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: power-server
+      description: Power on a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.poweronserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: soft-reboot-server
+      description: Soft-reboot a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.rebootserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: rebuild-server-image
+      description: Rebuild a Server from an Image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.rebuildserver
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-placement-group
+      description: Remove from Placement Group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.removeserverfromplacementgroup
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: request-console-server
+      description: Request Console for a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.requestserverconsole
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: reset-server
+      description: Reset a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.resetserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: reset-root-password-server
+      description: Reset root Password of a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.resetserverpassword
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: shutdown-server
+      description: Shutdown a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-server-actions.shutdownserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-action-server
+      description: Get an Action for a Server
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-server-actions.getserveraction
+      with:
+        id: tools.id
+        action_id: tools.action_id
+      outputParameters:
+      - type: object
+        mapping: $.

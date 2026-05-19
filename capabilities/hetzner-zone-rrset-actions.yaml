@@ -1,0 +1,404 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Zone RRSet Actions
+  description: 'Hetzner Cloud API — Zone RRSet Actions. 6 operations. Lead operation: Add Records to an RRSet. Self-contained
+    Naftiko capability covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Zone RRSet Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-zone-rrset-actions
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Zone RRSet Actions business capability. Self-contained, no shared references.
+    resources:
+    - name: zones-id_or_name-rrsets-rr_name-rr_type-actions-add_records
+      path: /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}/actions/add_records
+      operations:
+      - name: addzonerrsetrecords
+        method: POST
+        description: Add Records to an RRSet
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id_or_name
+          in: path
+          type: string
+          description: ID or Name of the Zone.
+          required: true
+        - name: rr_name
+          in: path
+          type: string
+          required: true
+        - name: rr_type
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: zones-id_or_name-rrsets-rr_name-rr_type-actions-change_protection
+      path: /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}/actions/change_protection
+      operations:
+      - name: changezonerrsetprotection
+        method: POST
+        description: Change an RRSet's Protection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id_or_name
+          in: path
+          type: string
+          description: ID or Name of the Zone.
+          required: true
+        - name: rr_name
+          in: path
+          type: string
+          required: true
+        - name: rr_type
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: zones-id_or_name-rrsets-rr_name-rr_type-actions-change_ttl
+      path: /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}/actions/change_ttl
+      operations:
+      - name: changezonerrsetttl
+        method: POST
+        description: Change an RRSet's TTL
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id_or_name
+          in: path
+          type: string
+          description: ID or Name of the Zone.
+          required: true
+        - name: rr_name
+          in: path
+          type: string
+          required: true
+        - name: rr_type
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: zones-id_or_name-rrsets-rr_name-rr_type-actions-remove_records
+      path: /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}/actions/remove_records
+      operations:
+      - name: removezonerrsetrecords
+        method: POST
+        description: Remove Records from an RRSet
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id_or_name
+          in: path
+          type: string
+          description: ID or Name of the Zone.
+          required: true
+        - name: rr_name
+          in: path
+          type: string
+          required: true
+        - name: rr_type
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: zones-id_or_name-rrsets-rr_name-rr_type-actions-set_records
+      path: /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}/actions/set_records
+      operations:
+      - name: setzonerrsetrecords
+        method: POST
+        description: Set Records of an RRSet
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id_or_name
+          in: path
+          type: string
+          description: ID or Name of the Zone.
+          required: true
+        - name: rr_name
+          in: path
+          type: string
+          required: true
+        - name: rr_type
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: zones-id_or_name-rrsets-rr_name-rr_type-actions-update_records
+      path: /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}/actions/update_records
+      operations:
+      - name: updatezonerrsetrecords
+        method: POST
+        description: Update Records of an RRSet
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id_or_name
+          in: path
+          type: string
+          description: ID or Name of the Zone.
+          required: true
+        - name: rr_name
+          in: path
+          type: string
+          required: true
+        - name: rr_type
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-zone-rrset-actions-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Zone RRSet Actions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/zones/{id-or-name}/rrsets/{rr-name}/{rr-type}/actions/add-records
+      name: zones-id-or-name-rrsets-rr-name-rr-type-actions-add-records
+      description: REST surface for zones-id_or_name-rrsets-rr_name-rr_type-actions-add_records.
+      operations:
+      - method: POST
+        name: addzonerrsetrecords
+        description: Add Records to an RRSet
+        call: hetzner-zone-rrset-actions.addzonerrsetrecords
+        with:
+          id_or_name: rest.id_or_name
+          rr_name: rest.rr_name
+          rr_type: rest.rr_type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/zones/{id-or-name}/rrsets/{rr-name}/{rr-type}/actions/change-protection
+      name: zones-id-or-name-rrsets-rr-name-rr-type-actions-change-protection
+      description: REST surface for zones-id_or_name-rrsets-rr_name-rr_type-actions-change_protection.
+      operations:
+      - method: POST
+        name: changezonerrsetprotection
+        description: Change an RRSet's Protection
+        call: hetzner-zone-rrset-actions.changezonerrsetprotection
+        with:
+          id_or_name: rest.id_or_name
+          rr_name: rest.rr_name
+          rr_type: rest.rr_type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/zones/{id-or-name}/rrsets/{rr-name}/{rr-type}/actions/change-ttl
+      name: zones-id-or-name-rrsets-rr-name-rr-type-actions-change-ttl
+      description: REST surface for zones-id_or_name-rrsets-rr_name-rr_type-actions-change_ttl.
+      operations:
+      - method: POST
+        name: changezonerrsetttl
+        description: Change an RRSet's TTL
+        call: hetzner-zone-rrset-actions.changezonerrsetttl
+        with:
+          id_or_name: rest.id_or_name
+          rr_name: rest.rr_name
+          rr_type: rest.rr_type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/zones/{id-or-name}/rrsets/{rr-name}/{rr-type}/actions/remove-records
+      name: zones-id-or-name-rrsets-rr-name-rr-type-actions-remove-records
+      description: REST surface for zones-id_or_name-rrsets-rr_name-rr_type-actions-remove_records.
+      operations:
+      - method: POST
+        name: removezonerrsetrecords
+        description: Remove Records from an RRSet
+        call: hetzner-zone-rrset-actions.removezonerrsetrecords
+        with:
+          id_or_name: rest.id_or_name
+          rr_name: rest.rr_name
+          rr_type: rest.rr_type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/zones/{id-or-name}/rrsets/{rr-name}/{rr-type}/actions/set-records
+      name: zones-id-or-name-rrsets-rr-name-rr-type-actions-set-records
+      description: REST surface for zones-id_or_name-rrsets-rr_name-rr_type-actions-set_records.
+      operations:
+      - method: POST
+        name: setzonerrsetrecords
+        description: Set Records of an RRSet
+        call: hetzner-zone-rrset-actions.setzonerrsetrecords
+        with:
+          id_or_name: rest.id_or_name
+          rr_name: rest.rr_name
+          rr_type: rest.rr_type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/zones/{id-or-name}/rrsets/{rr-name}/{rr-type}/actions/update-records
+      name: zones-id-or-name-rrsets-rr-name-rr-type-actions-update-records
+      description: REST surface for zones-id_or_name-rrsets-rr_name-rr_type-actions-update_records.
+      operations:
+      - method: POST
+        name: updatezonerrsetrecords
+        description: Update Records of an RRSet
+        call: hetzner-zone-rrset-actions.updatezonerrsetrecords
+        with:
+          id_or_name: rest.id_or_name
+          rr_name: rest.rr_name
+          rr_type: rest.rr_type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-zone-rrset-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Zone RRSet Actions. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: add-records-rrset
+      description: Add Records to an RRSet
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-zone-rrset-actions.addzonerrsetrecords
+      with:
+        id_or_name: tools.id_or_name
+        rr_name: tools.rr_name
+        rr_type: tools.rr_type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-rrset-s-protection
+      description: Change an RRSet's Protection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-zone-rrset-actions.changezonerrsetprotection
+      with:
+        id_or_name: tools.id_or_name
+        rr_name: tools.rr_name
+        rr_type: tools.rr_type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: change-rrset-s-ttl
+      description: Change an RRSet's TTL
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-zone-rrset-actions.changezonerrsetttl
+      with:
+        id_or_name: tools.id_or_name
+        rr_name: tools.rr_name
+        rr_type: tools.rr_type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-records-rrset
+      description: Remove Records from an RRSet
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-zone-rrset-actions.removezonerrsetrecords
+      with:
+        id_or_name: tools.id_or_name
+        rr_name: tools.rr_name
+        rr_type: tools.rr_type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: set-records-rrset
+      description: Set Records of an RRSet
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-zone-rrset-actions.setzonerrsetrecords
+      with:
+        id_or_name: tools.id_or_name
+        rr_name: tools.rr_name
+        rr_type: tools.rr_type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-records-rrset
+      description: Update Records of an RRSet
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-zone-rrset-actions.updatezonerrsetrecords
+      with:
+        id_or_name: tools.id_or_name
+        rr_name: tools.rr_name
+        rr_type: tools.rr_type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

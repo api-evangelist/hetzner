@@ -1,0 +1,334 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Servers
+  description: 'Hetzner Cloud API — Servers. 6 operations. Lead operation: List Servers. Self-contained Naftiko capability
+    covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Servers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-servers
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Servers business capability. Self-contained, no shared references.
+    resources:
+    - name: servers
+      path: /servers
+      operations:
+      - name: listservers
+        method: GET
+        description: List Servers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter resources by their name.
+        - name: label_selector
+          in: query
+          type: string
+          description: Filter resources by labels.
+        - name: sort
+          in: query
+          type: array
+          description: Sort resources by field and direction. May be used multiple times.
+        - name: status
+          in: query
+          type: array
+          description: Filter resources by status. May be used multiple times.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+      - name: createserver
+        method: POST
+        description: Create a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: servers-id
+      path: /servers/{id}
+      operations:
+      - name: getserver
+        method: GET
+        description: Get a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+      - name: updateserver
+        method: PUT
+        description: Update a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteserver
+        method: DELETE
+        description: Delete a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+    - name: servers-id-metrics
+      path: /servers/{id}/metrics
+      operations:
+      - name: getservermetrics
+        method: GET
+        description: Get Metrics for a Server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Server.
+          required: true
+        - name: type
+          in: query
+          type: array
+          description: Type of metrics to get.
+          required: true
+        - name: start
+          in: query
+          type: string
+          description: Start of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+            format).
+          required: true
+        - name: end
+          in: query
+          type: string
+          description: End of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+            format).
+          required: true
+        - name: step
+          in: query
+          type: string
+          description: Resolution of results in seconds.
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-servers-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Servers. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/servers
+      name: servers
+      description: REST surface for servers.
+      operations:
+      - method: GET
+        name: listservers
+        description: List Servers
+        call: hetzner-servers.listservers
+        with:
+          name: rest.name
+          label_selector: rest.label_selector
+          sort: rest.sort
+          status: rest.status
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createserver
+        description: Create a Server
+        call: hetzner-servers.createserver
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}
+      name: servers-id
+      description: REST surface for servers-id.
+      operations:
+      - method: GET
+        name: getserver
+        description: Get a Server
+        call: hetzner-servers.getserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateserver
+        description: Update a Server
+        call: hetzner-servers.updateserver
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteserver
+        description: Delete a Server
+        call: hetzner-servers.deleteserver
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{id}/metrics
+      name: servers-id-metrics
+      description: REST surface for servers-id-metrics.
+      operations:
+      - method: GET
+        name: getservermetrics
+        description: Get Metrics for a Server
+        call: hetzner-servers.getservermetrics
+        with:
+          id: rest.id
+          type: rest.type
+          start: rest.start
+          end: rest.end
+          step: rest.step
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-servers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Servers. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-servers
+      description: List Servers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-servers.listservers
+      with:
+        name: tools.name
+        label_selector: tools.label_selector
+        sort: tools.sort
+        status: tools.status
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-server
+      description: Create a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-servers.createserver
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-server
+      description: Get a Server
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-servers.getserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-server
+      description: Update a Server
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hetzner-servers.updateserver
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-server
+      description: Delete a Server
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hetzner-servers.deleteserver
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-metrics-server
+      description: Get Metrics for a Server
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-servers.getservermetrics
+      with:
+        id: tools.id
+        type: tools.type
+        start: tools.start
+        end: tools.end
+        step: tools.step
+      outputParameters:
+      - type: object
+        mapping: $.

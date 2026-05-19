@@ -1,0 +1,257 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Firewalls
+  description: 'Hetzner Cloud API — Firewalls. 5 operations. Lead operation: List Firewalls. Self-contained Naftiko capability
+    covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Firewalls
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-firewalls
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Firewalls business capability. Self-contained, no shared references.
+    resources:
+    - name: firewalls
+      path: /firewalls
+      operations:
+      - name: listfirewalls
+        method: GET
+        description: List Firewalls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: sort
+          in: query
+          type: array
+          description: Sort resources by field and direction. May be used multiple times.
+        - name: name
+          in: query
+          type: string
+          description: Filter resources by their name.
+        - name: label_selector
+          in: query
+          type: string
+          description: Filter resources by labels.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+      - name: createfirewall
+        method: POST
+        description: Create a Firewall
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: firewalls-id
+      path: /firewalls/{id}
+      operations:
+      - name: getfirewall
+        method: GET
+        description: Get a Firewall
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Firewall.
+          required: true
+      - name: updatefirewall
+        method: PUT
+        description: Update a Firewall
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Firewall.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletefirewall
+        method: DELETE
+        description: Delete a Firewall
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Firewall.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-firewalls-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Firewalls. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/firewalls
+      name: firewalls
+      description: REST surface for firewalls.
+      operations:
+      - method: GET
+        name: listfirewalls
+        description: List Firewalls
+        call: hetzner-firewalls.listfirewalls
+        with:
+          sort: rest.sort
+          name: rest.name
+          label_selector: rest.label_selector
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createfirewall
+        description: Create a Firewall
+        call: hetzner-firewalls.createfirewall
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/firewalls/{id}
+      name: firewalls-id
+      description: REST surface for firewalls-id.
+      operations:
+      - method: GET
+        name: getfirewall
+        description: Get a Firewall
+        call: hetzner-firewalls.getfirewall
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatefirewall
+        description: Update a Firewall
+        call: hetzner-firewalls.updatefirewall
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefirewall
+        description: Delete a Firewall
+        call: hetzner-firewalls.deletefirewall
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-firewalls-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Firewalls. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-firewalls
+      description: List Firewalls
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-firewalls.listfirewalls
+      with:
+        sort: tools.sort
+        name: tools.name
+        label_selector: tools.label_selector
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-firewall
+      description: Create a Firewall
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-firewalls.createfirewall
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-firewall
+      description: Get a Firewall
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-firewalls.getfirewall
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-firewall
+      description: Update a Firewall
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hetzner-firewalls.updatefirewall
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-firewall
+      description: Delete a Firewall
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hetzner-firewalls.deletefirewall
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

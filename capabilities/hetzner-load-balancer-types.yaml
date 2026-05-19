@@ -1,0 +1,133 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Load Balancer Types
+  description: 'Hetzner Cloud API — Load Balancer Types. 2 operations. Lead operation: List Load Balancer Types. Self-contained
+    Naftiko capability covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Load Balancer Types
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-load-balancer-types
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Load Balancer Types business capability. Self-contained, no shared references.
+    resources:
+    - name: load_balancer_types
+      path: /load_balancer_types
+      operations:
+      - name: listloadbalancertypes
+        method: GET
+        description: List Load Balancer Types
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter resources by their name.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+    - name: load_balancer_types-id
+      path: /load_balancer_types/{id}
+      operations:
+      - name: getloadbalancertype
+        method: GET
+        description: Get a Load Balancer Type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer Type.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-load-balancer-types-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Load Balancer Types. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/load-balancer-types
+      name: load-balancer-types
+      description: REST surface for load_balancer_types.
+      operations:
+      - method: GET
+        name: listloadbalancertypes
+        description: List Load Balancer Types
+        call: hetzner-load-balancer-types.listloadbalancertypes
+        with:
+          name: rest.name
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancer-types/{id}
+      name: load-balancer-types-id
+      description: REST surface for load_balancer_types-id.
+      operations:
+      - method: GET
+        name: getloadbalancertype
+        description: Get a Load Balancer Type
+        call: hetzner-load-balancer-types.getloadbalancertype
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-load-balancer-types-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Load Balancer Types. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-load-balancer-types
+      description: List Load Balancer Types
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancer-types.listloadbalancertypes
+      with:
+        name: tools.name
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-load-balancer-type
+      description: Get a Load Balancer Type
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancer-types.getloadbalancertype
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

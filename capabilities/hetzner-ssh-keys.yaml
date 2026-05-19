@@ -1,0 +1,264 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — SSH Keys
+  description: 'Hetzner Cloud API — SSH Keys. 5 operations. Lead operation: List SSH keys. Self-contained Naftiko capability
+    covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - SSH Keys
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-ssh-keys
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — SSH Keys business capability. Self-contained, no shared references.
+    resources:
+    - name: ssh_keys
+      path: /ssh_keys
+      operations:
+      - name: listsshkeys
+        method: GET
+        description: List SSH keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: sort
+          in: query
+          type: array
+          description: Sort resources by field and direction. May be used multiple times.
+        - name: name
+          in: query
+          type: string
+          description: Filter resources by their name.
+        - name: fingerprint
+          in: query
+          type: string
+          description: May be used to filter SSH keys by their fingerprint. The response will only contain the SSH key matching
+            the specified fingerprint.
+        - name: label_selector
+          in: query
+          type: string
+          description: Filter resources by labels.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+      - name: createsshkey
+        method: POST
+        description: Create an SSH key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: ssh_keys-id
+      path: /ssh_keys/{id}
+      operations:
+      - name: getsshkey
+        method: GET
+        description: Get a SSH key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the SSH Key.
+          required: true
+      - name: updatesshkey
+        method: PUT
+        description: Update an SSH key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the SSH Key.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletesshkey
+        method: DELETE
+        description: Delete an SSH key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the SSH Key.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-ssh-keys-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — SSH Keys. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/ssh-keys
+      name: ssh-keys
+      description: REST surface for ssh_keys.
+      operations:
+      - method: GET
+        name: listsshkeys
+        description: List SSH keys
+        call: hetzner-ssh-keys.listsshkeys
+        with:
+          sort: rest.sort
+          name: rest.name
+          fingerprint: rest.fingerprint
+          label_selector: rest.label_selector
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createsshkey
+        description: Create an SSH key
+        call: hetzner-ssh-keys.createsshkey
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ssh-keys/{id}
+      name: ssh-keys-id
+      description: REST surface for ssh_keys-id.
+      operations:
+      - method: GET
+        name: getsshkey
+        description: Get a SSH key
+        call: hetzner-ssh-keys.getsshkey
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatesshkey
+        description: Update an SSH key
+        call: hetzner-ssh-keys.updatesshkey
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesshkey
+        description: Delete an SSH key
+        call: hetzner-ssh-keys.deletesshkey
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-ssh-keys-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — SSH Keys. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-ssh-keys
+      description: List SSH keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-ssh-keys.listsshkeys
+      with:
+        sort: tools.sort
+        name: tools.name
+        fingerprint: tools.fingerprint
+        label_selector: tools.label_selector
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-ssh-key
+      description: Create an SSH key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-ssh-keys.createsshkey
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-ssh-key
+      description: Get a SSH key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-ssh-keys.getsshkey
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-ssh-key
+      description: Update an SSH key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hetzner-ssh-keys.updatesshkey
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-ssh-key
+      description: Delete an SSH key
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hetzner-ssh-keys.deletesshkey
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

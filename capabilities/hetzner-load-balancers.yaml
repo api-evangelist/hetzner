@@ -1,0 +1,328 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hetzner Cloud API — Load Balancers
+  description: 'Hetzner Cloud API — Load Balancers. 6 operations. Lead operation: List Load Balancers. Self-contained Naftiko
+    capability covering one Hetzner business surface.'
+  tags:
+  - Hetzner
+  - Load Balancers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HETZNER_API_KEY: HETZNER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hetzner-load-balancers
+    baseUri: https://api.hetzner.cloud/v1
+    description: Hetzner Cloud API — Load Balancers business capability. Self-contained, no shared references.
+    resources:
+    - name: load_balancers
+      path: /load_balancers
+      operations:
+      - name: listloadbalancers
+        method: GET
+        description: List Load Balancers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: sort
+          in: query
+          type: array
+          description: Sort resources by field and direction. May be used multiple times.
+        - name: name
+          in: query
+          type: string
+          description: Filter resources by their name.
+        - name: label_selector
+          in: query
+          type: string
+          description: Filter resources by labels.
+        - name: page
+          in: query
+          type: integer
+          description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        - name: per_page
+          in: query
+          type: integer
+          description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+      - name: createloadbalancer
+        method: POST
+        description: Create a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: load_balancers-id
+      path: /load_balancers/{id}
+      operations:
+      - name: getloadbalancer
+        method: GET
+        description: Get a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+      - name: updateloadbalancer
+        method: PUT
+        description: Update a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteloadbalancer
+        method: DELETE
+        description: Delete a Load Balancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+    - name: load_balancers-id-metrics
+      path: /load_balancers/{id}/metrics
+      operations:
+      - name: getloadbalancermetrics
+        method: GET
+        description: Get Metrics for a LoadBalancer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          description: ID of the Load Balancer.
+          required: true
+        - name: type
+          in: query
+          type: array
+          description: Type of metrics to get.
+          required: true
+        - name: start
+          in: query
+          type: string
+          description: Start of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+            format).
+          required: true
+        - name: end
+          in: query
+          type: string
+          description: End of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+            format).
+          required: true
+        - name: step
+          in: query
+          type: string
+          description: Resolution of results in seconds.
+    authentication:
+      type: bearer
+      token: '{{env.HETZNER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hetzner-load-balancers-rest
+    port: 8080
+    description: REST adapter for Hetzner Cloud API — Load Balancers. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/load-balancers
+      name: load-balancers
+      description: REST surface for load_balancers.
+      operations:
+      - method: GET
+        name: listloadbalancers
+        description: List Load Balancers
+        call: hetzner-load-balancers.listloadbalancers
+        with:
+          sort: rest.sort
+          name: rest.name
+          label_selector: rest.label_selector
+          page: rest.page
+          per_page: rest.per_page
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createloadbalancer
+        description: Create a Load Balancer
+        call: hetzner-load-balancers.createloadbalancer
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}
+      name: load-balancers-id
+      description: REST surface for load_balancers-id.
+      operations:
+      - method: GET
+        name: getloadbalancer
+        description: Get a Load Balancer
+        call: hetzner-load-balancers.getloadbalancer
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateloadbalancer
+        description: Update a Load Balancer
+        call: hetzner-load-balancers.updateloadbalancer
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteloadbalancer
+        description: Delete a Load Balancer
+        call: hetzner-load-balancers.deleteloadbalancer
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/load-balancers/{id}/metrics
+      name: load-balancers-id-metrics
+      description: REST surface for load_balancers-id-metrics.
+      operations:
+      - method: GET
+        name: getloadbalancermetrics
+        description: Get Metrics for a LoadBalancer
+        call: hetzner-load-balancers.getloadbalancermetrics
+        with:
+          id: rest.id
+          type: rest.type
+          start: rest.start
+          end: rest.end
+          step: rest.step
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hetzner-load-balancers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hetzner Cloud API — Load Balancers. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-load-balancers
+      description: List Load Balancers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancers.listloadbalancers
+      with:
+        sort: tools.sort
+        name: tools.name
+        label_selector: tools.label_selector
+        page: tools.page
+        per_page: tools.per_page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-load-balancer
+      description: Create a Load Balancer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hetzner-load-balancers.createloadbalancer
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-load-balancer
+      description: Get a Load Balancer
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancers.getloadbalancer
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-load-balancer
+      description: Update a Load Balancer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancers.updateloadbalancer
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-load-balancer
+      description: Delete a Load Balancer
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hetzner-load-balancers.deleteloadbalancer
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-metrics-loadbalancer
+      description: Get Metrics for a LoadBalancer
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hetzner-load-balancers.getloadbalancermetrics
+      with:
+        id: tools.id
+        type: tools.type
+        start: tools.start
+        end: tools.end
+        step: tools.step
+      outputParameters:
+      - type: object
+        mapping: $.
