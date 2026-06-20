@@ -5,7 +5,7 @@ description: >-
   provides a Cloud API for programmatic management of cloud resources, as well as a DNS API for managing DNS zones and
   records.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Cloud Hosting
   - DNS
