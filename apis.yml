@@ -58,7 +58,7 @@ common:
     url: https://www.hetzner.com/
   - type: Documentation
     url: https://docs.hetzner.com/
-  - type: SignUp
+  - type: Signup
     url: https://accounts.hetzner.com/signUp
   - type: Login
     url: https://accounts.hetzner.com/login
