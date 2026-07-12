@@ -1,0 +1,12 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/hetzner-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: APIToken
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/hetzner-openapi.yml

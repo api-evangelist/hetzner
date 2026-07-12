@@ -50,6 +50,12 @@ apis:
       - type: Authentication
         url: https://dns.hetzner.com/api-docs#section/Authentication
 common:
+  - type: VulnerabilityDisclosure
+    url: security/hetzner-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/hetzner-domain-security.yml
+  - type: Authentication
+    url: authentication/hetzner-authentication.yml
   - type: GitHubOrganization
     url: https://github.com/hetzneronline
   - type: LinkedIn
@@ -72,6 +78,8 @@ common:
     url: https://www.hetzner.com/legal/privacy-policy
   - type: TermsOfService
     url: https://www.hetzner.com/legal/terms-and-conditions
+  - url: https://www.hetzner.com/blog/
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
