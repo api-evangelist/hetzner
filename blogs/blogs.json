@@ -1,0 +1,14 @@
+{
+  "repo": "hetzner",
+  "feeds": [
+    {
+      "source": "https://www.hetzner.com/blog/",
+      "feed_url": "https://www.hetzner.com/blog/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "fetched": "2026-07-11T11:50:51Z",
+  "post_count": 12
+}
