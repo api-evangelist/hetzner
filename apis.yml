@@ -50,6 +50,8 @@ apis:
       - type: Authentication
         url: https://dns.hetzner.com/api-docs#section/Authentication
 common:
+  - type: AgenticAccess
+    url: agentic-access/hetzner-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/hetzner-vulnerability-disclosure.yml
   - type: DomainSecurity
