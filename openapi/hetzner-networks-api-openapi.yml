@@ -1,0 +1,1819 @@
+openapi: 3.0.3
+info:
+  title: Hetzner Cloud Actions Networks API
+  version: 1.0.0
+  x-summary: 'Manage Hetzner Cloud services and resources linked to them, such as Floating IPs, Volumes and Load Balancers.
+
+    '
+  description: "# Overview\n\nThis is the official documentation for the Hetzner Cloud API.\n\n## Introduction\n\nThe Hetzner Cloud API operates over HTTPS and uses JSON as its data format. The API is a RESTful API and utilizes HTTP methods and HTTP status codes to specify requests and responses.\n\nAs an alternative to working directly with our API you may also consider to use:\n\n- Our CLI program [hcloud](https://github.com/hetznercloud/cli)\n- Our [library for Go](https://github.com/hetznercloud/hcloud-go)\n- Our [library for Python](https://github.com/hetznercloud/hcloud-python)\n\nYou can find even more libraries, tools and integrations on our [Awesome List on GitHub](https://github.com/hetznercloud/awesome-hcloud).\n\n### Open source credits\n\nIf you are developing an open-source project that supports or intends to add support for Hetzner APIs, you may be eligible for a free one-time credit of up to € 50 / $ 50 on your account. Please contact us via the support page on your [Hetzner Console](https://console.hetzner.cloud/support) and let us know the following:\n\n- The name of the project you are working on\n- A short description of the project\n- Link to the project website or repo where the project is hosted\n- Affiliation with / role in the project (e.g. project maintainer)\n- Link to some other open-source work you have already done (if you have done so)\n\n**Note:** We only consider rewards for projects that provide Hetzner-specific functionality or integrations. For example, our Object Storage exposes a standard S3 API without any Hetzner-specific extensions. Projects that focus solely on generic S3 capabilities (e.g., general S3 clients or SDKs) are not Hetzner-specific and are therefore not eligible for Hetzner Rewards.\n\n## Getting Started\n\nTo get started using the API you first need an API token. Sign in into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token. Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project. Let’s say your new token is `LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj`.\n\nYou’re now ready to do your first request against the API. To get a list of all Servers in your Project, issue the example request on the right side using [curl](https://curl.se/).\n\nMake sure to replace the token in the example command with the token you have just created. Since your Project probably does not contain any Servers yet, the example response will look like the response on the right side. We will almost always provide a resource root like `servers` inside the example response. A response can also contain a `meta` object with information like [Pagination](#description/pagination).\n\n**Example Request**\n\n```shell\ncurl -H \"Authorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\" \\\n  https://api.hetzner.cloud/v1/servers\n```\n\n**Example Response**\n\n```json\n{\n  \"servers\": [],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 1,\n      \"per_page\": 25,\n      \"previous_page\": null,\n      \"next_page\": null,\n      \"last_page\": 1,\n      \"total_entries\": 0\n    }\n  }\n}\n```\n\n## Authentication\n\nAll requests to the Hetzner Cloud API must be authenticated via a API token. Include your secret API token in every request you send to the API with the `Authorization` HTTP header.\n\nTo create a new API token for your Project, switch into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token.\n\n**Example Authorization header**\n\n```http\nAuthorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\n```\n\n## Query Parameters\n\nThe API makes use of query parameters to sort and filter responses. The parameter names and values must be URI encoded according to [RFC2396](https://datatracker.ietf.org/doc/html/rfc2396). Query parameters of type `array` can be used multiple times:\n\n**Example query parameters for pagination**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?page=1&page_size=12\n```\n\n**Example use of multiple values for a parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?type=uploaded&type=managed\n```\n\n**Example use of an encoded parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?label_selector=key%3Dvalue\n```\n\n## Errors\n\nErrors are indicated by HTTP status codes. Further, the response of the request which generated the error contains an error code, an error message, and, optionally, error details. The schema of the error details object depends on the error code.\n\nThe error response contains the following keys:\n\n| Keys      | Meaning                                                               |\n| --------- | --------------------------------------------------------------------- |\n| `code`    | Short string indicating the type of error (machine-parsable)          |\n| `message` | Textual description on what has gone wrong                            |\n| `details` | An object providing for details on the error (schema depends on code) |\n\n**Example response**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n### Error Codes\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `400` | `json_error` | Invalid JSON input in your request. |\n| `401` | `unauthorized` | Request was made with an invalid or unknown token. |\n| `401` | `token_readonly` | The token is only allowed to perform GET requests. |\n| `403` | `forbidden` | Insufficient permissions for this request. |\n| `403` | `maintenance` | Cannot perform operation due to maintenance. |\n| `403` | `resource_limit_exceeded` | Error when exceeding the maximum quantity of a resource for an account. |\n| `404` | `not_found` | Entity not found. |\n| `405` | `method_not_allowed` | The request method is not allowed |\n| `409` | `uniqueness_error` | One or more of the objects fields must be unique. |\n| `409` | `conflict` | The resource has changed during the request, please retry. |\n| `410` | `deprecated_api_endpoint` | The API endpoint functionality was removed. |\n| `412` | `resource_unavailable` | The requested resource is currently unavailable (e.g. not available for order). |\n| `422` | `invalid_input` | Error while parsing or processing the input. |\n| `422` | `service_error` | Error within a service. |\n| `422` | `unsupported_error` | The corresponding resource does not support the Action. |\n| `423` | `locked` | The item you are trying to access is locked (there is already an Action running). |\n| `423` | `protected` | The Action you are trying to start is protected for this resource. |\n| `429` | `rate_limit_exceeded` | Error when sending too many requests. |\n| `500` | `server_error` | Error within the API backend. |\n| `503` | `unavailable` | A service or product is currently not available. |\n| `504` | `timeout` | The request could not be answered in time, please retry. |\n\n**invalid_input**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n**uniqueness_error**\n\n```json\n{\n  \"error\": {\n    \"code\": \"uniqueness_error\",\n    \"message\": \"SSH key with the same fingerprint already exists\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"public_key\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**resource_limit_exceeded**\n\n```json\n{\n  \"error\": {\n    \"code\": \"resource_limit_exceeded\",\n    \"message\": \"project limit exceeded\",\n    \"details\": {\n      \"limits\": [\n        {\n          \"name\": \"project_limit\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**deprecated_api_endpoint**\n\n```json\n{\n  \"error\": {\n    \"code\": \"deprecated_api_endpoint\",\n    \"message\": \"API functionality was removed\",\n    \"details\": {\n      \"announcement\": \"https://docs.hetzner.cloud/changelog#2023-07-20-foo-endpoint-is-deprecated\"\n    }\n  }\n}\n```\n\n## Actions\n\nActions represent asynchronous tasks within the API, targeting one or more resources. Triggering changes in the API may return a `running` action.\n\nAn action should be waited upon, until it reaches either the `success` or `error` state. Avoid polling the action's state too frequently to reduce the risk of exhausting your API requests and hitting the [rate limit](#description/rate-limiting).\n\nIf an action fails, it will contain details about the underlying error.\n\nOnce the asynchronous tasks have completed and the targeted resources are in a consistent state, the action is marked as succeeded.\n\nIn some cases, you may trigger multiple changes at once, and only wait for the returned actions at a later stage.\n\n## Labels\n\nLabels are `key/value` pairs that can be attached to all resources.\n\nValid label keys have two segments: an optional prefix and name, separated by a slash (`/`). The name segment is required and must be a string of 63 characters or less, beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between. The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots (`.`), not longer than 253 characters in total, followed by a slash (`/`).\n\nValid label values must be a string of 63 characters or less and must be empty or begin and end with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.\n\nThe `hetzner.cloud/` prefix is reserved and cannot be used.\n\n**Example Labels**\n\n```json\n{\n  \"labels\": {\n    \"environment\": \"development\",\n    \"service\": \"backend\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}\n```\n\n## Label Selector\n\nFor resources with labels, you can filter resources by their labels using the label selector query language.\n\n| Expression           | Meaning                                              |\n| -------------------- | ---------------------------------------------------- |\n| `k==v` / `k=v`       | Value of key `k` does equal value `v`                |\n| `k!=v`               | Value of key `k` does not equal value `v`            |\n| `k`                  | Key `k` is present                                   |\n| `!k`                 | Key `k` is not present                               |\n| `k in (v1,v2,v3)`    | Value of key `k` is `v1`, `v2`, or `v3`              |\n| `k notin (v1,v2,v3)` | Value of key `k` is neither `v1`, nor `v2`, nor `v3` |\n| `k1==v,!k2`          | Value of key `k1` is `v` and key `k2` is not present |\n\n### Examples\n\n- Returns all resources that have a `env=production` label and that don't have a `type=database` label:\n\n  `env=production,type!=database`\n\n- Returns all resources that have a `env=testing` or `env=staging` label:\n\n  `env in (testing,staging)`\n\n- Returns all resources that don't have a `type` label:\n\n  `!type`\n\n## Pagination\n\nResponses which return multiple items support pagination. If they do support pagination, it can be controlled with following query string parameters:\n\n- A `page` parameter specifies the page to fetch. The number of the first page is 1.\n- A `per_page` parameter specifies the number of items returned per page. The default value is 25, the maximum value is 50 except otherwise specified in the documentation.\n\nResponses contain a `Link` header with pagination information.\n\nAdditionally, if the response body is JSON and the root object is an object, that object has a `pagination` object inside the `meta` object with pagination information:\n\n**Example Pagination**\n\n```json\n{\n    \"servers\": [...],\n    \"meta\": {\n        \"pagination\": {\n            \"page\": 2,\n            \"per_page\": 25,\n            \"previous_page\": 1,\n            \"next_page\": 3,\n            \"last_page\": 4,\n            \"total_entries\": 100\n        }\n    }\n}\n```\n\nThe keys `previous_page`, `next_page`, `last_page`, and `total_entries` may be `null` when on the first page, last page, or when the total number of entries is unknown.\n\n**Example Pagination Link header**\n\n```http\nLink: <https://api.hetzner.cloud/v1/actions?page=2&per_page=5>; rel=\"prev\",\n      <https://api.hetzner.cloud/v1/actions?page=4&per_page=5>; rel=\"next\",\n      <https://api.hetzner.cloud/v1/actions?page=6&per_page=5>; rel=\"last\"\n```\n\nLine breaks have been added for display purposes only and responses may only contain some of the above `rel` values.\n\n## Rate Limiting\n\nAll requests, whether they are authenticated or not, are subject to rate limiting. If you have reached your limit, your requests will be handled with a `429 Too Many Requests` error. Burst requests are allowed. Responses contain several headers which provide information about your current rate limit status.\n\n- The `RateLimit-Limit` header contains the total number of requests you can perform per hour.\n- The `RateLimit-Remaining` header contains the number of requests remaining in the current rate limit time frame.\n- The `RateLimit-Reset` header contains a UNIX timestamp of the point in time when your rate limit will have recovered, and you will have the full number of requests available again.\n\nThe default limit is 3600 requests per hour and per Project. The number of remaining requests increases gradually. For example, when your limit is 3600 requests per hour, the number of remaining requests will increase by 1 every second.\n\n## Server Metadata\n\nYour Server can discover metadata about itself by doing a HTTP request to specific URLs. The following data is available:\n\n| Data              | Format | Contents                                                     |\n| ----------------- | ------ | ------------------------------------------------------------ |\n| hostname          | text   | Name of the Server as set in the api                         |\n| instance-id       | number | ID of the server                                             |\n| public-ipv4       | text   | Primary public IPv4 address                                  |\n| private-networks  | yaml   | Details about the private networks the Server is attached to |\n| availability-zone | text   | Name of the availability zone that Server runs in            |\n| region            | text   | Network zone, e.g. eu-central                                |\n\n**Example: Summary**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata\n```\n\n```yaml\navailability-zone: hel1-dc2\nhostname: my-server\ninstance-id: 42\npublic-ipv4: 1.2.3.4\nregion: eu-central\n```\n\n**Example: Hostname**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/hostname\nmy-server\n```\n\n**Example: Instance ID**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/instance-id\n42\n```\n\n**Example: Public IPv4**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4\n1.2.3.4\n```\n\n**Example: Private Networks**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/private-networks\n```\n\n```yaml\n- ip: 10.0.0.2\n  alias_ips: [10.0.0.3, 10.0.0.4]\n  interface_num: 1\n  mac_address: 86:00:00:2a:7d:e0\n  network_id: 1234\n  network_name: nw-test1\n  network: 10.0.0.0/8\n  subnet: 10.0.0.0/24\n  gateway: 10.0.0.1\n- ip: 192.168.0.2\n  alias_ips: []\n  interface_num: 2\n  mac_address: 86:00:00:2a:7d:e1\n  network_id: 4321\n  network_name: nw-test2\n  network: 192.168.0.0/16\n  subnet: 192.168.0.0/24\n  gateway: 192.168.0.1\n```\n\n**Example: Availability Zone**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/availability-zone\nhel1-dc2\n```\n\n**Example: Region**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/region\neu-central\n```\n\n## Sorting\n\nSome responses which return multiple items support sorting. If they do support sorting the documentation states which fields can be used for sorting. You specify sorting with the `sort` query string parameter. You can sort by multiple fields. You can set the sort direction by appending `:asc` or `:desc` to the field name. By default, ascending sorting is used.\n\n**Example: Sorting**\n\n```\nhttps://api.hetzner.cloud/v1/actions?sort=status\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc\nhttps://api.hetzner.cloud/v1/actions?sort=status:desc\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc&sort=command:desc\n```\n\n## Deprecation Notices\n\nYou can find all announced deprecations in our [Changelog](/changelog).\n"
+servers:
+- url: https://api.hetzner.cloud/v1
+security:
+- APIToken: []
+tags:
+- name: Networks
+  description: 'Networks is a private networks feature. These Networks are optional and they coexist with the public network that every Server has by default.
+
+
+    They allow Servers to talk to each other over a dedicated network interface using private IP addresses not available publicly.
+
+
+    The IP addresses are allocated and managed via the API, they must conform to [RFC1918](https://tools.ietf.org/html/rfc1918#section-3) standard. IPs and network interfaces defined under Networks do not provide public internet connectivity, you will need to use the already existing public network interface for that.
+
+
+    Each network has a user selected `ip_range` which defines all available IP addresses which can be used for Subnets within the Network.
+
+
+    To assign individual IPs to Servers you will need to create Network Subnets, described below.
+
+
+    Currently Networks support IPv4 only.
+
+
+    ### Subnets
+
+
+    Subnets divide the `ip_range` from the parent Network object into multiple Subnetworks that you can use for different specific purposes.
+
+
+    For each subnet you need to specify its own `ip_range` which must be contained within the parent Network’s `ip_range`. Additionally each subnet must belong to one of the available Network Zones described below. Subnets can not have overlapping IP ranges.
+
+
+    Currently there are three types of subnet:
+
+
+    - type `cloud` is used to connect cloud Resources into your Network.
+
+    - type `server` was used to connect only cloud Servers into your Network. This type is deprecated and is replaced by type cloud.
+
+    - type `vswitch` allows you to connect [Dedicated Server vSwitch](https://docs.hetzner.com/robot/dedicated-server/network/vswitch) - and all Dedicated Servers attached to it - into your Network
+
+
+    Subnets of type `vswitch` must set a `vswitch_id` which is the ID of the existing vSwitch in Hetzner Robot that should be coupled.
+
+
+    ### Network Zones
+
+
+    Network Zones are groups of Locations which have special high-speed network connections between them. The [Location object](https://docs.hetzner.cloud/reference/cloud#locations-get-a-location) contains the `network_zone` property each Location belongs to. Currently these network zones exist:
+
+
+    | Network Zone | Contains Locations |
+
+    | ------------ | ------------------ |
+
+    | eu-central   | nbg1, fsn1, hel1   |
+
+    | us-east      | ash                |
+
+    | us-west      | hil                |
+
+    | ap-southeast | sin                |
+
+
+    ### IP address management
+
+
+    When a cloud Server is attached to a network without the user specifying an IP it automatically gets an IP address assigned from a subnet of type `server` in the same network zone. If you specify the optional `ip` parameter when attaching then we will try to assign that IP. Keep in mind that the Server’s location must be covered by the Subnet’s Network Zone if you specify an IP, or that at least one Subnet with the zone covering Server’s location must exist.
+
+
+    A cloud Server can also have more than one IP address in a Network by specifying aliases. For details see the [attach to network action](https://docs.hetzner.cloud/reference/cloud#server-actions-attach-a-server-to-a-network).
+
+
+    The following IP addresses are reserved in networks and can not be used:
+
+
+    - the first IP of the network `ip_range` as it will be used as a default gateway for the private Network interface.
+
+    - `172.31.1.1` as it is being used as default gateway for our public Network interfaces.
+
+
+    ### Coupling Dedicated Servers
+
+
+    By using subnets of type `vswitch` you can couple the Cloud Networks with an existing [Dedicated Server vSwitch](https://docs.hetzner.com/robot/dedicated-server/network/vswitch) and enable dedicated and cloud servers to
+
+    talk to each other over the Network.
+
+    In order for this to work the dedicated servers may only use IPs from the subnet and must have a special network configuration. Please refer to [FAQ](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch). vSwitch Layer 2 features are not supported.
+
+
+    ### Routes
+
+
+    Networks also support the notion of routes which are automatically applied to private traffic. A route makes sure that all packets for a given `destination` IP prefix will be sent to the address specified in its `gateway`.
+
+    '
+paths:
+  /networks:
+    get:
+      operationId: list_networks
+      summary: List Networks
+      description: 'List multiple [Networks](#tag/networks).
+
+
+        Use the provided URI parameters to modify the result.
+
+        '
+      tags:
+      - Networks
+      parameters:
+      - description: 'Sort resources by field and direction. May be used multiple times.
+
+
+          For more information, see "[Sorting](#description/sorting)".
+
+          '
+        name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - id
+            - id:asc
+            - id:desc
+            - name
+            - name:asc
+            - name:desc
+            - created
+            - created:asc
+            - created:desc
+      - description: 'Filter resources by their name.
+
+
+          The response will only contain the resources
+
+          matching exactly the specified name.
+
+          '
+        name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - description: 'Filter resources by labels.
+
+
+          The response will only contain resources matching the label selector.
+
+          For more information, see "[Label Selector](#description/label-selector)".
+
+          '
+        name: label_selector
+        in: query
+        required: false
+        schema:
+          type: string
+      - description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 1
+          example: 1
+      - description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+        name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 25
+          example: 25
+      responses:
+        '200':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  networks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: ID of the [Network](#tag/networks).
+                          type: integer
+                          format: int64
+                          example: 4711
+                        name:
+                          description: Name of the [Network](#tag/networks).
+                          type: string
+                          example: mynet
+                        ip_range:
+                          description: 'IP range of the [Network](#tag/networks).
+
+
+                            Uses CIDR notation.
+
+                            '
+                          type: string
+                          example: 10.0.0.0/16
+                        subnets:
+                          description: List of subnets allocated in this [Network](#tag/networks).
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                description: 'Type of subnet.
+
+                                  '
+                                type: string
+                                enum:
+                                - cloud
+                                - server
+                                - vswitch
+                                x-enumDescriptions:
+                                  cloud: Used to connect cloud [Servers](#tag/servers) and [Load Balancers](#tag/load-balancers).
+                                  server: Same as the `cloud` type. **Deprecated**, use the `cloud` type instead.
+                                  vswitch: Used to [connect cloud Servers and Load Balancers with dedicated Servers](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch).
+                              ip_range:
+                                description: 'IP range of the subnet.
+
+
+                                  Uses CIDR notation.
+
+                                  '
+                                type: string
+                                example: 10.0.1.0/24
+                              network_zone:
+                                description: 'Name of the [Network Zone](#tag/network-zones).
+
+
+                                  The [Location](#tag/locations) contains the `network_zone` property it belongs to.
+
+                                  '
+                                type: string
+                                example: eu-central
+                              gateway:
+                                description: 'Gateway for [Servers](#tag/servers) attached to this subnet.
+
+
+                                  For subnets of type `server` this is always the first IP of the subnets IP range.
+
+                                  '
+                                type: string
+                                example: 10.0.0.1
+                              vswitch_id:
+                                description: ID of the robot vSwitch if the subnet is of type `vswitch`.
+                                type: integer
+                                format: int64
+                                nullable: true
+                                example: 1000
+                            required:
+                            - type
+                            - network_zone
+                            - gateway
+                        routes:
+                          description: Array of routes set in this [Network](#tag/networks).
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              destination:
+                                description: 'Destination network or host of the route.
+
+
+                                  Packages addressed for IPs matching the destination IP prefix will be send to the specified gateway.
+
+
+                                  Must be one of
+
+                                  * private IPv4 ranges of RFC1918
+
+                                  * or `0.0.0.0/0`.
+
+
+                                  Must not overlap with
+
+                                  * an existing ip_range in any subnets
+
+                                  * or with any destinations in other routes
+
+                                  * or with `172.31.1.1`.
+
+
+                                  `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                  '
+                                type: string
+                                example: 10.100.1.0/24
+                              gateway:
+                                description: 'Gateway of the route.
+
+
+                                  Packages addressed for the specified destination will be send to this IP address.
+
+
+                                  Cannot be
+
+                                  * the first IP of the networks ip_range,
+
+                                  * an IP behind a vSwitch or
+
+                                  * `172.31.1.1`.
+
+
+                                  `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                  '
+                                type: string
+                                example: 10.0.1.1
+                            required:
+                            - destination
+                            - gateway
+                        servers:
+                          description: Array of IDs of [Servers](#tag/servers) attached to this [Network](#tag/networks).
+                          type: array
+                          items:
+                            type: integer
+                            format: int64
+                          example:
+                          - 42
+                        load_balancers:
+                          description: Array of IDs of [Load Balancers](#tag/load-balancers) attached to this [Network](#tag/networks).
+                          type: array
+                          items:
+                            type: integer
+                            format: int64
+                          example:
+                          - 42
+                        protection:
+                          description: Protection configuration for the Resource.
+                          type: object
+                          properties:
+                            delete:
+                              description: Prevent the Resource from being deleted.
+                              type: boolean
+                              example: false
+                          required:
+                          - delete
+                        labels:
+                          description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                            For more information, see "[Labels](#description/labels)".
+
+                            '
+                          type: object
+                          additionalProperties:
+                            type: string
+                          example:
+                            environment: prod
+                            example.com/my: label
+                            just-a-key: ''
+                        created:
+                          description: Point in time when the Resource was created (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
+                          type: string
+                          format: date-time
+                          example: '2016-01-30T23:55:00Z'
+                        expose_routes_to_vswitch:
+                          description: Indicates if the routes from this [Network](#tag/networks) should be exposed to the vSwitch connection.
+                          type: boolean
+                          example: false
+                      required:
+                      - id
+                      - name
+                      - ip_range
+                      - subnets
+                      - routes
+                      - servers
+                      - protection
+                      - labels
+                      - created
+                      - expose_routes_to_vswitch
+                  meta:
+                    title: ListMeta
+                    type: object
+                    properties:
+                      pagination:
+                        description: See "[Pagination](#description/pagination)" for more information.
+                        type: object
+                        properties:
+                          page:
+                            description: Current page number.
+                            type: integer
+                            format: int64
+                            example: 3
+                          per_page:
+                            description: Maximum number of entries returned per page.
+                            type: integer
+                            format: int64
+                            example: 25
+                          previous_page:
+                            description: Page number of the previous page. Can be null if the current page is the first one.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 2
+                          next_page:
+                            description: Page number of the next page. Can be null if the current page is the last one.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 4
+                          last_page:
+                            description: Page number of the last page available. Can be null if the current page is the last one.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 4
+                          total_entries:
+                            description: Total number of entries that exist for this query. Can be null if unknown.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 100
+                        required:
+                        - page
+                        - per_page
+                        - previous_page
+                        - next_page
+                        - last_page
+                        - total_entries
+                    required:
+                    - pagination
+                required:
+                - networks
+                - meta
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\tnetworks, err := client.Network.All(ctx)\n}"
+      - lang: Python
+        label: Python
+        source: 'from __future__ import annotations
+
+
+          from os import environ
+
+
+          from hcloud import Client
+
+
+          token = environ["HCLOUD_TOKEN"]
+
+          client = Client(token=token)
+
+
+          networks = client.networks.get_all()'
+      - lang: Shell
+        label: CLI
+        source: hcloud network list
+    post:
+      operationId: create_network
+      summary: Create a Network
+      description: 'Creates a [Network](#tag/networks).
+
+
+        The provided `ip_range` can only be extended later on, but not reduced.
+
+
+        Subnets can be added now or later on using the [add subnet action](#tag/network-actions/add_network_subnet). If you do not specify an `ip_range` for the subnet the first available /24 range will be used.
+
+
+        Routes can be added now or later by using the [add route action](#tag/network-actions/add_network_route).
+
+        '
+      tags:
+      - Networks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: NetworkCreateRequest
+              type: object
+              properties:
+                name:
+                  description: Name of the [Network](#tag/networks).
+                  type: string
+                  example: mynet
+                ip_range:
+                  example: 10.0.0.0/16
+                  description: 'IP range of the [Network](#tag/networks).
+
+
+                    Uses CIDR notation.
+
+
+                    Must span all included subnets. Must be one of the private IPv4 ranges of RFC1918.
+
+
+                    Minimum network size is /24. We highly recommend that you pick a larger [Network](#tag/networks) with a /16 netmask.
+
+                    '
+                  type: string
+                labels:
+                  description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                    For more information, see "[Labels](#description/labels)".
+
+                    '
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    environment: prod
+                    example.com/my: label
+                    just-a-key: ''
+                subnets:
+                  description: Array of subnets to allocate.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        description: 'Type of subnet.
+
+                          '
+                        type: string
+                        enum:
+                        - cloud
+                        - server
+                        - vswitch
+                        x-enumDescriptions:
+                          cloud: Used to connect cloud [Servers](#tag/servers) and [Load Balancers](#tag/load-balancers).
+                          server: Same as the `cloud` type. **Deprecated**, use the `cloud` type instead.
+                          vswitch: Used to [connect cloud Servers and Load Balancers with dedicated Servers](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch).
+                      ip_range:
+                        description: 'IP range of the subnet.
+
+
+                          Uses CIDR notation.
+
+
+                          Must be a subnet of the parent [Networks](#tag/networks) `ip_range`.
+
+
+                          Must not overlap with any other subnets or with any destinations in routes.
+
+
+                          Minimum network size is /30. We highly recommend that you pick a larger subnet with a /24 netmask.
+
+                          '
+                        type: string
+                        example: 10.0.1.0/24
+                      network_zone:
+                        description: 'Name of the [Network Zone](#tag/network-zones).
+
+
+                          The [Location](#tag/locations) contains the `network_zone` property it belongs to.
+
+                          '
+                        type: string
+                        example: eu-central
+                      vswitch_id:
+                        description: 'ID of the robot vSwitch.
+
+
+                          Must only be supplied for subnets of type `vswitch`.
+
+                          '
+                        type: integer
+                        format: int64
+                        example: 1000
+                    required:
+                    - type
+                    - network_zone
+                routes:
+                  description: Array of routes set in this [Network](#tag/networks).
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      destination:
+                        description: 'Destination network or host of the route.
+
+
+                          Packages addressed for IPs matching the destination IP prefix will be send to the specified gateway.
+
+
+                          Must be one of
+
+                          * private IPv4 ranges of RFC1918
+
+                          * or `0.0.0.0/0`.
+
+
+                          Must not overlap with
+
+                          * an existing ip_range in any subnets
+
+                          * or with any destinations in other routes
+
+                          * or with `172.31.1.1`.
+
+
+                          `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                          '
+                        type: string
+                        example: 10.100.1.0/24
+                      gateway:
+                        description: 'Gateway of the route.
+
+
+                          Packages addressed for the specified destination will be send to this IP address.
+
+
+                          Cannot be
+
+                          * the first IP of the networks ip_range,
+
+                          * an IP behind a vSwitch or
+
+                          * `172.31.1.1`.
+
+
+                          `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                          '
+                        type: string
+                        example: 10.0.1.1
+                    required:
+                    - destination
+                    - gateway
+                expose_routes_to_vswitch:
+                  description: 'Toggle to expose routes to the [Networks](#tag/networks) vSwitch.
+
+
+                    Indicates if the routes from this [Network](#tag/networks) should be exposed to the vSwitch in this [Network](#tag/networks). Only takes effect if a [vSwitch is setup](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch) in this [Network](#tag/networks).
+
+                    '
+                  type: boolean
+                  example: false
+              required:
+              - name
+              - ip_range
+      responses:
+        '201':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  network:
+                    type: object
+                    properties:
+                      id:
+                        description: ID of the [Network](#tag/networks).
+                        type: integer
+                        format: int64
+                        example: 4711
+                      name:
+                        description: Name of the [Network](#tag/networks).
+                        type: string
+                        example: mynet
+                      ip_range:
+                        description: 'IP range of the [Network](#tag/networks).
+
+
+                          Uses CIDR notation.
+
+                          '
+                        type: string
+                        example: 10.0.0.0/16
+                      subnets:
+                        description: List of subnets allocated in this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              description: 'Type of subnet.
+
+                                '
+                              type: string
+                              enum:
+                              - cloud
+                              - server
+                              - vswitch
+                              x-enumDescriptions:
+                                cloud: Used to connect cloud [Servers](#tag/servers) and [Load Balancers](#tag/load-balancers).
+                                server: Same as the `cloud` type. **Deprecated**, use the `cloud` type instead.
+                                vswitch: Used to [connect cloud Servers and Load Balancers with dedicated Servers](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch).
+                            ip_range:
+                              description: 'IP range of the subnet.
+
+
+                                Uses CIDR notation.
+
+                                '
+                              type: string
+                              example: 10.0.1.0/24
+                            network_zone:
+                              description: 'Name of the [Network Zone](#tag/network-zones).
+
+
+                                The [Location](#tag/locations) contains the `network_zone` property it belongs to.
+
+                                '
+                              type: string
+                              example: eu-central
+                            gateway:
+                              description: 'Gateway for [Servers](#tag/servers) attached to this subnet.
+
+
+                                For subnets of type `server` this is always the first IP of the subnets IP range.
+
+                                '
+                              type: string
+                              example: 10.0.0.1
+                            vswitch_id:
+                              description: ID of the robot vSwitch if the subnet is of type `vswitch`.
+                              type: integer
+                              format: int64
+                              nullable: true
+                              example: 1000
+                          required:
+                          - type
+                          - network_zone
+                          - gateway
+                      routes:
+                        description: Array of routes set in this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            destination:
+                              description: 'Destination network or host of the route.
+
+
+                                Packages addressed for IPs matching the destination IP prefix will be send to the specified gateway.
+
+
+                                Must be one of
+
+                                * private IPv4 ranges of RFC1918
+
+                                * or `0.0.0.0/0`.
+
+
+                                Must not overlap with
+
+                                * an existing ip_range in any subnets
+
+                                * or with any destinations in other routes
+
+                                * or with `172.31.1.1`.
+
+
+                                `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                '
+                              type: string
+                              example: 10.100.1.0/24
+                            gateway:
+                              description: 'Gateway of the route.
+
+
+                                Packages addressed for the specified destination will be send to this IP address.
+
+
+                                Cannot be
+
+                                * the first IP of the networks ip_range,
+
+                                * an IP behind a vSwitch or
+
+                                * `172.31.1.1`.
+
+
+                                `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                '
+                              type: string
+                              example: 10.0.1.1
+                          required:
+                          - destination
+                          - gateway
+                      servers:
+                        description: Array of IDs of [Servers](#tag/servers) attached to this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: integer
+                          format: int64
+                        example:
+                        - 42
+                      load_balancers:
+                        description: Array of IDs of [Load Balancers](#tag/load-balancers) attached to this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: integer
+                          format: int64
+                        example:
+                        - 42
+                      protection:
+                        description: Protection configuration for the Resource.
+                        type: object
+                        properties:
+                          delete:
+                            description: Prevent the Resource from being deleted.
+                            type: boolean
+                            example: false
+                        required:
+                        - delete
+                      labels:
+                        description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                          For more information, see "[Labels](#description/labels)".
+
+                          '
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          environment: prod
+                          example.com/my: label
+                          just-a-key: ''
+                      created:
+                        description: Point in time when the Resource was created (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                      expose_routes_to_vswitch:
+                        description: Indicates if the routes from this [Network](#tag/networks) should be exposed to the vSwitch connection.
+                        type: boolean
+                        example: false
+                    required:
+                    - id
+                    - name
+                    - ip_range
+                    - subnets
+                    - routes
+                    - servers
+                    - protection
+                    - labels
+                    - created
+                    - expose_routes_to_vswitch
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"net\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\tnetwork, _, err := client.Network.Create(ctx, hcloud.NetworkCreateOpts{\n\t\tExposeRoutesToVSwitch: false,\n\t\tIPRange: &net.IPNet{\n\t\t\tIP:   net.ParseIP(\"10.0.0.0\"),\n\t\t\tMask: net.CIDRMask(16, 32),\n\t\t},\n\t\tLabels: map[string]string{\n\t\t\t\"environment\":    \"prod\",\n\t\t\t\"example.com/my\": \"label\",\n\t\t\t\"just-a-key\":     \"\",\n\t\t},\n\t\tName: \"mynet\",\n\t\tRoutes: []hcloud.NetworkRoute{\n\t\t\t{\n\t\t\t\tDestination: &net.IPNet{\n\t\t\t\t\tIP:   net.ParseIP(\"10.100.1.0\"),\n\t\t\t\t\tMask: net.CIDRMask(24, 32),\n\t\t\t\t},\n\t\t\t\tGateway: net.ParseIP(\"10.0.1.1\"),\n\t\t\t},\n\t\t},\n\t\tSubnets: []hcloud.NetworkSubnet{\n\t\t\t{\n\t\t\t\tIPRange: &net.IPNet{\n\t\t\t\t\tIP:   net.ParseIP(\"10.0.1.0\"),\n\t\t\t\t\tMask: net.CIDRMask(24, 32),\n\t\t\t\t},\n\t\t\t\tNetworkZone: hcloud.NetworkZoneEUCentral,\n\t\t\t\tType:        hcloud.NetworkSubnetTypeCloud,\n\t\t\t\tVSwitchID:   1000,\n\t\t\t},\n\t\t},\n\t})\n}"
+      - lang: Python
+        label: Python
+        source: "from __future__ import annotations\n\nfrom os import environ\n\nfrom hcloud import Client\nfrom hcloud.networks import NetworkRoute, NetworkSubnet\n\ntoken = environ[\"HCLOUD_TOKEN\"]\nclient = Client(token=token)\n\nnetwork = client.networks.create(\n    expose_routes_to_vswitch=False,\n    ip_range=\"10.0.0.0/16\",\n    labels={\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\",\n    },\n    name=\"mynet\",\n    routes=[\n        NetworkRoute(\n            destination=\"10.100.1.0/24\",\n            gateway=\"10.0.1.1\",\n        )\n    ],\n    subnets=[\n        NetworkSubnet(\n            ip_range=\"10.0.1.0/24\",\n            network_zone=\"eu-central\",\n            type=\"cloud\",\n            vswitch_id=1000,\n        )\n    ],\n)"
+      - lang: Shell
+        label: CLI
+        source: "hcloud network create \\\n    --expose-routes-to-vswitch=false \\\n    --ip-range 10.0.0.0/16 \\\n    --label \"environment=prod\" \\\n    --label \"example.com/my=label\" \\\n    --label \"just-a-key=\" \\\n    --name mynet\n\nhcloud network add-route mynet \\\n    --destination 10.100.1.0/24 \\\n    --gateway 10.0.1.1\n\nhcloud network add-subnet mynet \\\n    --ip-range 10.0.1.0/24 \\\n    --network-zone eu-central \\\n    --type cloud \\\n    --vswitch-id 1000"
+  /networks/{id}:
+    get:
+      operationId: get_network
+      summary: Get a Network
+      description: 'Get a specific [Network](#tag/networks).
+
+        '
+      tags:
+      - Networks
+      parameters:
+      - description: ID of the Network.
+        name: id
+        in: path
+        required: true
+        schema:
+          description: ID of the [Network](#tag/networks).
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          example: 42
+      responses:
+        '200':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  network:
+                    type: object
+                    properties:
+                      id:
+                        description: ID of the [Network](#tag/networks).
+                        type: integer
+                        format: int64
+                        example: 4711
+                      name:
+                        description: Name of the [Network](#tag/networks).
+                        type: string
+                        example: mynet
+                      ip_range:
+                        description: 'IP range of the [Network](#tag/networks).
+
+
+                          Uses CIDR notation.
+
+                          '
+                        type: string
+                        example: 10.0.0.0/16
+                      subnets:
+                        description: List of subnets allocated in this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              description: 'Type of subnet.
+
+                                '
+                              type: string
+                              enum:
+                              - cloud
+                              - server
+                              - vswitch
+                              x-enumDescriptions:
+                                cloud: Used to connect cloud [Servers](#tag/servers) and [Load Balancers](#tag/load-balancers).
+                                server: Same as the `cloud` type. **Deprecated**, use the `cloud` type instead.
+                                vswitch: Used to [connect cloud Servers and Load Balancers with dedicated Servers](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch).
+                            ip_range:
+                              description: 'IP range of the subnet.
+
+
+                                Uses CIDR notation.
+
+                                '
+                              type: string
+                              example: 10.0.1.0/24
+                            network_zone:
+                              description: 'Name of the [Network Zone](#tag/network-zones).
+
+
+                                The [Location](#tag/locations) contains the `network_zone` property it belongs to.
+
+                                '
+                              type: string
+                              example: eu-central
+                            gateway:
+                              description: 'Gateway for [Servers](#tag/servers) attached to this subnet.
+
+
+                                For subnets of type `server` this is always the first IP of the subnets IP range.
+
+                                '
+                              type: string
+                              example: 10.0.0.1
+                            vswitch_id:
+                              description: ID of the robot vSwitch if the subnet is of type `vswitch`.
+                              type: integer
+                              format: int64
+                              nullable: true
+                              example: 1000
+                          required:
+                          - type
+                          - network_zone
+                          - gateway
+                      routes:
+                        description: Array of routes set in this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            destination:
+                              description: 'Destination network or host of the route.
+
+
+                                Packages addressed for IPs matching the destination IP prefix will be send to the specified gateway.
+
+
+                                Must be one of
+
+                                * private IPv4 ranges of RFC1918
+
+                                * or `0.0.0.0/0`.
+
+
+                                Must not overlap with
+
+                                * an existing ip_range in any subnets
+
+                                * or with any destinations in other routes
+
+                                * or with `172.31.1.1`.
+
+
+                                `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                '
+                              type: string
+                              example: 10.100.1.0/24
+                            gateway:
+                              description: 'Gateway of the route.
+
+
+                                Packages addressed for the specified destination will be send to this IP address.
+
+
+                                Cannot be
+
+                                * the first IP of the networks ip_range,
+
+                                * an IP behind a vSwitch or
+
+                                * `172.31.1.1`.
+
+
+                                `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                '
+                              type: string
+                              example: 10.0.1.1
+                          required:
+                          - destination
+                          - gateway
+                      servers:
+                        description: Array of IDs of [Servers](#tag/servers) attached to this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: integer
+                          format: int64
+                        example:
+                        - 42
+                      load_balancers:
+                        description: Array of IDs of [Load Balancers](#tag/load-balancers) attached to this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: integer
+                          format: int64
+                        example:
+                        - 42
+                      protection:
+                        description: Protection configuration for the Resource.
+                        type: object
+                        properties:
+                          delete:
+                            description: Prevent the Resource from being deleted.
+                            type: boolean
+                            example: false
+                        required:
+                        - delete
+                      labels:
+                        description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                          For more information, see "[Labels](#description/labels)".
+
+                          '
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          environment: prod
+                          example.com/my: label
+                          just-a-key: ''
+                      created:
+                        description: Point in time when the Resource was created (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                      expose_routes_to_vswitch:
+                        description: Indicates if the routes from this [Network](#tag/networks) should be exposed to the vSwitch connection.
+                        type: boolean
+                        example: false
+                    required:
+                    - id
+                    - name
+                    - ip_range
+                    - subnets
+                    - routes
+                    - servers
+                    - protection
+                    - labels
+                    - created
+                    - expose_routes_to_vswitch
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\tnetwork, _, err := client.Network.GetByID(ctx, 123)\n}"
+      - lang: Python
+        label: Python
+        source: 'from __future__ import annotations
+
+
+          from os import environ
+
+
+          from hcloud import Client
+
+
+          token = environ["HCLOUD_TOKEN"]
+
+          client = Client(token=token)
+
+
+          network = client.networks.get_by_id(123)'
+      - lang: Shell
+        label: CLI
+        source: hcloud network describe $NETWORK
+    put:
+      operationId: update_network
+      summary: Update a Network
+      description: 'Update a [Network](#tag/networks).
+
+
+        If a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.
+
+        '
+      tags:
+      - Networks
+      parameters:
+      - description: ID of the Network.
+        name: id
+        in: path
+        required: true
+        schema:
+          description: ID of the [Network](#tag/networks).
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          example: 42
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: NetworkUpdateRequest
+              type: object
+              properties:
+                name:
+                  description: New [Network](#tag/networks) name.
+                  type: string
+                  example: new-name
+                labels:
+                  description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+
+                    Note that the set of [Labels](#description/labels) provided in the request will overwrite the
+
+                    existing one.
+
+
+                    For more information, see "[Labels](#description/labels)".
+
+                    '
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    environment: prod
+                    example.com/my: label
+                    just-a-key: ''
+                expose_routes_to_vswitch:
+                  description: 'Toggle to expose routes to the [Networks](#tag/networks) vSwitch.
+
+
+                    Indicates if the routes from this [Network](#tag/networks) should be exposed to the vSwitch in this [Network](#tag/networks). Only takes effect if a [vSwitch is setup](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch) in this [Network](#tag/networks).
+
+                    '
+                  type: boolean
+                  example: false
+      responses:
+        '200':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  network:
+                    type: object
+                    properties:
+                      id:
+                        description: ID of the [Network](#tag/networks).
+                        type: integer
+                        format: int64
+                        example: 4711
+                      name:
+                        description: Name of the [Network](#tag/networks).
+                        type: string
+                        example: mynet
+                      ip_range:
+                        description: 'IP range of the [Network](#tag/networks).
+
+
+                          Uses CIDR notation.
+
+                          '
+                        type: string
+                        example: 10.0.0.0/16
+                      subnets:
+                        description: List of subnets allocated in this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              description: 'Type of subnet.
+
+                                '
+                              type: string
+                              enum:
+                              - cloud
+                              - server
+                              - vswitch
+                              x-enumDescriptions:
+                                cloud: Used to connect cloud [Servers](#tag/servers) and [Load Balancers](#tag/load-balancers).
+                                server: Same as the `cloud` type. **Deprecated**, use the `cloud` type instead.
+                                vswitch: Used to [connect cloud Servers and Load Balancers with dedicated Servers](https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch).
+                            ip_range:
+                              description: 'IP range of the subnet.
+
+
+                                Uses CIDR notation.
+
+                                '
+                              type: string
+                              example: 10.0.1.0/24
+                            network_zone:
+                              description: 'Name of the [Network Zone](#tag/network-zones).
+
+
+                                The [Location](#tag/locations) contains the `network_zone` property it belongs to.
+
+                                '
+                              type: string
+                              example: eu-central
+                            gateway:
+                              description: 'Gateway for [Servers](#tag/servers) attached to this subnet.
+
+
+                                For subnets of type `server` this is always the first IP of the subnets IP range.
+
+                                '
+                              type: string
+                              example: 10.0.0.1
+                            vswitch_id:
+                              description: ID of the robot vSwitch if the subnet is of type `vswitch`.
+                              type: integer
+                              format: int64
+                              nullable: true
+                              example: 1000
+                          required:
+                          - type
+                          - network_zone
+                          - gateway
+                      routes:
+                        description: Array of routes set in this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            destination:
+                              description: 'Destination network or host of the route.
+
+
+                                Packages addressed for IPs matching the destination IP prefix will be send to the specified gateway.
+
+
+                                Must be one of
+
+                                * private IPv4 ranges of RFC1918
+
+                                * or `0.0.0.0/0`.
+
+
+                                Must not overlap with
+
+                                * an existing ip_range in any subnets
+
+                                * or with any destinations in other routes
+
+                                * or with `172.31.1.1`.
+
+
+                                `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                '
+                              type: string
+                              example: 10.100.1.0/24
+                            gateway:
+                              description: 'Gateway of the route.
+
+
+                                Packages addressed for the specified destination will be send to this IP address.
+
+
+                                Cannot be
+
+                                * the first IP of the networks ip_range,
+
+                                * an IP behind a vSwitch or
+
+                                * `172.31.1.1`.
+
+
+                                `172.31.1.1` is being used as a gateway for the public network interface of [Servers](#tag/servers).
+
+                                '
+                              type: string
+                              example: 10.0.1.1
+                          required:
+                          - destination
+                          - gateway
+                      servers:
+                        description: Array of IDs of [Servers](#tag/servers) attached to this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: integer
+                          format: int64
+                        example:
+                        - 42
+                      load_balancers:
+                        description: Array of IDs of [Load Balancers](#tag/load-balancers) attached to this [Network](#tag/networks).
+                        type: array
+                        items:
+                          type: integer
+                          format: int64
+                        example:
+                        - 42
+                      protection:
+                        description: Protection configuration for the Resource.
+                        type: object
+                        properties:
+                          delete:
+                            description: Prevent the Resource from being deleted.
+                            type: boolean
+                            example: false
+                        required:
+                        - delete
+                      labels:
+                        description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                          For more information, see "[Labels](#description/labels)".
+
+                          '
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          environment: prod
+                          example.com/my: label
+                          just-a-key: ''
+                      created:
+                        description: Point in time when the Resource was created (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                      expose_routes_to_vswitch:
+                        description: Indicates if the routes from this [Network](#tag/networks) should be exposed to the vSwitch connection.
+                        type: boolean
+                        example: false
+                    required:
+                    - id
+                    - name
+                    - ip_range
+                    - subnets
+                    - routes
+                    - servers
+                    - protection
+                    - labels
+                    - created
+                    - expose_routes_to_vswitch
+              examples:
+                default:
+                  value:
+                    network:
+                      id: 4711
+                      name: new-name
+                      ip_range: 10.0.0.0/16
+                      subnets:
+                      - type: cloud
+                        ip_range: 10.0.1.0/24
+                        network_zone: eu-central
+                        gateway: 10.0.0.1
+                      routes:
+                      - destination: 10.100.1.0/24
+                        gateway: 10.0.1.1
+                      servers:
+                      - 42
+                      load_balancers:
+                      - 42
+                      protection:
+                        delete: false
+                      labels:
+                        key: value
+                      created: '2016-01-30T23:50:00Z'
+                      expose_routes_to_vswitch: true
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\tnetwork, _, err := client.Network.Update(ctx, &hcloud.Network{ID: 123}, hcloud.NetworkUpdateOpts{\n\t\tExposeRoutesToVSwitch: hcloud.Ptr(false),\n\t\tLabels: map[string]string{\n\t\t\t\"environment\":    \"prod\",\n\t\t\t\"example.com/my\": \"label\",\n\t\t\t\"just-a-key\":     \"\",\n\t\t},\n\t\tName: \"new-name\",\n\t})\n}"
+      - lang: Python
+        label: Python
+        source: "from __future__ import annotations\n\nfrom os import environ\n\nfrom hcloud import Client\nfrom hcloud.networks import Network\n\ntoken = environ[\"HCLOUD_TOKEN\"]\nclient = Client(token=token)\n\nnetwork = client.networks.update(\n    network=Network(id=123),\n    expose_routes_to_vswitch=False,\n    labels={\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\",\n    },\n    name=\"new-name\",\n)"
+      - lang: Shell
+        label: CLI
+        source: "hcloud network update $NETWORK --name new-name\nhcloud network expose-routes-to-vswitch --disable $NETWORK\nhcloud network add-label --overwrite $NETWORK \\\n    \"environment=prod\" \"example.com/my=label\" \"just-a-key=\"\nhcloud network remove-label $NETWORK \\\n    \"environment\" \"example.com\" \"just-a-key\""
+    delete:
+      operationId: delete_network
+      summary: Delete a Network
+      description: 'Deletes a [Network](#tag/networks).
+
+
+        Attached resources will be detached automatically.
+
+        '
+      tags:
+      - Networks
+      parameters:
+      - description: ID of the Network.
+        name: id
+        in: path
+        required: true
+        schema:
+          description: ID of the [Network](#tag/networks).
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          example: 42
+      responses:
+        '204':
+          description: Request succeeded.
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\t_, err := client.Network.Delete(ctx, &hcloud.Network{ID: 123})\n}"
+      - lang: Python
+        label: Python
+        source: "from __future__ import annotations\n\nfrom os import environ\n\nfrom hcloud import Client\nfrom hcloud.networks import Network\n\ntoken = environ[\"HCLOUD_TOKEN\"]\nclient = Client(token=token)\n\nclient.networks.delete(\n    network=Network(id=123),\n)"
+      - lang: Shell
+        label: CLI
+        source: hcloud network delete $NETWORK
+components:
+  securitySchemes:
+    APIToken:
+      type: http
+      scheme: bearer
+x-tagGroups:
+- name: Actions
+  tags:
+  - Actions
+- name: Servers
+  tags:
+  - Servers
+  - Server Actions
+  - Server Types
+  - Images
+  - Image Actions
+  - ISOs
+  - Placement Groups
+  - Primary IPs
+  - Primary IP Actions
+- name: Volumes
+  tags:
+  - Volumes
+  - Volume Actions
+- name: Floating IPs
+  tags:
+  - Floating IPs
+  - Floating IP Actions
+- name: Firewalls
+  tags:
+  - Firewalls
+  - Firewall Actions
+- name: Load Balancers
+  tags:
+  - Load Balancers
+  - Load Balancer Actions
+  - Load Balancer Types
+- name: Networks
+  tags:
+  - Networks
+  - Network Actions
+- name: DNS
+  tags:
+  - Zones
+  - Zone Actions
+  - Zone RRSets
+  - Zone RRSet Actions
+- name: Security
+  tags:
+  - Certificates
+  - Certificate Actions
+  - SSH Keys
+- name: Locations
+  tags:
+  - Locations
+  - Data Centers
+- name: Billing
+  tags:
+  - Pricing

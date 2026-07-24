@@ -1,0 +1,1925 @@
+openapi: 3.0.3
+info:
+  title: Hetzner Cloud Actions Zone RRSets API
+  version: 1.0.0
+  x-summary: 'Manage Hetzner Cloud services and resources linked to them, such as Floating IPs, Volumes and Load Balancers.
+
+    '
+  description: "# Overview\n\nThis is the official documentation for the Hetzner Cloud API.\n\n## Introduction\n\nThe Hetzner Cloud API operates over HTTPS and uses JSON as its data format. The API is a RESTful API and utilizes HTTP methods and HTTP status codes to specify requests and responses.\n\nAs an alternative to working directly with our API you may also consider to use:\n\n- Our CLI program [hcloud](https://github.com/hetznercloud/cli)\n- Our [library for Go](https://github.com/hetznercloud/hcloud-go)\n- Our [library for Python](https://github.com/hetznercloud/hcloud-python)\n\nYou can find even more libraries, tools and integrations on our [Awesome List on GitHub](https://github.com/hetznercloud/awesome-hcloud).\n\n### Open source credits\n\nIf you are developing an open-source project that supports or intends to add support for Hetzner APIs, you may be eligible for a free one-time credit of up to € 50 / $ 50 on your account. Please contact us via the support page on your [Hetzner Console](https://console.hetzner.cloud/support) and let us know the following:\n\n- The name of the project you are working on\n- A short description of the project\n- Link to the project website or repo where the project is hosted\n- Affiliation with / role in the project (e.g. project maintainer)\n- Link to some other open-source work you have already done (if you have done so)\n\n**Note:** We only consider rewards for projects that provide Hetzner-specific functionality or integrations. For example, our Object Storage exposes a standard S3 API without any Hetzner-specific extensions. Projects that focus solely on generic S3 capabilities (e.g., general S3 clients or SDKs) are not Hetzner-specific and are therefore not eligible for Hetzner Rewards.\n\n## Getting Started\n\nTo get started using the API you first need an API token. Sign in into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token. Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project. Let’s say your new token is `LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj`.\n\nYou’re now ready to do your first request against the API. To get a list of all Servers in your Project, issue the example request on the right side using [curl](https://curl.se/).\n\nMake sure to replace the token in the example command with the token you have just created. Since your Project probably does not contain any Servers yet, the example response will look like the response on the right side. We will almost always provide a resource root like `servers` inside the example response. A response can also contain a `meta` object with information like [Pagination](#description/pagination).\n\n**Example Request**\n\n```shell\ncurl -H \"Authorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\" \\\n  https://api.hetzner.cloud/v1/servers\n```\n\n**Example Response**\n\n```json\n{\n  \"servers\": [],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 1,\n      \"per_page\": 25,\n      \"previous_page\": null,\n      \"next_page\": null,\n      \"last_page\": 1,\n      \"total_entries\": 0\n    }\n  }\n}\n```\n\n## Authentication\n\nAll requests to the Hetzner Cloud API must be authenticated via a API token. Include your secret API token in every request you send to the API with the `Authorization` HTTP header.\n\nTo create a new API token for your Project, switch into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token.\n\n**Example Authorization header**\n\n```http\nAuthorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\n```\n\n## Query Parameters\n\nThe API makes use of query parameters to sort and filter responses. The parameter names and values must be URI encoded according to [RFC2396](https://datatracker.ietf.org/doc/html/rfc2396). Query parameters of type `array` can be used multiple times:\n\n**Example query parameters for pagination**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?page=1&page_size=12\n```\n\n**Example use of multiple values for a parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?type=uploaded&type=managed\n```\n\n**Example use of an encoded parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?label_selector=key%3Dvalue\n```\n\n## Errors\n\nErrors are indicated by HTTP status codes. Further, the response of the request which generated the error contains an error code, an error message, and, optionally, error details. The schema of the error details object depends on the error code.\n\nThe error response contains the following keys:\n\n| Keys      | Meaning                                                               |\n| --------- | --------------------------------------------------------------------- |\n| `code`    | Short string indicating the type of error (machine-parsable)          |\n| `message` | Textual description on what has gone wrong                            |\n| `details` | An object providing for details on the error (schema depends on code) |\n\n**Example response**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n### Error Codes\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `400` | `json_error` | Invalid JSON input in your request. |\n| `401` | `unauthorized` | Request was made with an invalid or unknown token. |\n| `401` | `token_readonly` | The token is only allowed to perform GET requests. |\n| `403` | `forbidden` | Insufficient permissions for this request. |\n| `403` | `maintenance` | Cannot perform operation due to maintenance. |\n| `403` | `resource_limit_exceeded` | Error when exceeding the maximum quantity of a resource for an account. |\n| `404` | `not_found` | Entity not found. |\n| `405` | `method_not_allowed` | The request method is not allowed |\n| `409` | `uniqueness_error` | One or more of the objects fields must be unique. |\n| `409` | `conflict` | The resource has changed during the request, please retry. |\n| `410` | `deprecated_api_endpoint` | The API endpoint functionality was removed. |\n| `412` | `resource_unavailable` | The requested resource is currently unavailable (e.g. not available for order). |\n| `422` | `invalid_input` | Error while parsing or processing the input. |\n| `422` | `service_error` | Error within a service. |\n| `422` | `unsupported_error` | The corresponding resource does not support the Action. |\n| `423` | `locked` | The item you are trying to access is locked (there is already an Action running). |\n| `423` | `protected` | The Action you are trying to start is protected for this resource. |\n| `429` | `rate_limit_exceeded` | Error when sending too many requests. |\n| `500` | `server_error` | Error within the API backend. |\n| `503` | `unavailable` | A service or product is currently not available. |\n| `504` | `timeout` | The request could not be answered in time, please retry. |\n\n**invalid_input**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n**uniqueness_error**\n\n```json\n{\n  \"error\": {\n    \"code\": \"uniqueness_error\",\n    \"message\": \"SSH key with the same fingerprint already exists\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"public_key\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**resource_limit_exceeded**\n\n```json\n{\n  \"error\": {\n    \"code\": \"resource_limit_exceeded\",\n    \"message\": \"project limit exceeded\",\n    \"details\": {\n      \"limits\": [\n        {\n          \"name\": \"project_limit\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**deprecated_api_endpoint**\n\n```json\n{\n  \"error\": {\n    \"code\": \"deprecated_api_endpoint\",\n    \"message\": \"API functionality was removed\",\n    \"details\": {\n      \"announcement\": \"https://docs.hetzner.cloud/changelog#2023-07-20-foo-endpoint-is-deprecated\"\n    }\n  }\n}\n```\n\n## Actions\n\nActions represent asynchronous tasks within the API, targeting one or more resources. Triggering changes in the API may return a `running` action.\n\nAn action should be waited upon, until it reaches either the `success` or `error` state. Avoid polling the action's state too frequently to reduce the risk of exhausting your API requests and hitting the [rate limit](#description/rate-limiting).\n\nIf an action fails, it will contain details about the underlying error.\n\nOnce the asynchronous tasks have completed and the targeted resources are in a consistent state, the action is marked as succeeded.\n\nIn some cases, you may trigger multiple changes at once, and only wait for the returned actions at a later stage.\n\n## Labels\n\nLabels are `key/value` pairs that can be attached to all resources.\n\nValid label keys have two segments: an optional prefix and name, separated by a slash (`/`). The name segment is required and must be a string of 63 characters or less, beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between. The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots (`.`), not longer than 253 characters in total, followed by a slash (`/`).\n\nValid label values must be a string of 63 characters or less and must be empty or begin and end with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.\n\nThe `hetzner.cloud/` prefix is reserved and cannot be used.\n\n**Example Labels**\n\n```json\n{\n  \"labels\": {\n    \"environment\": \"development\",\n    \"service\": \"backend\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}\n```\n\n## Label Selector\n\nFor resources with labels, you can filter resources by their labels using the label selector query language.\n\n| Expression           | Meaning                                              |\n| -------------------- | ---------------------------------------------------- |\n| `k==v` / `k=v`       | Value of key `k` does equal value `v`                |\n| `k!=v`               | Value of key `k` does not equal value `v`            |\n| `k`                  | Key `k` is present                                   |\n| `!k`                 | Key `k` is not present                               |\n| `k in (v1,v2,v3)`    | Value of key `k` is `v1`, `v2`, or `v3`              |\n| `k notin (v1,v2,v3)` | Value of key `k` is neither `v1`, nor `v2`, nor `v3` |\n| `k1==v,!k2`          | Value of key `k1` is `v` and key `k2` is not present |\n\n### Examples\n\n- Returns all resources that have a `env=production` label and that don't have a `type=database` label:\n\n  `env=production,type!=database`\n\n- Returns all resources that have a `env=testing` or `env=staging` label:\n\n  `env in (testing,staging)`\n\n- Returns all resources that don't have a `type` label:\n\n  `!type`\n\n## Pagination\n\nResponses which return multiple items support pagination. If they do support pagination, it can be controlled with following query string parameters:\n\n- A `page` parameter specifies the page to fetch. The number of the first page is 1.\n- A `per_page` parameter specifies the number of items returned per page. The default value is 25, the maximum value is 50 except otherwise specified in the documentation.\n\nResponses contain a `Link` header with pagination information.\n\nAdditionally, if the response body is JSON and the root object is an object, that object has a `pagination` object inside the `meta` object with pagination information:\n\n**Example Pagination**\n\n```json\n{\n    \"servers\": [...],\n    \"meta\": {\n        \"pagination\": {\n            \"page\": 2,\n            \"per_page\": 25,\n            \"previous_page\": 1,\n            \"next_page\": 3,\n            \"last_page\": 4,\n            \"total_entries\": 100\n        }\n    }\n}\n```\n\nThe keys `previous_page`, `next_page`, `last_page`, and `total_entries` may be `null` when on the first page, last page, or when the total number of entries is unknown.\n\n**Example Pagination Link header**\n\n```http\nLink: <https://api.hetzner.cloud/v1/actions?page=2&per_page=5>; rel=\"prev\",\n      <https://api.hetzner.cloud/v1/actions?page=4&per_page=5>; rel=\"next\",\n      <https://api.hetzner.cloud/v1/actions?page=6&per_page=5>; rel=\"last\"\n```\n\nLine breaks have been added for display purposes only and responses may only contain some of the above `rel` values.\n\n## Rate Limiting\n\nAll requests, whether they are authenticated or not, are subject to rate limiting. If you have reached your limit, your requests will be handled with a `429 Too Many Requests` error. Burst requests are allowed. Responses contain several headers which provide information about your current rate limit status.\n\n- The `RateLimit-Limit` header contains the total number of requests you can perform per hour.\n- The `RateLimit-Remaining` header contains the number of requests remaining in the current rate limit time frame.\n- The `RateLimit-Reset` header contains a UNIX timestamp of the point in time when your rate limit will have recovered, and you will have the full number of requests available again.\n\nThe default limit is 3600 requests per hour and per Project. The number of remaining requests increases gradually. For example, when your limit is 3600 requests per hour, the number of remaining requests will increase by 1 every second.\n\n## Server Metadata\n\nYour Server can discover metadata about itself by doing a HTTP request to specific URLs. The following data is available:\n\n| Data              | Format | Contents                                                     |\n| ----------------- | ------ | ------------------------------------------------------------ |\n| hostname          | text   | Name of the Server as set in the api                         |\n| instance-id       | number | ID of the server                                             |\n| public-ipv4       | text   | Primary public IPv4 address                                  |\n| private-networks  | yaml   | Details about the private networks the Server is attached to |\n| availability-zone | text   | Name of the availability zone that Server runs in            |\n| region            | text   | Network zone, e.g. eu-central                                |\n\n**Example: Summary**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata\n```\n\n```yaml\navailability-zone: hel1-dc2\nhostname: my-server\ninstance-id: 42\npublic-ipv4: 1.2.3.4\nregion: eu-central\n```\n\n**Example: Hostname**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/hostname\nmy-server\n```\n\n**Example: Instance ID**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/instance-id\n42\n```\n\n**Example: Public IPv4**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4\n1.2.3.4\n```\n\n**Example: Private Networks**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/private-networks\n```\n\n```yaml\n- ip: 10.0.0.2\n  alias_ips: [10.0.0.3, 10.0.0.4]\n  interface_num: 1\n  mac_address: 86:00:00:2a:7d:e0\n  network_id: 1234\n  network_name: nw-test1\n  network: 10.0.0.0/8\n  subnet: 10.0.0.0/24\n  gateway: 10.0.0.1\n- ip: 192.168.0.2\n  alias_ips: []\n  interface_num: 2\n  mac_address: 86:00:00:2a:7d:e1\n  network_id: 4321\n  network_name: nw-test2\n  network: 192.168.0.0/16\n  subnet: 192.168.0.0/24\n  gateway: 192.168.0.1\n```\n\n**Example: Availability Zone**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/availability-zone\nhel1-dc2\n```\n\n**Example: Region**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/region\neu-central\n```\n\n## Sorting\n\nSome responses which return multiple items support sorting. If they do support sorting the documentation states which fields can be used for sorting. You specify sorting with the `sort` query string parameter. You can sort by multiple fields. You can set the sort direction by appending `:asc` or `:desc` to the field name. By default, ascending sorting is used.\n\n**Example: Sorting**\n\n```\nhttps://api.hetzner.cloud/v1/actions?sort=status\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc\nhttps://api.hetzner.cloud/v1/actions?sort=status:desc\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc&sort=command:desc\n```\n\n## Deprecation Notices\n\nYou can find all announced deprecations in our [Changelog](/changelog).\n"
+servers:
+- url: https://api.hetzner.cloud/v1
+security:
+- APIToken: []
+tags:
+- name: Zone RRSets
+  description: 'This API operates on resource record sets (RRSets) instead of individual resource records (RRs).
+
+    An RRSet is identified by a name and type. For example, the two RRs
+
+
+    - (name: `@`, type: `MX`, value: `10 smtp.example.com.`) and
+
+    - (name: `@`, type: `MX`, value: `20 smtp-backup.example.com.`)
+
+
+    are part of the RRSet identified by (name: `@`, type: `MX`).
+
+
+    Please see [Hetzner Docs](https://docs.hetzner.com/networking/dns/record-types/overview) for more information on types.
+
+    '
+paths:
+  /zones/{id_or_name}/rrsets:
+    get:
+      operationId: list_zone_rrsets
+      summary: List RRSets
+      description: 'Returns all [RRSets](#tag/zone-rrsets) in the [Zone](#tag/zones).
+
+
+        Use the provided URI parameters to modify the result.
+
+
+        The maximum value for `per_page` on this endpoint is `100` instead of `50`.
+
+
+        Only applicable for [Zones](#tag/zones) in primary mode.
+
+
+        #### Operation specific errors
+
+
+        | Status | Code | Description |
+
+        | --- | --- | --- |
+
+        | `422` | `incorrect_zone_mode` | This operation is not supported for this Zone''s `mode`. |
+
+        '
+      tags:
+      - Zone RRSets
+      parameters:
+      - description: ID or Name of the Zone.
+        name: id_or_name
+        in: path
+        required: true
+        schema:
+          description: ID or Name of the [Zone](#tag/zones).
+          type: string
+      - description: 'Filter resources by their name.
+
+
+          The response will only contain the resources
+
+          matching exactly the specified name.
+
+          '
+        name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - description: 'Filter resources by their type. May be used multiple times.
+
+
+          The response will only contain resources matching the specified types.
+
+          '
+        name: type
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+              '
+            type: string
+            enum:
+            - A
+            - AAAA
+            - CAA
+            - CNAME
+            - DS
+            - HINFO
+            - HTTPS
+            - MX
+            - NS
+            - PTR
+            - RP
+            - SOA
+            - SRV
+            - SVCB
+            - TLSA
+            - TXT
+            example: A
+      - description: 'Filter resources by labels.
+
+
+          The response will only contain resources matching the label selector.
+
+          For more information, see "[Label Selector](#description/label-selector)".
+
+          '
+        name: label_selector
+        in: query
+        required: false
+        schema:
+          type: string
+      - description: 'Sort resources by field and direction. May be used multiple times.
+
+
+          For more information, see "[Sorting](#description/sorting)".
+
+          '
+        name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - id
+            - id:asc
+            - id:desc
+            - name
+            - name:asc
+            - name:desc
+            - created
+            - created:asc
+            - created:desc
+      - description: Page number to return. For more information, see "[Pagination](#description/pagination)".
+        name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 1
+          example: 1
+      - description: Maximum number of entries returned per page. For more information, see "[Pagination](#description/pagination)".
+        name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 25
+          example: 25
+      responses:
+        '200':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rrsets:
+                    type: array
+                    items:
+                      title: RRSet
+                      type: object
+                      properties:
+                        id:
+                          description: 'ID of the RRSet.
+
+
+                            The ID is composed of the name and type, joined with a slash (e.g. `www/AAAA`).
+
+                            '
+                          type: string
+                        name:
+                          description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+                            The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+                            name. Names containing non-ASCII characters must be transcribed to
+
+                            [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+                            `xn--4bi` (✉️).
+
+
+                            For the [Zone](#tag/zones) apex, use `@`.
+
+                            '
+                          type: string
+                          example: www
+                        type:
+                          description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+                            '
+                          type: string
+                          enum:
+                          - A
+                          - AAAA
+                          - CAA
+                          - CNAME
+                          - DS
+                          - HINFO
+                          - HTTPS
+                          - MX
+                          - NS
+                          - PTR
+                          - RP
+                          - SOA
+                          - SRV
+                          - SVCB
+                          - TLSA
+                          - TXT
+                          example: A
+                        ttl:
+                          description: 'Time To Live (TTL) of the [RRSet](#tag/zone-rrsets).
+
+
+                            Must be in between 60s and 2147483647s.
+
+
+                            If not set, the [Zone''s](#tag/zones) Default TTL is used.
+
+                            '
+                          type: integer
+                          nullable: true
+                          minimum: 60
+                          maximum: 2147483647
+                          example: 3600
+                        labels:
+                          description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                            For more information, see "[Labels](#description/labels)".
+
+                            '
+                          type: object
+                          additionalProperties:
+                            type: string
+                          example:
+                            environment: prod
+                            example.com/my: label
+                            just-a-key: ''
+                        protection:
+                          description: 'Protection of the [RRSet](#tag/zone-rrsets).
+
+                            '
+                          type: object
+                          properties:
+                            change:
+                              description: Prevent the Resource from being changed.
+                              type: boolean
+                              example: false
+                          required:
+                          - change
+                        records:
+                          description: 'Records of the [RRSet](#tag/zone-rrsets).
+
+
+                            Must not be empty and must only contain distinct record values.
+
+                            The order of records returned in responses is not guaranteed to be consistent.
+
+                            '
+                          type: array
+                          items:
+                            title: Record
+                            description: 'Record of a [RRSet](#tag/zone-rrsets).
+
+
+                              The `value` is used to identify the record in an [RRSet](#tag/zone-rrsets).
+
+                              '
+                            type: object
+                            properties:
+                              value:
+                                description: 'Value of the record.
+
+
+                                  For details about accepted values, see the [DNS record types documentation](https://docs.hetzner.com/networking/dns/record-types/overview/).
+
+                                  '
+                                type: string
+                                example: 198.51.100.1
+                              comment:
+                                description: Comment of the record.
+                                type: string
+                                example: My web server at Hetzner Cloud.
+                            required:
+                            - value
+                        zone:
+                          description: ID of the [Zone](#tag/zones).
+                          type: integer
+                          format: int64
+                          minimum: 1
+                          maximum: 9007199254740991
+                          example: 42
+                      required:
+                      - id
+                      - name
+                      - type
+                      - ttl
+                      - labels
+                      - protection
+                      - records
+                      - zone
+                  meta:
+                    title: ListMeta
+                    type: object
+                    properties:
+                      pagination:
+                        description: See "[Pagination](#description/pagination)" for more information.
+                        type: object
+                        properties:
+                          page:
+                            description: Current page number.
+                            type: integer
+                            format: int64
+                            example: 3
+                          per_page:
+                            description: Maximum number of entries returned per page.
+                            type: integer
+                            format: int64
+                            example: 25
+                          previous_page:
+                            description: Page number of the previous page. Can be null if the current page is the first one.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 2
+                          next_page:
+                            description: Page number of the next page. Can be null if the current page is the last one.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 4
+                          last_page:
+                            description: Page number of the last page available. Can be null if the current page is the last one.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 4
+                          total_entries:
+                            description: Total number of entries that exist for this query. Can be null if unknown.
+                            type: integer
+                            format: int64
+                            nullable: true
+                            example: 100
+                        required:
+                        - page
+                        - per_page
+                        - previous_page
+                        - next_page
+                        - last_page
+                        - total_entries
+                    required:
+                    - pagination
+                required:
+                - rrsets
+                - meta
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\trrSets, _, err := client.Zone.ListRRSets(ctx, &hcloud.Zone{Name: \"example.com\"}, hcloud.ZoneRRSetListOpts{})\n}"
+      - lang: Python
+        label: Python
+        source: 'from __future__ import annotations
+
+
+          from os import environ
+
+
+          from hcloud import Client
+
+          from hcloud.zones import Zone
+
+
+          token = environ["HCLOUD_TOKEN"]
+
+          client = Client(token=token)
+
+
+          zones = client.zones.get_rrset_all(zone=Zone(name="example.com"))'
+      - lang: Shell
+        label: CLI
+        source: hcloud zone rrset list $ZONE
+    post:
+      operationId: create_zone_rrset
+      summary: Create an RRSet
+      description: 'Create an [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).
+
+
+        Only applicable for [Zones](#tag/zones) in primary mode.
+
+
+        #### Operation specific errors
+
+
+        | Status | Code | Description |
+
+        | --- | --- | --- |
+
+        | `422` | `incorrect_zone_mode` | This operation is not supported for this Zone''s `mode`. |
+
+        '
+      tags:
+      - Zone RRSets
+      parameters:
+      - description: ID or Name of the Zone.
+        name: id_or_name
+        in: path
+        required: true
+        schema:
+          description: ID or Name of the [Zone](#tag/zones).
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+                    The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+                    name. Names containing non-ASCII characters must be transcribed to
+
+                    [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+                    `xn--4bi` (✉️).
+
+
+                    For the [Zone](#tag/zones) apex, use `@`.
+
+                    '
+                  type: string
+                  example: www
+                type:
+                  description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+                    '
+                  type: string
+                  enum:
+                  - A
+                  - AAAA
+                  - CAA
+                  - CNAME
+                  - DS
+                  - HINFO
+                  - HTTPS
+                  - MX
+                  - NS
+                  - PTR
+                  - RP
+                  - SOA
+                  - SRV
+                  - SVCB
+                  - TLSA
+                  - TXT
+                  example: A
+                ttl:
+                  description: 'Time To Live (TTL) of the [RRSet](#tag/zone-rrsets).
+
+
+                    Must be in between 60s and 2147483647s.
+
+
+                    If not set, the [Zone''s](#tag/zones) Default TTL is used.
+
+                    '
+                  type: integer
+                  nullable: true
+                  minimum: 60
+                  maximum: 2147483647
+                  example: 3600
+                records:
+                  description: 'Records of the [RRSet](#tag/zone-rrsets).
+
+
+                    Must not be empty and must only contain distinct record values.
+
+                    The order of records returned in responses is not guaranteed to be consistent.
+
+                    '
+                  type: array
+                  items:
+                    title: Record
+                    description: 'Record of a [RRSet](#tag/zone-rrsets).
+
+
+                      The `value` is used to identify the record in an [RRSet](#tag/zone-rrsets).
+
+                      '
+                    type: object
+                    properties:
+                      value:
+                        description: 'Value of the record.
+
+
+                          For details about accepted values, see the [DNS record types documentation](https://docs.hetzner.com/networking/dns/record-types/overview/).
+
+                          '
+                        type: string
+                        example: 198.51.100.1
+                      comment:
+                        description: Comment of the record.
+                        type: string
+                        example: My web server at Hetzner Cloud.
+                    required:
+                    - value
+                labels:
+                  description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                    For more information, see "[Labels](#description/labels)".
+
+                    '
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    environment: prod
+                    example.com/my: label
+                    just-a-key: ''
+              required:
+              - name
+              - type
+              - records
+      responses:
+        '201':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rrset:
+                    title: RRSet
+                    type: object
+                    properties:
+                      id:
+                        description: 'ID of the RRSet.
+
+
+                          The ID is composed of the name and type, joined with a slash (e.g. `www/AAAA`).
+
+                          '
+                        type: string
+                      name:
+                        description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+                          The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+                          name. Names containing non-ASCII characters must be transcribed to
+
+                          [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+                          `xn--4bi` (✉️).
+
+
+                          For the [Zone](#tag/zones) apex, use `@`.
+
+                          '
+                        type: string
+                        example: www
+                      type:
+                        description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+                          '
+                        type: string
+                        enum:
+                        - A
+                        - AAAA
+                        - CAA
+                        - CNAME
+                        - DS
+                        - HINFO
+                        - HTTPS
+                        - MX
+                        - NS
+                        - PTR
+                        - RP
+                        - SOA
+                        - SRV
+                        - SVCB
+                        - TLSA
+                        - TXT
+                        example: A
+                      ttl:
+                        description: 'Time To Live (TTL) of the [RRSet](#tag/zone-rrsets).
+
+
+                          Must be in between 60s and 2147483647s.
+
+
+                          If not set, the [Zone''s](#tag/zones) Default TTL is used.
+
+                          '
+                        type: integer
+                        nullable: true
+                        minimum: 60
+                        maximum: 2147483647
+                        example: 3600
+                      labels:
+                        description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                          For more information, see "[Labels](#description/labels)".
+
+                          '
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          environment: prod
+                          example.com/my: label
+                          just-a-key: ''
+                      protection:
+                        description: 'Protection of the [RRSet](#tag/zone-rrsets).
+
+                          '
+                        type: object
+                        properties:
+                          change:
+                            description: Prevent the Resource from being changed.
+                            type: boolean
+                            example: false
+                        required:
+                        - change
+                      records:
+                        description: 'Records of the [RRSet](#tag/zone-rrsets).
+
+
+                          Must not be empty and must only contain distinct record values.
+
+                          The order of records returned in responses is not guaranteed to be consistent.
+
+                          '
+                        type: array
+                        items:
+                          title: Record
+                          description: 'Record of a [RRSet](#tag/zone-rrsets).
+
+
+                            The `value` is used to identify the record in an [RRSet](#tag/zone-rrsets).
+
+                            '
+                          type: object
+                          properties:
+                            value:
+                              description: 'Value of the record.
+
+
+                                For details about accepted values, see the [DNS record types documentation](https://docs.hetzner.com/networking/dns/record-types/overview/).
+
+                                '
+                              type: string
+                              example: 198.51.100.1
+                            comment:
+                              description: Comment of the record.
+                              type: string
+                              example: My web server at Hetzner Cloud.
+                          required:
+                          - value
+                      zone:
+                        description: ID of the [Zone](#tag/zones).
+                        type: integer
+                        format: int64
+                        minimum: 1
+                        maximum: 9007199254740991
+                        example: 42
+                    required:
+                    - id
+                    - name
+                    - type
+                    - ttl
+                    - labels
+                    - protection
+                    - records
+                    - zone
+                  action:
+                    title: Action
+                    type: object
+                    properties:
+                      id:
+                        description: ID of the [Action](#description/actions).
+                        type: integer
+                        format: int64
+                        minimum: 1
+                        maximum: 9007199254740991
+                        example: 42
+                      command:
+                        description: Command executed in the Action.
+                        type: string
+                        example: start_resource
+                      status:
+                        description: Status of the Action.
+                        type: string
+                        enum:
+                        - running
+                        - success
+                        - error
+                      started:
+                        description: Point in time when the Action was started (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                      finished:
+                        description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                        nullable: true
+                      progress:
+                        description: Progress of the Action in percent.
+                        type: integer
+                        format: int32
+                        example: 100
+                      resources:
+                        description: Resources the Action relates to.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              description: ID of the Resource.
+                              type: integer
+                              format: int64
+                              minimum: 1
+                              maximum: 9007199254740991
+                              example: 42
+                            type:
+                              description: Type of the Resource.
+                              type: string
+                              example: server
+                          required:
+                          - id
+                          - type
+                      error:
+                        description: Error message for the Action if an error occurred, otherwise null.
+                        type: object
+                        nullable: true
+                        properties:
+                          code:
+                            description: Fixed error code for machines.
+                            type: string
+                            example: action_failed
+                          message:
+                            description: Error message for humans.
+                            type: string
+                            example: Action failed
+                        required:
+                        - code
+                        - message
+                    required:
+                    - id
+                    - command
+                    - status
+                    - progress
+                    - started
+                    - finished
+                    - resources
+                    - error
+                required:
+                - rrset
+                - action
+              examples:
+                default:
+                  value:
+                    rrset:
+                      id: www/A
+                      name: www
+                      type: A
+                      ttl: 3600
+                      labels:
+                        key: value
+                      protection:
+                        change: false
+                      records:
+                      - value: 198.51.100.1
+                        comment: My web server at Hetzner Cloud.
+                      zone: 42
+                    action:
+                      id: 1
+                      command: create_rrset
+                      status: running
+                      progress: 50
+                      started: '2016-01-30T23:55:00Z'
+                      finished: null
+                      resources:
+                      - id: 42
+                        type: zone
+                      error: null
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\tresult, _, err := client.Zone.CreateRRSet(ctx, &hcloud.Zone{Name: \"example.com\"}, hcloud.ZoneRRSetCreateOpts{\n\t\tName: \"www\",\n\t\tType: hcloud.ZoneRRSetTypeA,\n\t\tTTL:  hcloud.Ptr(3600),\n\t\tRecords: []hcloud.ZoneRRSetRecord{\n\t\t\t{\n\t\t\t\tValue:   \"198.51.100.1\",\n\t\t\t\tComment: \"My web server at Hetzner Cloud.\",\n\t\t\t},\n\t\t},\n\t\tLabels: map[string]string{\n\t\t\t\"environment\":    \"prod\",\n\t\t\t\"example.com/my\": \"label\",\n\t\t\t\"just-a-key\":     \"\",\n\t\t},\n\t})\n\n\terr = client.Action.WaitFor(ctx, result.Action)\n\n\trrSet := result.RRSet\n}"
+      - lang: Python
+        label: Python
+        source: "from __future__ import annotations\n\nfrom os import environ\n\nfrom hcloud import Client\nfrom hcloud.zones import Zone, ZoneRecord\n\ntoken = environ[\"HCLOUD_TOKEN\"]\nclient = Client(token=token)\n\nresponse = client.zones.create_rrset(\n    zone=Zone(name=\"example.com\"),\n    name=\"www\",\n    type=\"A\",\n    ttl=3600,\n    records=[\n        ZoneRecord(\n            value=\"198.51.100.1\",\n            comment=\"My web server at Hetzner Cloud.\",\n        )\n    ],\n    labels={\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\",\n    },\n)\n\nresponse.action.wait_until_finished()\n\nrrset = response.rrset"
+      - lang: Shell
+        label: CLI
+        source: "hcloud zone rrset create $ZONE \\\n    --name www \\\n    --type A \\\n    --ttl 3600 \\\n    --record \"198.51.100.1\" \\\n    --label \"environment=prod\" \\\n    --label \"example.com/my=label\" \\\n    --label \"just-a-key=\""
+  /zones/{id_or_name}/rrsets/{rr_name}/{rr_type}:
+    get:
+      operationId: get_zone_rrset
+      summary: Get an RRSet
+      description: 'Returns a single [RRSet](#tag/zone-rrsets) from the [Zone](#tag/zones).
+
+
+        Only applicable for [Zones](#tag/zones) in primary mode.
+
+
+        #### Operation specific errors
+
+
+        | Status | Code | Description |
+
+        | --- | --- | --- |
+
+        | `422` | `incorrect_zone_mode` | This operation is not supported for this Zone''s `mode`. |
+
+        '
+      tags:
+      - Zone RRSets
+      parameters:
+      - description: ID or Name of the Zone.
+        name: id_or_name
+        in: path
+        required: true
+        schema:
+          description: ID or Name of the [Zone](#tag/zones).
+          type: string
+      - name: rr_name
+        in: path
+        required: true
+        schema:
+          description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+            The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+            name. Names containing non-ASCII characters must be transcribed to
+
+            [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+            `xn--4bi` (✉️).
+
+
+            For the [Zone](#tag/zones) apex, use `@`.
+
+            '
+          type: string
+          example: www
+      - name: rr_type
+        in: path
+        required: true
+        schema:
+          description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+            '
+          type: string
+          enum:
+          - A
+          - AAAA
+          - CAA
+          - CNAME
+          - DS
+          - HINFO
+          - HTTPS
+          - MX
+          - NS
+          - PTR
+          - RP
+          - SOA
+          - SRV
+          - SVCB
+          - TLSA
+          - TXT
+          example: A
+      responses:
+        '200':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rrset:
+                    title: RRSet
+                    type: object
+                    properties:
+                      id:
+                        description: 'ID of the RRSet.
+
+
+                          The ID is composed of the name and type, joined with a slash (e.g. `www/AAAA`).
+
+                          '
+                        type: string
+                      name:
+                        description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+                          The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+                          name. Names containing non-ASCII characters must be transcribed to
+
+                          [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+                          `xn--4bi` (✉️).
+
+
+                          For the [Zone](#tag/zones) apex, use `@`.
+
+                          '
+                        type: string
+                        example: www
+                      type:
+                        description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+                          '
+                        type: string
+                        enum:
+                        - A
+                        - AAAA
+                        - CAA
+                        - CNAME
+                        - DS
+                        - HINFO
+                        - HTTPS
+                        - MX
+                        - NS
+                        - PTR
+                        - RP
+                        - SOA
+                        - SRV
+                        - SVCB
+                        - TLSA
+                        - TXT
+                        example: A
+                      ttl:
+                        description: 'Time To Live (TTL) of the [RRSet](#tag/zone-rrsets).
+
+
+                          Must be in between 60s and 2147483647s.
+
+
+                          If not set, the [Zone''s](#tag/zones) Default TTL is used.
+
+                          '
+                        type: integer
+                        nullable: true
+                        minimum: 60
+                        maximum: 2147483647
+                        example: 3600
+                      labels:
+                        description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                          For more information, see "[Labels](#description/labels)".
+
+                          '
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          environment: prod
+                          example.com/my: label
+                          just-a-key: ''
+                      protection:
+                        description: 'Protection of the [RRSet](#tag/zone-rrsets).
+
+                          '
+                        type: object
+                        properties:
+                          change:
+                            description: Prevent the Resource from being changed.
+                            type: boolean
+                            example: false
+                        required:
+                        - change
+                      records:
+                        description: 'Records of the [RRSet](#tag/zone-rrsets).
+
+
+                          Must not be empty and must only contain distinct record values.
+
+                          The order of records returned in responses is not guaranteed to be consistent.
+
+                          '
+                        type: array
+                        items:
+                          title: Record
+                          description: 'Record of a [RRSet](#tag/zone-rrsets).
+
+
+                            The `value` is used to identify the record in an [RRSet](#tag/zone-rrsets).
+
+                            '
+                          type: object
+                          properties:
+                            value:
+                              description: 'Value of the record.
+
+
+                                For details about accepted values, see the [DNS record types documentation](https://docs.hetzner.com/networking/dns/record-types/overview/).
+
+                                '
+                              type: string
+                              example: 198.51.100.1
+                            comment:
+                              description: Comment of the record.
+                              type: string
+                              example: My web server at Hetzner Cloud.
+                          required:
+                          - value
+                      zone:
+                        description: ID of the [Zone](#tag/zones).
+                        type: integer
+                        format: int64
+                        minimum: 1
+                        maximum: 9007199254740991
+                        example: 42
+                    required:
+                    - id
+                    - name
+                    - type
+                    - ttl
+                    - labels
+                    - protection
+                    - records
+                    - zone
+                required:
+                - rrset
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\trrSet, _, err := client.Zone.GetRRSetByNameAndType(ctx, &hcloud.Zone{Name: \"example.com\"}, \"www\", hcloud.ZoneRRSetTypeA)\n}"
+      - lang: Python
+        label: Python
+        source: 'from __future__ import annotations
+
+
+          from os import environ
+
+
+          from hcloud import Client
+
+          from hcloud.zones import Zone
+
+
+          token = environ["HCLOUD_TOKEN"]
+
+          client = Client(token=token)
+
+
+          rrset = client.zones.get_rrset(zone=Zone(name="example.com"), name="www", type="A")'
+      - lang: Shell
+        label: CLI
+        source: hcloud zone rrset describe $ZONE $RR_NAME $RR_TYPE
+    put:
+      operationId: update_zone_rrset
+      summary: Update an RRSet
+      description: 'Updates an [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).
+
+
+        Only applicable for [Zones](#tag/zones) in primary mode.
+
+
+        #### Operation specific errors
+
+
+        | Status | Code | Description |
+
+        | --- | --- | --- |
+
+        | `422` | `incorrect_zone_mode` | This operation is not supported for this Zone''s `mode`. |
+
+        '
+      tags:
+      - Zone RRSets
+      parameters:
+      - description: ID or Name of the Zone.
+        name: id_or_name
+        in: path
+        required: true
+        schema:
+          description: ID or Name of the [Zone](#tag/zones).
+          type: string
+      - name: rr_name
+        in: path
+        required: true
+        schema:
+          description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+            The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+            name. Names containing non-ASCII characters must be transcribed to
+
+            [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+            `xn--4bi` (✉️).
+
+
+            For the [Zone](#tag/zones) apex, use `@`.
+
+            '
+          type: string
+          example: www
+      - name: rr_type
+        in: path
+        required: true
+        schema:
+          description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+            '
+          type: string
+          enum:
+          - A
+          - AAAA
+          - CAA
+          - CNAME
+          - DS
+          - HINFO
+          - HTTPS
+          - MX
+          - NS
+          - PTR
+          - RP
+          - SOA
+          - SRV
+          - SVCB
+          - TLSA
+          - TXT
+          example: A
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                labels:
+                  description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+
+                    Note that the set of [Labels](#description/labels) provided in the request will overwrite the
+
+                    existing one.
+
+
+                    For more information, see "[Labels](#description/labels)".
+
+                    '
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    environment: prod
+                    example.com/my: label
+                    just-a-key: ''
+      responses:
+        '200':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rrset:
+                    title: RRSet
+                    type: object
+                    properties:
+                      id:
+                        description: 'ID of the RRSet.
+
+
+                          The ID is composed of the name and type, joined with a slash (e.g. `www/AAAA`).
+
+                          '
+                        type: string
+                      name:
+                        description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+                          The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+                          name. Names containing non-ASCII characters must be transcribed to
+
+                          [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+                          `xn--4bi` (✉️).
+
+
+                          For the [Zone](#tag/zones) apex, use `@`.
+
+                          '
+                        type: string
+                        example: www
+                      type:
+                        description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+                          '
+                        type: string
+                        enum:
+                        - A
+                        - AAAA
+                        - CAA
+                        - CNAME
+                        - DS
+                        - HINFO
+                        - HTTPS
+                        - MX
+                        - NS
+                        - PTR
+                        - RP
+                        - SOA
+                        - SRV
+                        - SVCB
+                        - TLSA
+                        - TXT
+                        example: A
+                      ttl:
+                        description: 'Time To Live (TTL) of the [RRSet](#tag/zone-rrsets).
+
+
+                          Must be in between 60s and 2147483647s.
+
+
+                          If not set, the [Zone''s](#tag/zones) Default TTL is used.
+
+                          '
+                        type: integer
+                        nullable: true
+                        minimum: 60
+                        maximum: 2147483647
+                        example: 3600
+                      labels:
+                        description: 'User-defined labels (`key/value` pairs) for the Resource.
+
+                          For more information, see "[Labels](#description/labels)".
+
+                          '
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          environment: prod
+                          example.com/my: label
+                          just-a-key: ''
+                      protection:
+                        description: 'Protection of the [RRSet](#tag/zone-rrsets).
+
+                          '
+                        type: object
+                        properties:
+                          change:
+                            description: Prevent the Resource from being changed.
+                            type: boolean
+                            example: false
+                        required:
+                        - change
+                      records:
+                        description: 'Records of the [RRSet](#tag/zone-rrsets).
+
+
+                          Must not be empty and must only contain distinct record values.
+
+                          The order of records returned in responses is not guaranteed to be consistent.
+
+                          '
+                        type: array
+                        items:
+                          title: Record
+                          description: 'Record of a [RRSet](#tag/zone-rrsets).
+
+
+                            The `value` is used to identify the record in an [RRSet](#tag/zone-rrsets).
+
+                            '
+                          type: object
+                          properties:
+                            value:
+                              description: 'Value of the record.
+
+
+                                For details about accepted values, see the [DNS record types documentation](https://docs.hetzner.com/networking/dns/record-types/overview/).
+
+                                '
+                              type: string
+                              example: 198.51.100.1
+                            comment:
+                              description: Comment of the record.
+                              type: string
+                              example: My web server at Hetzner Cloud.
+                          required:
+                          - value
+                      zone:
+                        description: ID of the [Zone](#tag/zones).
+                        type: integer
+                        format: int64
+                        minimum: 1
+                        maximum: 9007199254740991
+                        example: 42
+                    required:
+                    - id
+                    - name
+                    - type
+                    - ttl
+                    - labels
+                    - protection
+                    - records
+                    - zone
+                required:
+                - rrset
+              examples:
+                default:
+                  value:
+                    rrset:
+                      id: www/A
+                      name: www
+                      type: A
+                      ttl: null
+                      records:
+                      - value: 198.51.100.1
+                        comment: My web server at Hetzner Cloud.
+                      labels:
+                        environment: prod
+                        example.com/my: label
+                        just-a-key: ''
+                      protection:
+                        change: false
+                      zone: 42
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\trrSet, _, err := client.Zone.UpdateRRSet(ctx, &hcloud.ZoneRRSet{\n\t\tZone: &hcloud.Zone{Name: \"example.com\"},\n\t\tName: \"www\",\n\t\tType: hcloud.ZoneRRSetTypeA,\n\t}, hcloud.ZoneRRSetUpdateOpts{\n\t\tLabels: map[string]string{\n\t\t\t\"environment\":    \"prod\",\n\t\t\t\"example.com/my\": \"label\",\n\t\t\t\"just-a-key\":     \"\",\n\t\t},\n\t})\n}"
+      - lang: Python
+        label: Python
+        source: "from __future__ import annotations\n\nfrom os import environ\n\nfrom hcloud import Client\nfrom hcloud.zones import Zone, ZoneRRSet\n\ntoken = environ[\"HCLOUD_TOKEN\"]\nclient = Client(token=token)\n\nrrset = client.zones.update_rrset(\n    rrset=ZoneRRSet(\n        zone=Zone(name=\"example.com\"),\n        name=\"www\",\n        type=\"A\",\n    ),\n    labels={\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\",\n    },\n)"
+      - lang: Shell
+        label: CLI
+        source: "hcloud zone rrset add-label --overwrite $ZONE $RR_NAME $RR_TYPE \\\n    \"environment=prod\" \"example.com/my=label\" \"just-a-key=\"\nhcloud zone remove-label $ZONE $RR_NAME $RR_TYPE \\\n    \"environment\" \"example.com\" \"just-a-key\""
+    delete:
+      operationId: delete_zone_rrset
+      summary: Delete an RRSet
+      description: 'Deletes an [RRSet](#tag/zone-rrsets) from the [Zone](#tag/zones).
+
+
+        Only applicable for [Zones](#tag/zones) in primary mode.
+
+
+        #### Operation specific errors
+
+
+        | Status | Code | Description |
+
+        | --- | --- | --- |
+
+        | `422` | `incorrect_zone_mode` | This operation is not supported for this Zone''s `mode`. |
+
+        '
+      tags:
+      - Zone RRSets
+      parameters:
+      - description: ID or Name of the Zone.
+        name: id_or_name
+        in: path
+        required: true
+        schema:
+          description: ID or Name of the [Zone](#tag/zones).
+          type: string
+      - name: rr_name
+        in: path
+        required: true
+        schema:
+          description: 'Name of the [RRSet](#tag/zone-rrsets).
+
+
+            The name must be in lower case, and must not end with a dot or the [Zone](#tag/zones)
+
+            name. Names containing non-ASCII characters must be transcribed to
+
+            [Punycode](https://wikipedia.org/wiki/Punycode) representation with ACE prefix, e.g.
+
+            `xn--4bi` (✉️).
+
+
+            For the [Zone](#tag/zones) apex, use `@`.
+
+            '
+          type: string
+          example: www
+      - name: rr_type
+        in: path
+        required: true
+        schema:
+          description: 'Type of the [RRSet](#tag/zone-rrsets).
+
+            '
+          type: string
+          enum:
+          - A
+          - AAAA
+          - CAA
+          - CNAME
+          - DS
+          - HINFO
+          - HTTPS
+          - MX
+          - NS
+          - PTR
+          - RP
+          - SOA
+          - SRV
+          - SVCB
+          - TLSA
+          - TXT
+          example: A
+      responses:
+        '201':
+          description: Request succeeded.
+          content:
+            application/json:
+              schema:
+                title: ActionResponse
+                type: object
+                properties:
+                  action:
+                    title: Action
+                    type: object
+                    properties:
+                      id:
+                        description: ID of the [Action](#description/actions).
+                        type: integer
+                        format: int64
+                        minimum: 1
+                        maximum: 9007199254740991
+                        example: 42
+                      command:
+                        description: Command executed in the Action.
+                        type: string
+                        example: start_resource
+                      status:
+                        description: Status of the Action.
+                        type: string
+                        enum:
+                        - running
+                        - success
+                        - error
+                      started:
+                        description: Point in time when the Action was started (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                      finished:
+                        description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
+                        type: string
+                        format: date-time
+                        example: '2016-01-30T23:55:00Z'
+                        nullable: true
+                      progress:
+                        description: Progress of the Action in percent.
+                        type: integer
+                        format: int32
+                        example: 100
+                      resources:
+                        description: Resources the Action relates to.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              description: ID of the Resource.
+                              type: integer
+                              format: int64
+                              minimum: 1
+                              maximum: 9007199254740991
+                              example: 42
+                            type:
+                              description: Type of the Resource.
+                              type: string
+                              example: server
+                          required:
+                          - id
+                          - type
+                      error:
+                        description: Error message for the Action if an error occurred, otherwise null.
+                        type: object
+                        nullable: true
+                        properties:
+                          code:
+                            description: Fixed error code for machines.
+                            type: string
+                            example: action_failed
+                          message:
+                            description: Error message for humans.
+                            type: string
+                            example: Action failed
+                        required:
+                        - code
+                        - message
+                    required:
+                    - id
+                    - command
+                    - status
+                    - progress
+                    - started
+                    - finished
+                    - resources
+                    - error
+                required:
+                - action
+              examples:
+                default:
+                  value:
+                    action:
+                      id: 1
+                      command: delete_rrset
+                      status: running
+                      progress: 50
+                      started: '2016-01-30T23:55:00Z'
+                      finished: null
+                      resources:
+                      - id: 42
+                        type: zone
+                      error: null
+        4xx:
+          description: Request failed with a user error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: unauthorized
+                    message: unable to authenticate
+                    details: null
+        5xx:
+          description: Request failed with a server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        description: Error code for machines.
+                        type: string
+                      message:
+                        description: Error message for humans.
+                        type: string
+                      details:
+                        description: Details about the error.
+                        type: object
+                        nullable: true
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                example:
+                  error:
+                    code: timeout
+                    message: request timeout
+                    details: null
+      security:
+      - APIToken: []
+      x-codeSamples:
+      - lang: Go
+        label: Go
+        source: "package examples\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/hetznercloud/hcloud-go/v2/hcloud\"\n)\n\nfunc main() {\n\ttoken := os.Getenv(\"HCLOUD_TOKEN\")\n\n\tclient := hcloud.NewClient(hcloud.WithToken(token))\n\tctx := context.TODO()\n\n\tresult, _, err := client.Zone.DeleteRRSet(ctx, &hcloud.ZoneRRSet{\n\t\tZone: &hcloud.Zone{Name: \"example.com\"},\n\t\tName: \"www\",\n\t\tType: hcloud.ZoneRRSetTypeA,\n\t})\n\n\terr = client.Action.WaitFor(ctx, result.Action)\n}"
+      - lang: Python
+        label: Python
+        source: "from __future__ import annotations\n\nfrom os import environ\n\nfrom hcloud import Client\nfrom hcloud.zones import Zone, ZoneRRSet\n\ntoken = environ[\"HCLOUD_TOKEN\"]\nclient = Client(token=token)\n\nresponse = client.zones.delete_rrset(\n    rrset=ZoneRRSet(\n        zone=Zone(name=\"example.com\"),\n        name=\"www\",\n        type=\"A\",\n    ),\n)\n\nresponse.action.wait_until_finished()"
+      - lang: Shell
+        label: CLI
+        source: hcloud zone rrset delete $ZONE $RR_NAME $RR_TYPE
+components:
+  securitySchemes:
+    APIToken:
+      type: http
+      scheme: bearer
+x-tagGroups:
+- name: Actions
+  tags:
+  - Actions
+- name: Servers
+  tags:
+  - Servers
+  - Server Actions
+  - Server Types
+  - Images
+  - Image Actions
+  - ISOs
+  - Placement Groups
+  - Primary IPs
+  - Primary IP Actions
+- name: Volumes
+  tags:
+  - Volumes
+  - Volume Actions
+- name: Floating IPs
+  tags:
+  - Floating IPs
+  - Floating IP Actions
+- name: Firewalls
+  tags:
+  - Firewalls
+  - Firewall Actions
+- name: Load Balancers
+  tags:
+  - Load Balancers
+  - Load Balancer Actions
+  - Load Balancer Types
+- name: Networks
+  tags:
+  - Networks
+  - Network Actions
+- name: DNS
+  tags:
+  - Zones
+  - Zone Actions
+  - Zone RRSets
+  - Zone RRSet Actions
+- name: Security
+  tags:
+  - Certificates
+  - Certificate Actions
+  - SSH Keys
+- name: Locations
+  tags:
+  - Locations
+  - Data Centers
+- name: Billing
+  tags:
+  - Pricing
