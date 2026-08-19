@@ -1,0 +1,163 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Networks API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Networks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Networks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/networks",
+            "params": [
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "label_selector",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List multiple [Networks](#tag/networks).\n\nUse the provided URI parameters to modify the result.\n"
+        },
+        {
+          "info": {
+            "name": "Create a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a [Network](#tag/networks).\n\nThe provided `ip_range` can only be extended later on, but not reduced.\n\nSubnets can be added now or later on using the [add subnet action](#tag/network-actions/add_network_subnet). If you do not specify an `ip_range` for the subnet the first available /24 range will be used.\n\nRoutes can be added now or later by using the [add route action](#tag/network-actions/add_network_route).\n"
+        },
+        {
+          "info": {
+            "name": "Get a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/networks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a specific [Network](#tag/networks).\n"
+        },
+        {
+          "info": {
+            "name": "Update a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hetzner.cloud/v1/networks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a [Network](#tag/networks).\n\nIf a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hetzner.cloud/v1/networks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a [Network](#tag/networks).\n\nAttached resources will be detached automatically.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,169 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions SSH Keys API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SSH Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List SSH keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/ssh_keys",
+            "params": [
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "query",
+                "description": "May be used to filter SSH keys by their fingerprint. The response will only contain the SSH key matching the specified fingerprint."
+              },
+              {
+                "name": "label_selector",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all SSH key objects.\n"
+        },
+        {
+          "info": {
+            "name": "Create an SSH key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/ssh_keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new SSH key with the given `name` and `public_key`. Once an SSH key is created, it can be used in other calls such as creating Servers.\n"
+        },
+        {
+          "info": {
+            "name": "Get a SSH key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/ssh_keys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the SSH Key."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a specific SSH key object.\n"
+        },
+        {
+          "info": {
+            "name": "Update an SSH key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hetzner.cloud/v1/ssh_keys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the SSH Key."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates an SSH key. You can update an SSH key name and an SSH key labels.\n"
+        },
+        {
+          "info": {
+            "name": "Delete an SSH key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hetzner.cloud/v1/ssh_keys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the SSH Key."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes an SSH key. It cannot be used anymore.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

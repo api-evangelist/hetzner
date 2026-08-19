@@ -1,0 +1,274 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Primary IP Actions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Primary IP Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/actions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by ID. May be used multiple times.\n\nThe response will only contain actions matching the specified IDs.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort actions by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by status. May be used multiple times.\n\nThe response will only contain actions matching the specified statuses.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists multiple [Actions](#tag/actions).\n\nUse the provided URI parameters to modify the result.\n"
+        },
+        {
+          "info": {
+            "name": "Get an Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/actions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single [Action](#tag/actions).\n"
+        },
+        {
+          "info": {
+            "name": "List Actions for a Primary IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/:id/actions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Primary IP."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort actions by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by status. May be used multiple times.\n\nThe response will only contain actions matching the specified statuses.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all [Actions](#tag/actions) for a [Primary IP](#tag/primary-ips).\n\nUse the provided URI parameters to modify the result.\n"
+        },
+        {
+          "info": {
+            "name": "Get an Action for a Primary IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/:id/actions/:action_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Primary IP."
+              },
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "**Deprecated**: This operation is deprecated, see our [changelog](https://docs.hetzner.cloud/changelog#2026-04-30-deprecate-get-resource-action-endpoints) for more details.\n\nReturns a specific [Action](#tag/actions) for a [Primary IP](#tag/primary-ips).\n"
+        },
+        {
+          "info": {
+            "name": "Assign a Primary IP to a resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/:id/actions/assign",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Primary IP."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Assign a [Primary IP](#tag/primary-ips) to a resource.\n\nA [Server](#tag/servers) can only have one [Primary IP](#tag/primary-ips) of type `ipv4` and one of type `ipv6` assigned. If you need more IPs use [Floating IPs](#tag/floating-ips).\n\nA [Server](#tag/servers) must be powered off (status `off`) in order for this operation to succeed.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `server_not_stopped` | The [Server](#tag/servers) is running, but "
+        },
+        {
+          "info": {
+            "name": "Change reverse DNS records for a Primary IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/:id/actions/change_dns_ptr",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Primary IP."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Change the reverse DNS records for this [Primary IP](#tag/primary-ips).\n\nAllows to modify the PTR records set for the IP address.\n"
+        },
+        {
+          "info": {
+            "name": "Change Primary IP Protection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/:id/actions/change_protection",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Primary IP."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Changes the protection configuration of a [Primary IP](#tag/primary-ips).\n\nA [Primary IPs](#tag/primary-ips) deletion protection can only be enabled if its `auto_delete` property is set to `false`.\n"
+        },
+        {
+          "info": {
+            "name": "Unassign a Primary IP from a resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/primary_ips/:id/actions/unassign",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Primary IP."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Unassign a [Primary IP](#tag/primary-ips) from a resource.\n\nA [Server](#tag/servers) must be powered off (status `off`) in order for this operation to succeed.\n\nA [Server](#tag/servers) requires at least one network interface (public or private) to be powered on.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `server_not_stopped` | The [Server](#tag/servers) is running, but needs to be powered off |\n| `422` | `server_is_load_balancer_target` | The "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

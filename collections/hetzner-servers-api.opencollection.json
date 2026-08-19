@@ -1,0 +1,216 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Servers API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Servers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/servers",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "label_selector",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by status. May be used multiple times.\n\nThe response will only contain the resources with the specified status.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all existing Server objects.\n"
+        },
+        {
+          "info": {
+            "name": "Create a Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/servers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new Server. Returns preliminary information about the Server as well as an Action that covers progress of creation.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `412` | `primary_ip_version_mismatch` | The specified Primary IP has the wrong IP Version |\n| `422` | `placement_error` | An error during the placement occurred |\n| `422` | `primary_ip_assigned` | The specified Primary IP is already assigned to a server |\n| `422` | `primary_ip_datacente"
+        },
+        {
+          "info": {
+            "name": "Get a Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/servers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Server."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a specific Server object. The Server must exist inside the Project.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hetzner.cloud/v1/servers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Server."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a Server. You can update a Server’s name and a Server’s labels.\n\nPlease note that Server names must be unique per Project and valid hostnames as per RFC 1123 (i.e. may only contain letters, digits, periods, and dashes).\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hetzner.cloud/v1/servers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Server."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Server.\n\nThis immediately removes the Server from your account, and it is no longer\naccessible. Any resources attached to the server (like Volumes, Primary IPs,\nFloating IPs, Firewalls, Placement Groups) are detached while the server is deleted.\n"
+        },
+        {
+          "info": {
+            "name": "Get Metrics for a Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/servers/:id/metrics",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Server."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of metrics to get."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Start of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format)."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "End of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format)."
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Resolution of results in seconds."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Metrics for specified Server.\n\nYou must specify the type of metric to get: cpu, disk or network. You can also specify more than one type by comma separation, e.g. cpu,disk.\n\nDepending on the type you will get different time series data\n\n| Type    | Timeseries              | Unit      | Description                                          |\n|---------|-------------------------|-----------|------------------------------------------------------|\n| cpu     | cpu                     | percent   |"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

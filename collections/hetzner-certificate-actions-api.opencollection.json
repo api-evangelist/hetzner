@@ -1,0 +1,193 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Certificate Actions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Certificate Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/certificates/actions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by ID. May be used multiple times.\n\nThe response will only contain actions matching the specified IDs.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort actions by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by status. May be used multiple times.\n\nThe response will only contain actions matching the specified statuses.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Action objects. You can `sort` the results by using the sort URI parameter, and filter them with the `status` and `id` parameter.\n"
+        },
+        {
+          "info": {
+            "name": "Get an Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/certificates/actions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a specific Action object.\n"
+        },
+        {
+          "info": {
+            "name": "List Actions for a Certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/certificates/:id/actions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Certificate."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort actions by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by status. May be used multiple times.\n\nThe response will only contain actions matching the specified statuses.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Action objects for a Certificate. You can sort the results by using the `sort` URI parameter, and filter them with the `status` parameter.\n\nOnly type `managed` Certificates can have Actions. For type `uploaded` Certificates the `actions` key will always contain an empty array.\n"
+        },
+        {
+          "info": {
+            "name": "Retry Issuance or Renewal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/certificates/:id/actions/retry",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Certificate."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retry a failed Certificate issuance or renewal.\n\nOnly applicable if the type of the Certificate is `managed` and the issuance or renewal status is `failed`.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n|  | `caa_record_does_not_allow_ca` | CAA record does not allow certificate authority |\n|  | `ca_dns_validation_failed` | Certificate Authority: DNS validation failed |\n|  | `ca_too_many_authorizations_failed_recently` | Certificate Authority: Too many autho"
+        },
+        {
+          "info": {
+            "name": "Get an Action for a Certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/certificates/:id/actions/:action_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Certificate."
+              },
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "**Deprecated**: This operation is deprecated, see our [changelog](https://docs.hetzner.cloud/changelog#2026-04-30-deprecate-get-resource-action-endpoints) for more details.\n\nReturns a specific Action for a Certificate. Only type `managed` Certificates have Actions.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

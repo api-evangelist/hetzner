@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Pricing API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Pricing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all prices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/pricing",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns prices for all resources available on the platform. VAT and currency of the Project owner are used for calculations.\n\nBoth net and gross prices are included in the response.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

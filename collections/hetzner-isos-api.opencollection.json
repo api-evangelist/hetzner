@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions ISOs API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ISOs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List ISOs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/isos",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "architecture",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by cpu architecture.\n\nThe response will only contain the resources with the specified cpu architecture.\n"
+              },
+              {
+                "name": "include_architecture_wildcard",
+                "value": "",
+                "type": "query",
+                "description": "Include Images with wildcard architecture (architecture is null). Architecture filter must be specified."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all available ISO objects.\n"
+        },
+        {
+          "info": {
+            "name": "Get an ISO",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/isos/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ISO."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a specific ISO object.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

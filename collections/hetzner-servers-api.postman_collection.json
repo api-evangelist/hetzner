@@ -1,0 +1,1543 @@
+{
+  "item": [
+    {
+      "id": "9c360c2b-35be-41a0-9900-658b2429ad17",
+      "name": "Servers",
+      "description": {
+        "content": "Servers are virtual machines that can be provisioned.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4ae0668e-17cf-444a-8986-8ec4308f08cc",
+          "name": "List Servers",
+          "request": {
+            "name": "List Servers",
+            "description": {
+              "content": "Returns all existing Server objects.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "servers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "label_selector",
+                  "value": "<string>",
+                  "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter resources by status. May be used multiple times.\n\nThe response will only contain the resources with the specified status.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter resources by status. May be used multiple times.\n\nThe response will only contain the resources with the specified status.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fd77c219-c749-4bc2-b11c-4b9db9edf8d6",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label_selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "A link to the next page of responses.",
+                  "key": "x-next",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"servers\": [\n    {\n      \"id\": 42,\n      \"name\": \"my-resource\",\n      \"status\": \"off\",\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"public_net\": {\n        \"ipv4\": {\n          \"ip\": \"1.2.3.4\",\n          \"blocked\": false,\n          \"dns_ptr\": \"server01.example.com\",\n          \"id\": 42\n        },\n        \"ipv6\": {\n          \"ip\": \"2001:db8::/64\",\n          \"blocked\": false,\n          \"dns_ptr\": [\n            {\n              \"ip\": \"2001:db8::1\",\n              \"dns_ptr\": \"server.example.com\"\n            },\n            {\n              \"ip\": \"2001:db8::1\",\n              \"dns_ptr\": \"server.example.com\"\n            }\n          ],\n          \"id\": 42\n        },\n        \"floating_ips\": [\n          478\n        ],\n        \"firewalls\": [\n          {\n            \"id\": 42,\n            \"status\": \"applied\"\n          },\n          {\n            \"id\": 42,\n            \"status\": \"applied\"\n          }\n        ]\n      },\n      \"private_net\": [\n        {\n          \"network\": 4711,\n          \"ip\": \"10.0.0.2\",\n          \"alias_ips\": [\n            \"10.0.0.3\",\n            \"10.0.0.4\"\n          ],\n          \"mac_address\": \"86:00:ff:2a:7d:e1\"\n        },\n        {\n          \"network\": 4711,\n          \"ip\": \"10.0.0.2\",\n          \"alias_ips\": [\n            \"10.0.0.3\",\n            \"10.0.0.4\"\n          ],\n          \"mac_address\": \"86:00:ff:2a:7d:e1\"\n        }\n      ],\n      \"server_type\": {\n        \"id\": 1,\n        \"name\": \"cpx22\",\n        \"description\": \"CPX22\",\n        \"cores\": 2,\n        \"memory\": 4,\n        \"disk\": 80,\n        \"deprecated\": false,\n        \"prices\": [\n          {\n            \"location\": \"fsn1\",\n            \"price_hourly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"price_monthly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"included_traffic\": 654321,\n            \"price_per_tb_traffic\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            }\n          },\n          {\n            \"location\": \"fsn1\",\n            \"price_hourly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"price_monthly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"included_traffic\": 654321,\n            \"price_per_tb_traffic\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            }\n          }\n        ],\n        \"storage_type\": \"local\",\n        \"cpu_type\": \"shared\",\n        \"architecture\": \"x86\",\n        \"locations\": [\n          {\n            \"id\": 42,\n            \"name\": \"fsn1\",\n            \"deprecation\": {\n              \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n              \"announced\": \"2023-06-01T00:00:00Z\"\n            },\n            \"recommended\": false,\n            \"available\": true\n          },\n          {\n            \"id\": 42,\n            \"name\": \"fsn1\",\n            \"deprecation\": {\n              \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n              \"announced\": \"2023-06-01T00:00:00Z\"\n            },\n            \"recommended\": false,\n            \"available\": true\n          }\n        ],\n        \"category\": \"Shared vCPU\",\n        \"deprecation\": {\n          \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n          \"announced\": \"2023-06-01T00:00:00Z\"\n        }\n      },\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"datacenter\": {\n        \"id\": 42,\n        \"name\": \"fsn1-dc8\",\n        \"description\": \"Falkenstein DC Park 8\",\n        \"location\": {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"description\": \"Falkenstein DC Park 1\",\n          \"country\": \"DE\",\n          \"city\": \"Falkenstein\",\n          \"latitude\": 50.47612,\n          \"longitude\": 12.370071,\n          \"network_zone\": \"eu-central\"\n        },\n        \"server_types\": {\n          \"supported\": [\n            1,\n            2,\n            3\n          ],\n          \"available\": [\n            1,\n            2,\n            3\n          ],\n          \"available_for_migration\": [\n            1,\n            2,\n            3\n          ]\n        }\n      },\n      \"image\": {\n        \"id\": 42,\n        \"type\": \"snapshot\",\n        \"status\": \"available\",\n        \"name\": \"ubuntu-24.04\",\n        \"description\": \"Ubuntu 24.04 Standard 64 bit\",\n        \"image_size\": 2.3,\n        \"disk_size\": 10,\n        \"created\": \"2016-01-30T23:55:00Z\",\n        \"created_from\": {\n          \"id\": 1,\n          \"name\": \"Server\"\n        },\n        \"bound_to\": null,\n        \"os_flavor\": \"ubuntu\",\n        \"os_version\": \"24.04\",\n        \"protection\": {\n          \"delete\": false\n        },\n        \"deprecated\": \"2018-02-28T00:00:00Z\",\n        \"deleted\": null,\n        \"labels\": {\n          \"environment\": \"prod\",\n          \"example.com/my\": \"label\",\n          \"just-a-key\": \"\"\n        },\n        \"architecture\": \"x86\",\n        \"rapid_deploy\": false\n      },\n      \"iso\": {\n        \"id\": 42,\n        \"name\": \"FreeBSD-11.0-RELEASE-amd64-dvd1\",\n        \"description\": \"FreeBSD 11.0 x64\",\n        \"type\": \"public\",\n        \"deprecation\": {\n          \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n          \"announced\": \"2023-06-01T00:00:00Z\"\n        },\n        \"architecture\": \"x86\"\n      },\n      \"rescue_enabled\": false,\n      \"locked\": false,\n      \"backup_window\": \"22-02\",\n      \"outgoing_traffic\": 123456,\n      \"ingoing_traffic\": 123456,\n      \"included_traffic\": 654321,\n      \"protection\": {\n        \"delete\": false,\n        \"rebuild\": false\n      },\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"primary_disk_size\": 50,\n      \"volumes\": [\n        6782,\n        2615\n      ],\n      \"load_balancers\": [\n        878,\n        3284\n      ],\n      \"placement_group\": {\n        \"id\": 42,\n        \"name\": \"my-resource\",\n        \"labels\": {\n          \"environment\": \"prod\",\n          \"example.com/my\": \"label\",\n          \"just-a-key\": \"\"\n        },\n        \"type\": \"spread\",\n        \"created\": \"2016-01-30T23:55:00Z\",\n        \"servers\": [\n          42\n        ]\n      }\n    },\n    {\n      \"id\": 42,\n      \"name\": \"my-resource\",\n      \"status\": \"migrating\",\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"public_net\": {\n        \"ipv4\": {\n          \"ip\": \"1.2.3.4\",\n          \"blocked\": false,\n          \"dns_ptr\": \"server01.example.com\",\n          \"id\": 42\n        },\n        \"ipv6\": {\n          \"ip\": \"2001:db8::/64\",\n          \"blocked\": false,\n          \"dns_ptr\": [\n            {\n              \"ip\": \"2001:db8::1\",\n              \"dns_ptr\": \"server.example.com\"\n            },\n            {\n              \"ip\": \"2001:db8::1\",\n              \"dns_ptr\": \"server.example.com\"\n            }\n          ],\n          \"id\": 42\n        },\n        \"floating_ips\": [\n          478\n        ],\n        \"firewalls\": [\n          {\n            \"id\": 42,\n            \"status\": \"applied\"\n          },\n          {\n            \"id\": 42,\n            \"status\": \"applied\"\n          }\n        ]\n      },\n      \"private_net\": [\n        {\n          \"network\": 4711,\n          \"ip\": \"10.0.0.2\",\n          \"alias_ips\": [\n            \"10.0.0.3\",\n            \"10.0.0.4\"\n          ],\n          \"mac_address\": \"86:00:ff:2a:7d:e1\"\n        },\n        {\n          \"network\": 4711,\n          \"ip\": \"10.0.0.2\",\n          \"alias_ips\": [\n            \"10.0.0.3\",\n            \"10.0.0.4\"\n          ],\n          \"mac_address\": \"86:00:ff:2a:7d:e1\"\n        }\n      ],\n      \"server_type\": {\n        \"id\": 1,\n        \"name\": \"cpx22\",\n        \"description\": \"CPX22\",\n        \"cores\": 2,\n        \"memory\": 4,\n        \"disk\": 80,\n        \"deprecated\": false,\n        \"prices\": [\n          {\n            \"location\": \"fsn1\",\n            \"price_hourly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"price_monthly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"included_traffic\": 654321,\n            \"price_per_tb_traffic\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            }\n          },\n          {\n            \"location\": \"fsn1\",\n            \"price_hourly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"price_monthly\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            },\n            \"included_traffic\": 654321,\n            \"price_per_tb_traffic\": {\n              \"net\": \"1.0000\",\n              \"gross\": \"1.1900\"\n            }\n          }\n        ],\n        \"storage_type\": \"local\",\n        \"cpu_type\": \"shared\",\n        \"architecture\": \"x86\",\n        \"locations\": [\n          {\n            \"id\": 42,\n            \"name\": \"fsn1\",\n            \"deprecation\": {\n              \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n              \"announced\": \"2023-06-01T00:00:00Z\"\n            },\n            \"recommended\": false,\n            \"available\": true\n          },\n          {\n            \"id\": 42,\n            \"name\": \"fsn1\",\n            \"deprecation\": {\n              \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n              \"announced\": \"2023-06-01T00:00:00Z\"\n            },\n            \"recommended\": false,\n            \"available\": true\n          }\n        ],\n        \"category\": \"Shared vCPU\",\n        \"deprecation\": {\n          \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n          \"announced\": \"2023-06-01T00:00:00Z\"\n        }\n      },\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"datacenter\": {\n        \"id\": 42,\n        \"name\": \"fsn1-dc8\",\n        \"description\": \"Falkenstein DC Park 8\",\n        \"location\": {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"description\": \"Falkenstein DC Park 1\",\n          \"country\": \"DE\",\n          \"city\": \"Falkenstein\",\n          \"latitude\": 50.47612,\n          \"longitude\": 12.370071,\n          \"network_zone\": \"eu-central\"\n        },\n        \"server_types\": {\n          \"supported\": [\n            1,\n            2,\n            3\n          ],\n          \"available\": [\n            1,\n            2,\n            3\n          ],\n          \"available_for_migration\": [\n            1,\n            2,\n            3\n          ]\n        }\n      },\n      \"image\": {\n        \"id\": 42,\n        \"type\": \"snapshot\",\n        \"status\": \"available\",\n        \"name\": \"ubuntu-24.04\",\n        \"description\": \"Ubuntu 24.04 Standard 64 bit\",\n        \"image_size\": 2.3,\n        \"disk_size\": 10,\n        \"created\": \"2016-01-30T23:55:00Z\",\n        \"created_from\": {\n          \"id\": 1,\n          \"name\": \"Server\"\n        },\n        \"bound_to\": null,\n        \"os_flavor\": \"ubuntu\",\n        \"os_version\": \"24.04\",\n        \"protection\": {\n          \"delete\": false\n        },\n        \"deprecated\": \"2018-02-28T00:00:00Z\",\n        \"deleted\": null,\n        \"labels\": {\n          \"environment\": \"prod\",\n          \"example.com/my\": \"label\",\n          \"just-a-key\": \"\"\n        },\n        \"architecture\": \"x86\",\n        \"rapid_deploy\": false\n      },\n      \"iso\": {\n        \"id\": 42,\n        \"name\": \"FreeBSD-11.0-RELEASE-amd64-dvd1\",\n        \"description\": \"FreeBSD 11.0 x64\",\n        \"type\": \"public\",\n        \"deprecation\": {\n          \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n          \"announced\": \"2023-06-01T00:00:00Z\"\n        },\n        \"architecture\": \"x86\"\n      },\n      \"rescue_enabled\": false,\n      \"locked\": false,\n      \"backup_window\": \"22-02\",\n      \"outgoing_traffic\": 123456,\n      \"ingoing_traffic\": 123456,\n      \"included_traffic\": 654321,\n      \"protection\": {\n        \"delete\": false,\n        \"rebuild\": false\n      },\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"primary_disk_size\": 50,\n      \"volumes\": [\n        9119,\n        9614\n      ],\n      \"load_balancers\": [\n        1296,\n        774\n      ],\n      \"placement_group\": {\n        \"id\": 42,\n        \"name\": \"my-resource\",\n        \"labels\": {\n          \"environment\": \"prod\",\n          \"example.com/my\": \"label\",\n          \"just-a-key\": \"\"\n        },\n        \"type\": \"spread\",\n        \"created\": \"2016-01-30T23:55:00Z\",\n        \"servers\": [\n          42\n        ]\n      }\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 3,\n      \"per_page\": 25,\n      \"previous_page\": 2,\n      \"next_page\": 4,\n      \"last_page\": 4,\n      \"total_entries\": 100\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d2647ec-83c0-44f5-bc99-aaf35355dfc8",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label_selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07a9fe42-16e8-4526-8d9a-d08583cbacea",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label_selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69fb2b87-fe1f-454e-b78d-884ab9a0ee43",
+          "name": "Create a Server",
+          "request": {
+            "name": "Create a Server",
+            "description": {
+              "content": "Creates a new Server. Returns preliminary information about the Server as well as an Action that covers progress of creation.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `412` | `primary_ip_version_mismatch` | The specified Primary IP has the wrong IP Version |\n| `422` | `placement_error` | An error during the placement occurred |\n| `422` | `primary_ip_assigned` | The specified Primary IP is already assigned to a server |\n| `422` | `primary_ip_datacenter_mismatch` | he specified Primary IP is in a different datacenter |\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "servers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"server_type\": \"<string>\",\n  \"image\": \"<string>\",\n  \"location\": \"<string>\",\n  \"datacenter\": \"<string>\",\n  \"start_after_create\": true,\n  \"placement_group\": \"<long>\",\n  \"ssh_keys\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"volumes\": [\n    \"<long>\",\n    \"<long>\"\n  ],\n  \"networks\": [\n    \"<long>\",\n    \"<long>\"\n  ],\n  \"firewalls\": [\n    {\n      \"firewall\": \"<long>\"\n    },\n    {\n      \"firewall\": \"<long>\"\n    }\n  ],\n  \"user_data\": \"<string>\",\n  \"labels\": {\n    \"key_0\": \"<string>\"\n  },\n  \"automount\": \"<boolean>\",\n  \"public_net\": {\n    \"enable_ipv4\": true,\n    \"enable_ipv6\": true,\n    \"ipv4\": \"<integer>\",\n    \"ipv6\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6af8df75-f711-4940-9560-7e6b87371d1a",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-server\",\n  \"server_type\": \"cpx22\",\n  \"image\": \"ubuntu-24.04\",\n  \"location\": \"nbg1\",\n  \"datacenter\": \"nbg1-dc3\",\n  \"start_after_create\": true,\n  \"placement_group\": 1,\n  \"ssh_keys\": [\n    \"my-ssh-key\"\n  ],\n  \"volumes\": [\n    123\n  ],\n  \"networks\": [\n    456\n  ],\n  \"firewalls\": [\n    {\n      \"firewall\": 38\n    }\n  ],\n  \"user_data\": \"#cloud-config\\nruncmd:\\n- [touch, /root/cloud-init-worked]\\n\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"automount\": false,\n  \"public_net\": {\n    \"enable_ipv4\": true,\n    \"enable_ipv6\": true,\n    \"ipv4\": \"<integer>\",\n    \"ipv6\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"server\": {\n    \"id\": 42,\n    \"name\": \"my-server\",\n    \"status\": \"initializing\",\n    \"created\": \"2016-01-30T23:50:00Z\",\n    \"public_net\": {\n      \"ipv4\": {\n        \"ip\": \"1.2.3.4\",\n        \"blocked\": false,\n        \"dns_ptr\": \"server01.example.com\"\n      },\n      \"ipv6\": {\n        \"ip\": \"2001:db8::/64\",\n        \"blocked\": false,\n        \"dns_ptr\": [\n          {\n            \"ip\": \"2001:db8::1\",\n            \"dns_ptr\": \"server.example.com\"\n          }\n        ]\n      },\n      \"floating_ips\": [\n        478\n      ],\n      \"firewalls\": [\n        {\n          \"id\": 38,\n          \"status\": \"applied\"\n        }\n      ]\n    },\n    \"private_net\": [\n      {\n        \"network\": 4711,\n        \"ip\": \"10.0.0.2\",\n        \"alias_ips\": [],\n        \"mac_address\": \"86:00:ff:2a:7d:e1\"\n      }\n    ],\n    \"server_type\": {\n      \"id\": 1,\n      \"name\": \"cpx22\",\n      \"description\": \"CPX22\",\n      \"cores\": 2,\n      \"memory\": 4,\n      \"disk\": 80,\n      \"deprecated\": true,\n      \"prices\": [\n        {\n          \"location\": \"fsn1\",\n          \"price_hourly\": {\n            \"net\": \"1.0000000000\",\n            \"gross\": \"1.1900000000000000\"\n          },\n          \"price_monthly\": {\n            \"net\": \"1.0000000000\",\n            \"gross\": \"1.1900000000000000\"\n          },\n          \"included_traffic\": 21990232555520,\n          \"price_per_tb_traffic\": {\n            \"net\": \"1.0000000000\",\n            \"gross\": \"1.1900000000000000\"\n          }\n        }\n      ],\n      \"storage_type\": \"local\",\n      \"cpu_type\": \"shared\",\n      \"architecture\": \"x86\",\n      \"locations\": [\n        {\n          \"id\": 1,\n          \"name\": \"fsn1\",\n          \"deprecation\": null,\n          \"available\": true,\n          \"recommended\": true\n        },\n        {\n          \"id\": 2,\n          \"name\": \"nbg1\",\n          \"deprecation\": {\n            \"announced\": \"2018-02-28T00:00:00Z\",\n            \"unavailable_after\": \"2018-05-31T00:00:00Z\"\n          },\n          \"available\": false,\n          \"recommended\": false\n        }\n      ]\n    },\n    \"location\": {\n      \"id\": 1,\n      \"name\": \"fsn1\",\n      \"description\": \"Falkenstein DC Park 1\",\n      \"country\": \"DE\",\n      \"city\": \"Falkenstein\",\n      \"latitude\": 50.47612,\n      \"longitude\": 12.370071,\n      \"network_zone\": \"eu-central\"\n    },\n    \"datacenter\": {\n      \"id\": 1,\n      \"name\": \"fsn1-dc8\",\n      \"description\": \"Falkenstein 1 DC 8\",\n      \"location\": {\n        \"id\": 1,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"server_types\": {\n        \"supported\": [\n          1,\n          2,\n          3\n        ],\n        \"available\": [\n          1,\n          2,\n          3\n        ],\n        \"available_for_migration\": [\n          1,\n          2,\n          3\n        ]\n      }\n    },\n    \"image\": {\n      \"id\": 4711,\n      \"type\": \"snapshot\",\n      \"status\": \"available\",\n      \"name\": \"ubuntu-24.04\",\n      \"description\": \"Ubuntu 24.04 Standard 64 bit\",\n      \"image_size\": 2.3,\n      \"disk_size\": 10,\n      \"created\": \"2016-01-30T23:50:00Z\",\n      \"created_from\": {\n        \"id\": 1,\n        \"name\": \"Server\"\n      },\n      \"bound_to\": null,\n      \"os_flavor\": \"ubuntu\",\n      \"os_version\": \"24.04\",\n      \"rapid_deploy\": false,\n      \"protection\": {\n        \"delete\": false\n      },\n      \"deprecated\": \"2018-02-28T00:00:00Z\",\n      \"deleted\": null,\n      \"labels\": {\n        \"key\": \"value\"\n      },\n      \"architecture\": \"x86\"\n    },\n    \"iso\": {\n      \"id\": 4711,\n      \"name\": \"FreeBSD-11.0-RELEASE-amd64-dvd1\",\n      \"description\": \"FreeBSD 11.0 x64\",\n      \"type\": \"public\",\n      \"deprecation\": {\n        \"announced\": \"2018-02-28T00:00:00Z\",\n        \"unavailable_after\": \"2018-05-31T00:00:00Z\"\n      },\n      \"architecture\": \"x86\"\n    },\n    \"rescue_enabled\": false,\n    \"locked\": false,\n    \"backup_window\": \"22-02\",\n    \"outgoing_traffic\": 123456,\n    \"ingoing_traffic\": 123456,\n    \"included_traffic\": 654321,\n    \"protection\": {\n      \"delete\": false,\n      \"rebuild\": false\n    },\n    \"labels\": {\n      \"key\": \"value\"\n    },\n    \"volumes\": [],\n    \"load_balancers\": [],\n    \"primary_disk_size\": 50\n  },\n  \"action\": {\n    \"id\": 1,\n    \"command\": \"create_server\",\n    \"status\": \"running\",\n    \"progress\": 0,\n    \"started\": \"2016-01-30T23:50:00Z\",\n    \"finished\": null,\n    \"resources\": [\n      {\n        \"id\": 42,\n        \"type\": \"server\"\n      }\n    ],\n    \"error\": {\n      \"code\": \"action_failed\",\n      \"message\": \"Action failed\"\n    }\n  },\n  \"next_actions\": [\n    {\n      \"id\": 13,\n      \"command\": \"start_server\",\n      \"status\": \"running\",\n      \"progress\": 0,\n      \"started\": \"2016-01-30T23:50:00Z\",\n      \"finished\": null,\n      \"resources\": [\n        {\n          \"id\": 42,\n          \"type\": \"server\"\n        }\n      ],\n      \"error\": {\n        \"code\": \"action_failed\",\n        \"message\": \"Action failed\"\n      }\n    }\n  ],\n  \"root_password\": \"YItygq1v3GYjjMomLaKc\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "43d9c73a-bfba-4b37-b00e-ca372f362aab",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-server\",\n  \"server_type\": \"cpx22\",\n  \"image\": \"ubuntu-24.04\",\n  \"location\": \"nbg1\",\n  \"datacenter\": \"nbg1-dc3\",\n  \"start_after_create\": true,\n  \"placement_group\": 1,\n  \"ssh_keys\": [\n    \"my-ssh-key\"\n  ],\n  \"volumes\": [\n    123\n  ],\n  \"networks\": [\n    456\n  ],\n  \"firewalls\": [\n    {\n      \"firewall\": 38\n    }\n  ],\n  \"user_data\": \"#cloud-config\\nruncmd:\\n- [touch, /root/cloud-init-worked]\\n\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"automount\": false,\n  \"public_net\": {\n    \"enable_ipv4\": true,\n    \"enable_ipv6\": true,\n    \"ipv4\": \"<integer>\",\n    \"ipv6\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6325188-b95a-4ee8-8a27-d4e49eec337f",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-server\",\n  \"server_type\": \"cpx22\",\n  \"image\": \"ubuntu-24.04\",\n  \"location\": \"nbg1\",\n  \"datacenter\": \"nbg1-dc3\",\n  \"start_after_create\": true,\n  \"placement_group\": 1,\n  \"ssh_keys\": [\n    \"my-ssh-key\"\n  ],\n  \"volumes\": [\n    123\n  ],\n  \"networks\": [\n    456\n  ],\n  \"firewalls\": [\n    {\n      \"firewall\": 38\n    }\n  ],\n  \"user_data\": \"#cloud-config\\nruncmd:\\n- [touch, /root/cloud-init-worked]\\n\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"automount\": false,\n  \"public_net\": {\n    \"enable_ipv4\": true,\n    \"enable_ipv6\": true,\n    \"ipv4\": \"<integer>\",\n    \"ipv6\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "362f3c54-3baa-402f-9b62-75a742353c83",
+          "name": "Get a Server",
+          "request": {
+            "name": "Get a Server",
+            "description": {
+              "content": "Returns a specific Server object. The Server must exist inside the Project.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "servers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Server."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8acda571-5039-4812-b41a-2a2da5172f47",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"server\": {\n    \"id\": 42,\n    \"name\": \"my-resource\",\n    \"status\": \"starting\",\n    \"created\": \"2016-01-30T23:55:00Z\",\n    \"public_net\": {\n      \"ipv4\": {\n        \"ip\": \"1.2.3.4\",\n        \"blocked\": false,\n        \"dns_ptr\": \"server01.example.com\",\n        \"id\": 42\n      },\n      \"ipv6\": {\n        \"ip\": \"2001:db8::/64\",\n        \"blocked\": false,\n        \"dns_ptr\": [\n          {\n            \"ip\": \"2001:db8::1\",\n            \"dns_ptr\": \"server.example.com\"\n          },\n          {\n            \"ip\": \"2001:db8::1\",\n            \"dns_ptr\": \"server.example.com\"\n          }\n        ],\n        \"id\": 42\n      },\n      \"floating_ips\": [\n        478\n      ],\n      \"firewalls\": [\n        {\n          \"id\": 42,\n          \"status\": \"applied\"\n        },\n        {\n          \"id\": 42,\n          \"status\": \"applied\"\n        }\n      ]\n    },\n    \"private_net\": [\n      {\n        \"network\": 4711,\n        \"ip\": \"10.0.0.2\",\n        \"alias_ips\": [\n          \"10.0.0.3\",\n          \"10.0.0.4\"\n        ],\n        \"mac_address\": \"86:00:ff:2a:7d:e1\"\n      },\n      {\n        \"network\": 4711,\n        \"ip\": \"10.0.0.2\",\n        \"alias_ips\": [\n          \"10.0.0.3\",\n          \"10.0.0.4\"\n        ],\n        \"mac_address\": \"86:00:ff:2a:7d:e1\"\n      }\n    ],\n    \"server_type\": {\n      \"id\": 1,\n      \"name\": \"cpx22\",\n      \"description\": \"CPX22\",\n      \"cores\": 2,\n      \"memory\": 4,\n      \"disk\": 80,\n      \"deprecated\": false,\n      \"prices\": [\n        {\n          \"location\": \"fsn1\",\n          \"price_hourly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"price_monthly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"included_traffic\": 654321,\n          \"price_per_tb_traffic\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          }\n        },\n        {\n          \"location\": \"fsn1\",\n          \"price_hourly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"price_monthly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"included_traffic\": 654321,\n          \"price_per_tb_traffic\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          }\n        }\n      ],\n      \"storage_type\": \"network\",\n      \"cpu_type\": \"shared\",\n      \"architecture\": \"x86\",\n      \"locations\": [\n        {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"deprecation\": {\n            \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n            \"announced\": \"2023-06-01T00:00:00Z\"\n          },\n          \"recommended\": false,\n          \"available\": true\n        },\n        {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"deprecation\": {\n            \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n            \"announced\": \"2023-06-01T00:00:00Z\"\n          },\n          \"recommended\": false,\n          \"available\": true\n        }\n      ],\n      \"category\": \"Shared vCPU\",\n      \"deprecation\": {\n        \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n        \"announced\": \"2023-06-01T00:00:00Z\"\n      }\n    },\n    \"location\": {\n      \"id\": 42,\n      \"name\": \"fsn1\",\n      \"description\": \"Falkenstein DC Park 1\",\n      \"country\": \"DE\",\n      \"city\": \"Falkenstein\",\n      \"latitude\": 50.47612,\n      \"longitude\": 12.370071,\n      \"network_zone\": \"eu-central\"\n    },\n    \"datacenter\": {\n      \"id\": 42,\n      \"name\": \"fsn1-dc8\",\n      \"description\": \"Falkenstein DC Park 8\",\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"server_types\": {\n        \"supported\": [\n          1,\n          2,\n          3\n        ],\n        \"available\": [\n          1,\n          2,\n          3\n        ],\n        \"available_for_migration\": [\n          1,\n          2,\n          3\n        ]\n      }\n    },\n    \"image\": {\n      \"id\": 42,\n      \"type\": \"snapshot\",\n      \"status\": \"available\",\n      \"name\": \"ubuntu-24.04\",\n      \"description\": \"Ubuntu 24.04 Standard 64 bit\",\n      \"image_size\": 2.3,\n      \"disk_size\": 10,\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"created_from\": {\n        \"id\": 1,\n        \"name\": \"Server\"\n      },\n      \"bound_to\": null,\n      \"os_flavor\": \"ubuntu\",\n      \"os_version\": \"24.04\",\n      \"protection\": {\n        \"delete\": false\n      },\n      \"deprecated\": \"2018-02-28T00:00:00Z\",\n      \"deleted\": null,\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"architecture\": \"x86\",\n      \"rapid_deploy\": false\n    },\n    \"iso\": {\n      \"id\": 42,\n      \"name\": \"FreeBSD-11.0-RELEASE-amd64-dvd1\",\n      \"description\": \"FreeBSD 11.0 x64\",\n      \"type\": \"public\",\n      \"deprecation\": {\n        \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n        \"announced\": \"2023-06-01T00:00:00Z\"\n      },\n      \"architecture\": \"x86\"\n    },\n    \"rescue_enabled\": false,\n    \"locked\": false,\n    \"backup_window\": \"22-02\",\n    \"outgoing_traffic\": 123456,\n    \"ingoing_traffic\": 123456,\n    \"included_traffic\": 654321,\n    \"protection\": {\n      \"delete\": false,\n      \"rebuild\": false\n    },\n    \"labels\": {\n      \"environment\": \"prod\",\n      \"example.com/my\": \"label\",\n      \"just-a-key\": \"\"\n    },\n    \"primary_disk_size\": 50,\n    \"volumes\": [\n      8711,\n      59\n    ],\n    \"load_balancers\": [\n      7081,\n      7030\n    ],\n    \"placement_group\": {\n      \"id\": 42,\n      \"name\": \"my-resource\",\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"type\": \"spread\",\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"servers\": [\n        42\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a06f18df-6ea4-4193-b8cd-b3cee8b1439d",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14b18f6c-157a-4c18-b4b0-75dce041bf50",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31a5ab0f-70b7-47e5-bcc9-b11b6ca77fcf",
+          "name": "Update a Server",
+          "request": {
+            "name": "Update a Server",
+            "description": {
+              "content": "Updates a Server. You can update a Server’s name and a Server’s labels.\n\nPlease note that Server names must be unique per Project and valid hostnames as per RFC 1123 (i.e. may only contain letters, digits, periods, and dashes).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "servers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Server."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"labels\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6ed9fccd-63dd-4385-9c59-dd94c1e2ba8b",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-server\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"server\": {\n    \"id\": 42,\n    \"name\": \"my-resource\",\n    \"status\": \"starting\",\n    \"created\": \"2016-01-30T23:55:00Z\",\n    \"public_net\": {\n      \"ipv4\": {\n        \"ip\": \"1.2.3.4\",\n        \"blocked\": false,\n        \"dns_ptr\": \"server01.example.com\",\n        \"id\": 42\n      },\n      \"ipv6\": {\n        \"ip\": \"2001:db8::/64\",\n        \"blocked\": false,\n        \"dns_ptr\": [\n          {\n            \"ip\": \"2001:db8::1\",\n            \"dns_ptr\": \"server.example.com\"\n          },\n          {\n            \"ip\": \"2001:db8::1\",\n            \"dns_ptr\": \"server.example.com\"\n          }\n        ],\n        \"id\": 42\n      },\n      \"floating_ips\": [\n        478\n      ],\n      \"firewalls\": [\n        {\n          \"id\": 42,\n          \"status\": \"applied\"\n        },\n        {\n          \"id\": 42,\n          \"status\": \"applied\"\n        }\n      ]\n    },\n    \"private_net\": [\n      {\n        \"network\": 4711,\n        \"ip\": \"10.0.0.2\",\n        \"alias_ips\": [\n          \"10.0.0.3\",\n          \"10.0.0.4\"\n        ],\n        \"mac_address\": \"86:00:ff:2a:7d:e1\"\n      },\n      {\n        \"network\": 4711,\n        \"ip\": \"10.0.0.2\",\n        \"alias_ips\": [\n          \"10.0.0.3\",\n          \"10.0.0.4\"\n        ],\n        \"mac_address\": \"86:00:ff:2a:7d:e1\"\n      }\n    ],\n    \"server_type\": {\n      \"id\": 1,\n      \"name\": \"cpx22\",\n      \"description\": \"CPX22\",\n      \"cores\": 2,\n      \"memory\": 4,\n      \"disk\": 80,\n      \"deprecated\": false,\n      \"prices\": [\n        {\n          \"location\": \"fsn1\",\n          \"price_hourly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"price_monthly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"included_traffic\": 654321,\n          \"price_per_tb_traffic\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          }\n        },\n        {\n          \"location\": \"fsn1\",\n          \"price_hourly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"price_monthly\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          },\n          \"included_traffic\": 654321,\n          \"price_per_tb_traffic\": {\n            \"net\": \"1.0000\",\n            \"gross\": \"1.1900\"\n          }\n        }\n      ],\n      \"storage_type\": \"network\",\n      \"cpu_type\": \"shared\",\n      \"architecture\": \"x86\",\n      \"locations\": [\n        {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"deprecation\": {\n            \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n            \"announced\": \"2023-06-01T00:00:00Z\"\n          },\n          \"recommended\": false,\n          \"available\": true\n        },\n        {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"deprecation\": {\n            \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n            \"announced\": \"2023-06-01T00:00:00Z\"\n          },\n          \"recommended\": false,\n          \"available\": true\n        }\n      ],\n      \"category\": \"Shared vCPU\",\n      \"deprecation\": {\n        \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n        \"announced\": \"2023-06-01T00:00:00Z\"\n      }\n    },\n    \"location\": {\n      \"id\": 42,\n      \"name\": \"fsn1\",\n      \"description\": \"Falkenstein DC Park 1\",\n      \"country\": \"DE\",\n      \"city\": \"Falkenstein\",\n      \"latitude\": 50.47612,\n      \"longitude\": 12.370071,\n      \"network_zone\": \"eu-central\"\n    },\n    \"datacenter\": {\n      \"id\": 42,\n      \"name\": \"fsn1-dc8\",\n      \"description\": \"Falkenstein DC Park 8\",\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"server_types\": {\n        \"supported\": [\n          1,\n          2,\n          3\n        ],\n        \"available\": [\n          1,\n          2,\n          3\n        ],\n        \"available_for_migration\": [\n          1,\n          2,\n          3\n        ]\n      }\n    },\n    \"image\": {\n      \"id\": 42,\n      \"type\": \"snapshot\",\n      \"status\": \"available\",\n      \"name\": \"ubuntu-24.04\",\n      \"description\": \"Ubuntu 24.04 Standard 64 bit\",\n      \"image_size\": 2.3,\n      \"disk_size\": 10,\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"created_from\": {\n        \"id\": 1,\n        \"name\": \"Server\"\n      },\n      \"bound_to\": null,\n      \"os_flavor\": \"ubuntu\",\n      \"os_version\": \"24.04\",\n      \"protection\": {\n        \"delete\": false\n      },\n      \"deprecated\": \"2018-02-28T00:00:00Z\",\n      \"deleted\": null,\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"architecture\": \"x86\",\n      \"rapid_deploy\": false\n    },\n    \"iso\": {\n      \"id\": 42,\n      \"name\": \"FreeBSD-11.0-RELEASE-amd64-dvd1\",\n      \"description\": \"FreeBSD 11.0 x64\",\n      \"type\": \"public\",\n      \"deprecation\": {\n        \"unavailable_after\": \"2023-09-01T00:00:00Z\",\n        \"announced\": \"2023-06-01T00:00:00Z\"\n      },\n      \"architecture\": \"x86\"\n    },\n    \"rescue_enabled\": false,\n    \"locked\": false,\n    \"backup_window\": \"22-02\",\n    \"outgoing_traffic\": 123456,\n    \"ingoing_traffic\": 123456,\n    \"included_traffic\": 654321,\n    \"protection\": {\n      \"delete\": false,\n      \"rebuild\": false\n    },\n    \"labels\": {\n      \"environment\": \"prod\",\n      \"example.com/my\": \"label\",\n      \"just-a-key\": \"\"\n    },\n    \"primary_disk_size\": 50,\n    \"volumes\": [\n      8711,\n      59\n    ],\n    \"load_balancers\": [\n      7081,\n      7030\n    ],\n    \"placement_group\": {\n      \"id\": 42,\n      \"name\": \"my-resource\",\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"type\": \"spread\",\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"servers\": [\n        42\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7b544e4-a4e4-4ce2-a37e-737c7cea7e0a",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-server\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "306c4b34-ce26-4e2b-9b94-9bf959a03501",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-server\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "358258bc-e6ab-4070-abd3-b6a7a0b2b80f",
+          "name": "Delete a Server",
+          "request": {
+            "name": "Delete a Server",
+            "description": {
+              "content": "Deletes a Server.\n\nThis immediately removes the Server from your account, and it is no longer\naccessible. Any resources attached to the server (like Volumes, Primary IPs,\nFloating IPs, Firewalls, Placement Groups) are detached while the server is deleted.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "servers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Server."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "14254dca-c99d-4a7e-8383-e7abd77f41d5",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"action\": {\n    \"id\": 42,\n    \"command\": \"start_resource\",\n    \"status\": \"error\",\n    \"progress\": 100,\n    \"started\": \"2016-01-30T23:55:00Z\",\n    \"finished\": \"2016-01-30T23:55:00Z\",\n    \"resources\": [\n      {\n        \"id\": 42,\n        \"type\": \"server\"\n      },\n      {\n        \"id\": 42,\n        \"type\": \"server\"\n      }\n    ],\n    \"error\": {\n      \"code\": \"action_failed\",\n      \"message\": \"Action failed\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81a2114e-7047-4bfc-be91-e8fad6708096",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "782e514d-1344-465a-a8e1-a11242a183f6",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5482d8af-2ce0-487a-b92d-6a7032e65bcb",
+          "name": "Get Metrics for a Server",
+          "request": {
+            "name": "Get Metrics for a Server",
+            "description": {
+              "content": "Get Metrics for specified Server.\n\nYou must specify the type of metric to get: cpu, disk or network. You can also specify more than one type by comma separation, e.g. cpu,disk.\n\nDepending on the type you will get different time series data\n\n| Type    | Timeseries              | Unit      | Description                                          |\n|---------|-------------------------|-----------|------------------------------------------------------|\n| cpu     | cpu                     | percent   | Percent CPU usage                                    |\n| disk    | disk.0.iops.read        | iop/s     | Number of read IO operations per second              |\n|         | disk.0.iops.write       | iop/s     | Number of write IO operations per second             |\n|         | disk.0.bandwidth.read   | bytes/s   | Bytes read per second                                |\n|         | disk.0.bandwidth.write  | bytes/s   | Bytes written per second                             |\n| network | network.0.pps.in        | packets/s | Public Network interface packets per second received |\n|         | network.0.pps.out       | packets/s | Public Network interface packets per second sent     |\n|         | network.0.bandwidth.in  | bytes/s   | Public Network interface bytes/s received            |\n|         | network.0.bandwidth.out | bytes/s   | Public Network interface bytes/s sent                |\n\nMetrics are available for the last 30 days only.\n\nIf you do not provide the step argument we will automatically adjust it so that a maximum of 200 samples are returned.\n\nWe limit the number of samples returned to a maximum of 500 and will adjust the step parameter accordingly.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "servers",
+                ":id",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) Type of metrics to get."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) Type of metrics to get."
+                },
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<string>",
+                  "description": "(Required) Start of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<string>",
+                  "description": "(Required) End of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "step",
+                  "value": "<string>",
+                  "description": "Resolution of results in seconds."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Server."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "58f448b5-4511-469d-a307-19208375338d",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "step",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metrics\": {\n    \"start\": \"2017-01-01T00:00:00Z\",\n    \"end\": \"2017-01-01T23:00:00Z\",\n    \"step\": 60,\n    \"time_series\": {\n      \"key_0\": {\n        \"values\": [\n          [\n            4452.300795459711,\n            3553.311403767907\n          ],\n          [\n            3777.180858069995,\n            7265.205290630238\n          ]\n        ]\n      },\n      \"key_1\": {\n        \"values\": [\n          [\n            6814.010592273175,\n            3809.965709026689\n          ],\n          [\n            4584.975729889581,\n            6246.680273599651\n          ]\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5cc7fa1-e00c-49b2-8a7e-07c87b0f5f00",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "step",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6e5df75-98bd-4391-a2ea-a5e9115c5e27",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "servers",
+                    ":id",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "step",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Server."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hetzner.cloud/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "dd5cf65d-0381-45d1-bcc6-c540ff88a3a9",
+    "name": "Hetzner Cloud Actions Servers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Overview\n\nThis is the official documentation for the Hetzner Cloud API.\n\n## Introduction\n\nThe Hetzner Cloud API operates over HTTPS and uses JSON as its data format. The API is a RESTful API and utilizes HTTP methods and HTTP status codes to specify requests and responses.\n\nAs an alternative to working directly with our API you may also consider to use:\n\n- Our CLI program [hcloud](https://github.com/hetznercloud/cli)\n- Our [library for Go](https://github.com/hetznercloud/hcloud-go)\n- Our [library for Python](https://github.com/hetznercloud/hcloud-python)\n\nYou can find even more libraries, tools and integrations on our [Awesome List on GitHub](https://github.com/hetznercloud/awesome-hcloud).\n\n### Open source credits\n\nIf you are developing an open-source project that supports or intends to add support for Hetzner APIs, you may be eligible for a free one-time credit of up to € 50 / $ 50 on your account. Please contact us via the support page on your [Hetzner Console](https://console.hetzner.cloud/support) and let us know the following:\n\n- The name of the project you are working on\n- A short description of the project\n- Link to the project website or repo where the project is hosted\n- Affiliation with / role in the project (e.g. project maintainer)\n- Link to some other open-source work you have already done (if you have done so)\n\n**Note:** We only consider rewards for projects that provide Hetzner-specific functionality or integrations. For example, our Object Storage exposes a standard S3 API without any Hetzner-specific extensions. Projects that focus solely on generic S3 capabilities (e.g., general S3 clients or SDKs) are not Hetzner-specific and are therefore not eligible for Hetzner Rewards.\n\n## Getting Started\n\nTo get started using the API you first need an API token. Sign in into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token. Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project. Let’s say your new token is `LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj`.\n\nYou’re now ready to do your first request against the API. To get a list of all Servers in your Project, issue the example request on the right side using [curl](https://curl.se/).\n\nMake sure to replace the token in the example command with the token you have just created. Since your Project probably does not contain any Servers yet, the example response will look like the response on the right side. We will almost always provide a resource root like `servers` inside the example response. A response can also contain a `meta` object with information like [Pagination](#description/pagination).\n\n**Example Request**\n\n```shell\ncurl -H \"Authorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\" \\\n  https://api.hetzner.cloud/v1/servers\n```\n\n**Example Response**\n\n```json\n{\n  \"servers\": [],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 1,\n      \"per_page\": 25,\n      \"previous_page\": null,\n      \"next_page\": null,\n      \"last_page\": 1,\n      \"total_entries\": 0\n    }\n  }\n}\n```\n\n## Authentication\n\nAll requests to the Hetzner Cloud API must be authenticated via a API token. Include your secret API token in every request you send to the API with the `Authorization` HTTP header.\n\nTo create a new API token for your Project, switch into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token.\n\n**Example Authorization header**\n\n```http\nAuthorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\n```\n\n## Query Parameters\n\nThe API makes use of query parameters to sort and filter responses. The parameter names and values must be URI encoded according to [RFC2396](https://datatracker.ietf.org/doc/html/rfc2396). Query parameters of type `array` can be used multiple times:\n\n**Example query parameters for pagination**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?page=1&page_size=12\n```\n\n**Example use of multiple values for a parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?type=uploaded&type=managed\n```\n\n**Example use of an encoded parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?label_selector=key%3Dvalue\n```\n\n## Errors\n\nErrors are indicated by HTTP status codes. Further, the response of the request which generated the error contains an error code, an error message, and, optionally, error details. The schema of the error details object depends on the error code.\n\nThe error response contains the following keys:\n\n| Keys      | Meaning                                                               |\n| --------- | --------------------------------------------------------------------- |\n| `code`    | Short string indicating the type of error (machine-parsable)          |\n| `message` | Textual description on what has gone wrong                            |\n| `details` | An object providing for details on the error (schema depends on code) |\n\n**Example response**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n### Error Codes\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `400` | `json_error` | Invalid JSON input in your request. |\n| `401` | `unauthorized` | Request was made with an invalid or unknown token. |\n| `401` | `token_readonly` | The token is only allowed to perform GET requests. |\n| `403` | `forbidden` | Insufficient permissions for this request. |\n| `403` | `maintenance` | Cannot perform operation due to maintenance. |\n| `403` | `resource_limit_exceeded` | Error when exceeding the maximum quantity of a resource for an account. |\n| `404` | `not_found` | Entity not found. |\n| `405` | `method_not_allowed` | The request method is not allowed |\n| `409` | `uniqueness_error` | One or more of the objects fields must be unique. |\n| `409` | `conflict` | The resource has changed during the request, please retry. |\n| `410` | `deprecated_api_endpoint` | The API endpoint functionality was removed. |\n| `412` | `resource_unavailable` | The requested resource is currently unavailable (e.g. not available for order). |\n| `422` | `invalid_input` | Error while parsing or processing the input. |\n| `422` | `service_error` | Error within a service. |\n| `422` | `unsupported_error` | The corresponding resource does not support the Action. |\n| `423` | `locked` | The item you are trying to access is locked (there is already an Action running). |\n| `423` | `protected` | The Action you are trying to start is protected for this resource. |\n| `429` | `rate_limit_exceeded` | Error when sending too many requests. |\n| `500` | `server_error` | Error within the API backend. |\n| `503` | `unavailable` | A service or product is currently not available. |\n| `504` | `timeout` | The request could not be answered in time, please retry. |\n\n**invalid_input**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n**uniqueness_error**\n\n```json\n{\n  \"error\": {\n    \"code\": \"uniqueness_error\",\n    \"message\": \"SSH key with the same fingerprint already exists\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"public_key\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**resource_limit_exceeded**\n\n```json\n{\n  \"error\": {\n    \"code\": \"resource_limit_exceeded\",\n    \"message\": \"project limit exceeded\",\n    \"details\": {\n      \"limits\": [\n        {\n          \"name\": \"project_limit\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**deprecated_api_endpoint**\n\n```json\n{\n  \"error\": {\n    \"code\": \"deprecated_api_endpoint\",\n    \"message\": \"API functionality was removed\",\n    \"details\": {\n      \"announcement\": \"https://docs.hetzner.cloud/changelog#2023-07-20-foo-endpoint-is-deprecated\"\n    }\n  }\n}\n```\n\n## Actions\n\nActions represent asynchronous tasks within the API, targeting one or more resources. Triggering changes in the API may return a `running` action.\n\nAn action should be waited upon, until it reaches either the `success` or `error` state. Avoid polling the action's state too frequently to reduce the risk of exhausting your API requests and hitting the [rate limit](#description/rate-limiting).\n\nIf an action fails, it will contain details about the underlying error.\n\nOnce the asynchronous tasks have completed and the targeted resources are in a consistent state, the action is marked as succeeded.\n\nIn some cases, you may trigger multiple changes at once, and only wait for the returned actions at a later stage.\n\n## Labels\n\nLabels are `key/value` pairs that can be attached to all resources.\n\nValid label keys have two segments: an optional prefix and name, separated by a slash (`/`). The name segment is required and must be a string of 63 characters or less, beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between. The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots (`.`), not longer than 253 characters in total, followed by a slash (`/`).\n\nValid label values must be a string of 63 characters or less and must be empty or begin and end with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.\n\nThe `hetzner.cloud/` prefix is reserved and cannot be used.\n\n**Example Labels**\n\n```json\n{\n  \"labels\": {\n    \"environment\": \"development\",\n    \"service\": \"backend\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}\n```\n\n## Label Selector\n\nFor resources with labels, you can filter resources by their labels using the label selector query language.\n\n| Expression           | Meaning                                              |\n| -------------------- | ---------------------------------------------------- |\n| `k==v` / `k=v`       | Value of key `k` does equal value `v`                |\n| `k!=v`               | Value of key `k` does not equal value `v`            |\n| `k`                  | Key `k` is present                                   |\n| `!k`                 | Key `k` is not present                               |\n| `k in (v1,v2,v3)`    | Value of key `k` is `v1`, `v2`, or `v3`              |\n| `k notin (v1,v2,v3)` | Value of key `k` is neither `v1`, nor `v2`, nor `v3` |\n| `k1==v,!k2`          | Value of key `k1` is `v` and key `k2` is not present |\n\n### Examples\n\n- Returns all resources that have a `env=production` label and that don't have a `type=database` label:\n\n  `env=production,type!=database`\n\n- Returns all resources that have a `env=testing` or `env=staging` label:\n\n  `env in (testing,staging)`\n\n- Returns all resources that don't have a `type` label:\n\n  `!type`\n\n## Pagination\n\nResponses which return multiple items support pagination. If they do support pagination, it can be controlled with following query string parameters:\n\n- A `page` parameter specifies the page to fetch. The number of the first page is 1.\n- A `per_page` parameter specifies the number of items returned per page. The default value is 25, the maximum value is 50 except otherwise specified in the documentation.\n\nResponses contain a `Link` header with pagination information.\n\nAdditionally, if the response body is JSON and the root object is an object, that object has a `pagination` object inside the `meta` object with pagination information:\n\n**Example Pagination**\n\n```json\n{\n    \"servers\": [...],\n    \"meta\": {\n        \"pagination\": {\n            \"page\": 2,\n            \"per_page\": 25,\n            \"previous_page\": 1,\n            \"next_page\": 3,\n            \"last_page\": 4,\n            \"total_entries\": 100\n        }\n    }\n}\n```\n\nThe keys `previous_page`, `next_page`, `last_page`, and `total_entries` may be `null` when on the first page, last page, or when the total number of entries is unknown.\n\n**Example Pagination Link header**\n\n```http\nLink: <https://api.hetzner.cloud/v1/actions?page=2&per_page=5>; rel=\"prev\",\n      <https://api.hetzner.cloud/v1/actions?page=4&per_page=5>; rel=\"next\",\n      <https://api.hetzner.cloud/v1/actions?page=6&per_page=5>; rel=\"last\"\n```\n\nLine breaks have been added for display purposes only and responses may only contain some of the above `rel` values.\n\n## Rate Limiting\n\nAll requests, whether they are authenticated or not, are subject to rate limiting. If you have reached your limit, your requests will be handled with a `429 Too Many Requests` error. Burst requests are allowed. Responses contain several headers which provide information about your current rate limit status.\n\n- The `RateLimit-Limit` header contains the total number of requests you can perform per hour.\n- The `RateLimit-Remaining` header contains the number of requests remaining in the current rate limit time frame.\n- The `RateLimit-Reset` header contains a UNIX timestamp of the point in time when your rate limit will have recovered, and you will have the full number of requests available again.\n\nThe default limit is 3600 requests per hour and per Project. The number of remaining requests increases gradually. For example, when your limit is 3600 requests per hour, the number of remaining requests will increase by 1 every second.\n\n## Server Metadata\n\nYour Server can discover metadata about itself by doing a HTTP request to specific URLs. The following data is available:\n\n| Data              | Format | Contents                                                     |\n| ----------------- | ------ | ------------------------------------------------------------ |\n| hostname          | text   | Name of the Server as set in the api                         |\n| instance-id       | number | ID of the server                                             |\n| public-ipv4       | text   | Primary public IPv4 address                                  |\n| private-networks  | yaml   | Details about the private networks the Server is attached to |\n| availability-zone | text   | Name of the availability zone that Server runs in            |\n| region            | text   | Network zone, e.g. eu-central                                |\n\n**Example: Summary**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata\n```\n\n```yaml\navailability-zone: hel1-dc2\nhostname: my-server\ninstance-id: 42\npublic-ipv4: 1.2.3.4\nregion: eu-central\n```\n\n**Example: Hostname**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/hostname\nmy-server\n```\n\n**Example: Instance ID**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/instance-id\n42\n```\n\n**Example: Public IPv4**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4\n1.2.3.4\n```\n\n**Example: Private Networks**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/private-networks\n```\n\n```yaml\n- ip: 10.0.0.2\n  alias_ips: [10.0.0.3, 10.0.0.4]\n  interface_num: 1\n  mac_address: 86:00:00:2a:7d:e0\n  network_id: 1234\n  network_name: nw-test1\n  network: 10.0.0.0/8\n  subnet: 10.0.0.0/24\n  gateway: 10.0.0.1\n- ip: 192.168.0.2\n  alias_ips: []\n  interface_num: 2\n  mac_address: 86:00:00:2a:7d:e1\n  network_id: 4321\n  network_name: nw-test2\n  network: 192.168.0.0/16\n  subnet: 192.168.0.0/24\n  gateway: 192.168.0.1\n```\n\n**Example: Availability Zone**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/availability-zone\nhel1-dc2\n```\n\n**Example: Region**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/region\neu-central\n```\n\n## Sorting\n\nSome responses which return multiple items support sorting. If they do support sorting the documentation states which fields can be used for sorting. You specify sorting with the `sort` query string parameter. You can sort by multiple fields. You can set the sort direction by appending `:asc` or `:desc` to the field name. By default, ascending sorting is used.\n\n**Example: Sorting**\n\n```\nhttps://api.hetzner.cloud/v1/actions?sort=status\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc\nhttps://api.hetzner.cloud/v1/actions?sort=status:desc\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc&sort=command:desc\n```\n\n## Deprecation Notices\n\nYou can find all announced deprecations in our [Changelog](/changelog).\n",
+      "type": "text/plain"
+    }
+  }
+}

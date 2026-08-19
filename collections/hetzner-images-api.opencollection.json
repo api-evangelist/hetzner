@@ -1,0 +1,174 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Images API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Images",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/images",
+            "params": [
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by type. May be used multiple times.\n\nThe response will only contain the resources with the specified type.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by status. May be used multiple times.\n\nThe response will only contain the resources with the specified status.\n"
+              },
+              {
+                "name": "bound_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter Images by their linked Server ID. May be used multiple times.\n\nOnly available for Images of type `backup`.\n"
+              },
+              {
+                "name": "include_deprecated",
+                "value": "",
+                "type": "query",
+                "description": "Include deprecated Images."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "label_selector",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+              },
+              {
+                "name": "architecture",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by cpu architecture.\n\nThe response will only contain the resources with the specified cpu architecture.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Image objects. You can select specific Image types only and sort the results by using URI parameters.\n"
+        },
+        {
+          "info": {
+            "name": "Get an Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/images/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Image."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a specific Image object.\n"
+        },
+        {
+          "info": {
+            "name": "Update an Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hetzner.cloud/v1/images/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Image."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the Image. You may change the description, convert a Backup Image to a Snapshot Image or change the Image labels. Only Images of type `snapshot` and `backup` can be updated.\n"
+        },
+        {
+          "info": {
+            "name": "Delete an Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hetzner.cloud/v1/images/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Image."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes an Image. Only Images of type `snapshot` and `backup` can be deleted.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

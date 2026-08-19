@@ -1,0 +1,1209 @@
+{
+  "item": [
+    {
+      "id": "88de7a45-fe35-478d-8503-0d24d778fdb9",
+      "name": "Primary IPs",
+      "description": {
+        "content": "Primary IPs help you to create more flexible networking setups. You can assign at most one Primary IP of type `ipv4` and one of type `ipv6` per Server. This Server then uses these IPs.\n\nYou can only unassign a Primary IP from a Server when it's powered off. This Primary IP can then be assigned to a different powered off Server, or you can keep it around for later use.\n\nPrimary IPs are bound to a specific Location. You can not assign a Primary IP from one Location to a Server in a different Location. If you need this capability use Floating IPs instead.\n\nIf your Server's operating system supports cloud-init there is no further configuration needed to make Primary IPs work.\n\nPrimary IPs of type `ipv4` use a single IPv4 address as their `ip` property. Primary IPs of type `ipv6` use a /64 network such as `fc00::/64` as their `ip` property. Any IP address within that network can be used on your host.\n\nPrimary IPs are billed on an hourly basis.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "93a447fb-4cb9-474b-857e-9b1721876b35",
+          "name": "List Primary IPs",
+          "request": {
+            "name": "List Primary IPs",
+            "description": {
+              "content": "List multiple [Primary IPs](#tag/primary-ips).\n\nUse the provided URI parameters to modify the result.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "primary_ips"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "label_selector",
+                  "value": "<string>",
+                  "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "ip",
+                  "value": "<string>",
+                  "description": "Filter results by IP address."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5e3bcf6a-f55c-4015-8737-173c8aee75eb",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label_selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ip",
+                      "value": "127.0.0.1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"primary_ips\": [\n    {\n      \"id\": 42,\n      \"name\": \"my-resource\",\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"blocked\": false,\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"datacenter\": {\n        \"id\": 42,\n        \"name\": \"fsn1-dc8\",\n        \"description\": \"Falkenstein DC Park 8\",\n        \"location\": {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"description\": \"Falkenstein DC Park 1\",\n          \"country\": \"DE\",\n          \"city\": \"Falkenstein\",\n          \"latitude\": 50.47612,\n          \"longitude\": 12.370071,\n          \"network_zone\": \"eu-central\"\n        },\n        \"server_types\": {\n          \"supported\": [\n            1,\n            2,\n            3\n          ],\n          \"available\": [\n            1,\n            2,\n            3\n          ],\n          \"available_for_migration\": [\n            1,\n            2,\n            3\n          ]\n        }\n      },\n      \"ip\": \"2001:db8::/64\",\n      \"dns_ptr\": [\n        {\n          \"ip\": \"2001:db8::1\",\n          \"dns_ptr\": \"server.example.com\"\n        },\n        {\n          \"ip\": \"2001:db8::1\",\n          \"dns_ptr\": \"server.example.com\"\n        }\n      ],\n      \"protection\": {\n        \"delete\": false\n      },\n      \"type\": \"ipv6\",\n      \"auto_delete\": true,\n      \"assignee_type\": \"server\",\n      \"assignee_id\": 17\n    },\n    {\n      \"id\": 42,\n      \"name\": \"my-resource\",\n      \"labels\": {\n        \"environment\": \"prod\",\n        \"example.com/my\": \"label\",\n        \"just-a-key\": \"\"\n      },\n      \"created\": \"2016-01-30T23:55:00Z\",\n      \"blocked\": false,\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"datacenter\": {\n        \"id\": 42,\n        \"name\": \"fsn1-dc8\",\n        \"description\": \"Falkenstein DC Park 8\",\n        \"location\": {\n          \"id\": 42,\n          \"name\": \"fsn1\",\n          \"description\": \"Falkenstein DC Park 1\",\n          \"country\": \"DE\",\n          \"city\": \"Falkenstein\",\n          \"latitude\": 50.47612,\n          \"longitude\": 12.370071,\n          \"network_zone\": \"eu-central\"\n        },\n        \"server_types\": {\n          \"supported\": [\n            1,\n            2,\n            3\n          ],\n          \"available\": [\n            1,\n            2,\n            3\n          ],\n          \"available_for_migration\": [\n            1,\n            2,\n            3\n          ]\n        }\n      },\n      \"ip\": \"2001:db8::/64\",\n      \"dns_ptr\": [\n        {\n          \"ip\": \"2001:db8::1\",\n          \"dns_ptr\": \"server.example.com\"\n        },\n        {\n          \"ip\": \"2001:db8::1\",\n          \"dns_ptr\": \"server.example.com\"\n        }\n      ],\n      \"protection\": {\n        \"delete\": false\n      },\n      \"type\": \"ipv6\",\n      \"auto_delete\": true,\n      \"assignee_type\": \"server\",\n      \"assignee_id\": 17\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 3,\n      \"per_page\": 25,\n      \"previous_page\": 2,\n      \"next_page\": 4,\n      \"last_page\": 4,\n      \"total_entries\": 100\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "416a16d3-4e96-4d98-aea7-58cb5d026c03",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label_selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ip",
+                      "value": "127.0.0.1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0754b53c-6d00-4fcb-9310-1cd6dd84220a",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label_selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ip",
+                      "value": "127.0.0.1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71a02af8-8bdf-4986-b997-16e5cf5e9db3",
+          "name": "Create a Primary IP",
+          "request": {
+            "name": "Create a Primary IP",
+            "description": {
+              "content": "Create a new [Primary IP](#tag/primary-ips).\n\nCan optionally be assigned to a resource by providing an `assignee_id` and `assignee_type`.\n\nIf not assigned to a resource the `location` key needs to be provided. This can be either the ID or the name of the [Location](#tag/locations) this [Primary IP](#tag/primary-ips) shall be created in.\n\nA [Primary IP](#tag/primary-ips) can only be assigned to resource in the same [Location](#tag/locations) later on.\n\nThe `datacenter` key is deprecated in favor of `location` and will be removed after 01 July 2026.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `server_not_stopped` | The specified [Server](#tag/servers) is running, but needs to be powered off |\n| `422` | `server_has_ipv4` | The [Server](#tag/servers) already has an ipv4 address |\n| `422` | `server_has_ipv6` | The [Server](#tag/servers) already has an ipv6 address |\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "primary_ips"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"assignee_type\": \"<string>\",\n  \"labels\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"datacenter\": \"<string>\",\n  \"location\": \"<string>\",\n  \"assignee_id\": \"<long>\",\n  \"auto_delete\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4dbc800a-8405-4d5c-8428-6cfcf0282354",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-resource\",\n  \"type\": \"ipv6\",\n  \"assignee_type\": \"server\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"datacenter\": \"fsn1-dc8\",\n  \"location\": \"fsn1\",\n  \"assignee_id\": 17,\n  \"auto_delete\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"primary_ip\": {\n    \"id\": 42,\n    \"name\": \"my-ip\",\n    \"labels\": {\n      \"key\": \"value\"\n    },\n    \"created\": \"2016-01-30T23:50:00Z\",\n    \"blocked\": false,\n    \"location\": {\n      \"id\": 1,\n      \"name\": \"fsn1\",\n      \"description\": \"Falkenstein DC Park 1\",\n      \"country\": \"DE\",\n      \"city\": \"Falkenstein\",\n      \"latitude\": 50.47612,\n      \"longitude\": 12.370071,\n      \"network_zone\": \"eu-central\"\n    },\n    \"datacenter\": {\n      \"id\": 42,\n      \"name\": \"fsn1-dc8\",\n      \"description\": \"Falkenstein DC Park 8\",\n      \"location\": {\n        \"id\": 1,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"server_types\": {\n        \"supported\": [\n          1,\n          2,\n          3\n        ],\n        \"available\": [\n          1,\n          2,\n          3\n        ],\n        \"available_for_migration\": [\n          1,\n          2,\n          3\n        ]\n      }\n    },\n    \"ip\": \"2001:db8::/64\",\n    \"dns_ptr\": [\n      {\n        \"ip\": \"2001:db8::1\",\n        \"dns_ptr\": \"server.example.com\"\n      }\n    ],\n    \"protection\": {\n      \"delete\": false\n    },\n    \"type\": \"ipv6\",\n    \"auto_delete\": true,\n    \"assignee_type\": \"server\",\n    \"assignee_id\": 17\n  },\n  \"action\": {\n    \"id\": 13,\n    \"command\": \"assign_primary_ip\",\n    \"status\": \"running\",\n    \"progress\": 0,\n    \"started\": \"2016-01-30T23:50:00Z\",\n    \"finished\": null,\n    \"resources\": [\n      {\n        \"id\": 17,\n        \"type\": \"server\"\n      }\n    ],\n    \"error\": {\n      \"code\": \"action_failed\",\n      \"message\": \"Action failed\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f63e4374-2cdc-476a-b774-8ebb93b4a854",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-resource\",\n  \"type\": \"ipv6\",\n  \"assignee_type\": \"server\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"datacenter\": \"fsn1-dc8\",\n  \"location\": \"fsn1\",\n  \"assignee_id\": 17,\n  \"auto_delete\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea630040-fd85-4eec-9e7b-e8debedd32e4",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-resource\",\n  \"type\": \"ipv6\",\n  \"assignee_type\": \"server\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"datacenter\": \"fsn1-dc8\",\n  \"location\": \"fsn1\",\n  \"assignee_id\": 17,\n  \"auto_delete\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83cbad1c-d65c-4365-a035-262a9401fd3e",
+          "name": "Get a Primary IP",
+          "request": {
+            "name": "Get a Primary IP",
+            "description": {
+              "content": "Returns a [Primary IP](#tag/primary-ips).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "primary_ips",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Primary IP."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3d19e01f-f488-47fb-bfb9-0f1d1a5aee82",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"primary_ip\": {\n    \"id\": 42,\n    \"name\": \"my-resource\",\n    \"labels\": {\n      \"environment\": \"prod\",\n      \"example.com/my\": \"label\",\n      \"just-a-key\": \"\"\n    },\n    \"created\": \"2016-01-30T23:55:00Z\",\n    \"blocked\": false,\n    \"location\": {\n      \"id\": 42,\n      \"name\": \"fsn1\",\n      \"description\": \"Falkenstein DC Park 1\",\n      \"country\": \"DE\",\n      \"city\": \"Falkenstein\",\n      \"latitude\": 50.47612,\n      \"longitude\": 12.370071,\n      \"network_zone\": \"eu-central\"\n    },\n    \"datacenter\": {\n      \"id\": 42,\n      \"name\": \"fsn1-dc8\",\n      \"description\": \"Falkenstein DC Park 8\",\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"server_types\": {\n        \"supported\": [\n          1,\n          2,\n          3\n        ],\n        \"available\": [\n          1,\n          2,\n          3\n        ],\n        \"available_for_migration\": [\n          1,\n          2,\n          3\n        ]\n      }\n    },\n    \"ip\": \"2001:db8::/64\",\n    \"dns_ptr\": [\n      {\n        \"ip\": \"2001:db8::1\",\n        \"dns_ptr\": \"server.example.com\"\n      },\n      {\n        \"ip\": \"2001:db8::1\",\n        \"dns_ptr\": \"server.example.com\"\n      }\n    ],\n    \"protection\": {\n      \"delete\": false\n    },\n    \"type\": \"ipv6\",\n    \"auto_delete\": true,\n    \"assignee_type\": \"server\",\n    \"assignee_id\": 17\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bfa9f8e-e122-4952-a1c1-b86dc9e55217",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "486ce58e-d382-4fcc-bff0-b9b31d3fc718",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9d4818db-dab0-40b0-9323-632459f59d9c",
+          "name": "Update a Primary IP",
+          "request": {
+            "name": "Update a Primary IP",
+            "description": {
+              "content": "Update a [Primary IP](#tag/primary-ips).\n\nIf another change is concurrently performed on this [Primary IP](#tag/primary-ips), a error response with code `conflict` will be returned.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "primary_ips",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Primary IP."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"labels\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"auto_delete\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "15009ac1-bc39-4339-ba06-5a70adcf475d",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-resource\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"auto_delete\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"primary_ip\": {\n    \"id\": 42,\n    \"name\": \"my-resource\",\n    \"labels\": {\n      \"environment\": \"prod\",\n      \"example.com/my\": \"label\",\n      \"just-a-key\": \"\"\n    },\n    \"created\": \"2016-01-30T23:55:00Z\",\n    \"blocked\": false,\n    \"location\": {\n      \"id\": 42,\n      \"name\": \"fsn1\",\n      \"description\": \"Falkenstein DC Park 1\",\n      \"country\": \"DE\",\n      \"city\": \"Falkenstein\",\n      \"latitude\": 50.47612,\n      \"longitude\": 12.370071,\n      \"network_zone\": \"eu-central\"\n    },\n    \"datacenter\": {\n      \"id\": 42,\n      \"name\": \"fsn1-dc8\",\n      \"description\": \"Falkenstein DC Park 8\",\n      \"location\": {\n        \"id\": 42,\n        \"name\": \"fsn1\",\n        \"description\": \"Falkenstein DC Park 1\",\n        \"country\": \"DE\",\n        \"city\": \"Falkenstein\",\n        \"latitude\": 50.47612,\n        \"longitude\": 12.370071,\n        \"network_zone\": \"eu-central\"\n      },\n      \"server_types\": {\n        \"supported\": [\n          1,\n          2,\n          3\n        ],\n        \"available\": [\n          1,\n          2,\n          3\n        ],\n        \"available_for_migration\": [\n          1,\n          2,\n          3\n        ]\n      }\n    },\n    \"ip\": \"2001:db8::/64\",\n    \"dns_ptr\": [\n      {\n        \"ip\": \"2001:db8::1\",\n        \"dns_ptr\": \"server.example.com\"\n      },\n      {\n        \"ip\": \"2001:db8::1\",\n        \"dns_ptr\": \"server.example.com\"\n      }\n    ],\n    \"protection\": {\n      \"delete\": false\n    },\n    \"type\": \"ipv6\",\n    \"auto_delete\": true,\n    \"assignee_type\": \"server\",\n    \"assignee_id\": 17\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "995994b4-9b53-4b0a-bf1e-eac468b1ac63",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-resource\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"auto_delete\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f20580d1-af3d-4229-a464-5e0c5641658b",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my-resource\",\n  \"labels\": {\n    \"environment\": \"prod\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  },\n  \"auto_delete\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7ff9966-0ea4-45fa-a807-d32e4ab812bc",
+          "name": "Delete a Primary IP",
+          "request": {
+            "name": "Delete a Primary IP",
+            "description": {
+              "content": "Deletes a [Primary IP](#tag/primary-ips).\n\nThe [Server](#tag/servers) must be powered off (status `off`) in order for this operation to succeed.\nIf assigned to a [Server](#tag/servers) the [Primary IP](#tag/primary-ips) will be unassigned automatically until 1 May 2026. After this date, the [Primary IP](#tag/primary-ips) needs to be unassigned before it can be deleted.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `must_be_unassigned` | Error when IP is still assigned to a Resource. This error will appear as of 1 May 2026. |\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "primary_ips",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "id",
+                  "description": "(Required) ID of the Primary IP."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a4bfe071-c4ae-4005-929a-21e9213bbc5a",
+              "name": "Request succeeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "27164193-924c-42fe-adc2-edf8b11c6412",
+              "name": "Request failed with a user error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"unable to authenticate\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d8a1606-d489-4a6f-9122-2ec70411aa92",
+              "name": "Request failed with a server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "primary_ips",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "id",
+                      "description": "(Required) ID of the Primary IP."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"timeout\",\n    \"message\": \"request timeout\",\n    \"details\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hetzner.cloud/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0ae52be6-2a2a-4ae3-9ab8-be783b59051e",
+    "name": "Hetzner Cloud Actions Primary IPs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Overview\n\nThis is the official documentation for the Hetzner Cloud API.\n\n## Introduction\n\nThe Hetzner Cloud API operates over HTTPS and uses JSON as its data format. The API is a RESTful API and utilizes HTTP methods and HTTP status codes to specify requests and responses.\n\nAs an alternative to working directly with our API you may also consider to use:\n\n- Our CLI program [hcloud](https://github.com/hetznercloud/cli)\n- Our [library for Go](https://github.com/hetznercloud/hcloud-go)\n- Our [library for Python](https://github.com/hetznercloud/hcloud-python)\n\nYou can find even more libraries, tools and integrations on our [Awesome List on GitHub](https://github.com/hetznercloud/awesome-hcloud).\n\n### Open source credits\n\nIf you are developing an open-source project that supports or intends to add support for Hetzner APIs, you may be eligible for a free one-time credit of up to € 50 / $ 50 on your account. Please contact us via the support page on your [Hetzner Console](https://console.hetzner.cloud/support) and let us know the following:\n\n- The name of the project you are working on\n- A short description of the project\n- Link to the project website or repo where the project is hosted\n- Affiliation with / role in the project (e.g. project maintainer)\n- Link to some other open-source work you have already done (if you have done so)\n\n**Note:** We only consider rewards for projects that provide Hetzner-specific functionality or integrations. For example, our Object Storage exposes a standard S3 API without any Hetzner-specific extensions. Projects that focus solely on generic S3 capabilities (e.g., general S3 clients or SDKs) are not Hetzner-specific and are therefore not eligible for Hetzner Rewards.\n\n## Getting Started\n\nTo get started using the API you first need an API token. Sign in into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token. Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project. Let’s say your new token is `LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj`.\n\nYou’re now ready to do your first request against the API. To get a list of all Servers in your Project, issue the example request on the right side using [curl](https://curl.se/).\n\nMake sure to replace the token in the example command with the token you have just created. Since your Project probably does not contain any Servers yet, the example response will look like the response on the right side. We will almost always provide a resource root like `servers` inside the example response. A response can also contain a `meta` object with information like [Pagination](#description/pagination).\n\n**Example Request**\n\n```shell\ncurl -H \"Authorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\" \\\n  https://api.hetzner.cloud/v1/servers\n```\n\n**Example Response**\n\n```json\n{\n  \"servers\": [],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 1,\n      \"per_page\": 25,\n      \"previous_page\": null,\n      \"next_page\": null,\n      \"last_page\": 1,\n      \"total_entries\": 0\n    }\n  }\n}\n```\n\n## Authentication\n\nAll requests to the Hetzner Cloud API must be authenticated via a API token. Include your secret API token in every request you send to the API with the `Authorization` HTTP header.\n\nTo create a new API token for your Project, switch into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token.\n\n**Example Authorization header**\n\n```http\nAuthorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\n```\n\n## Query Parameters\n\nThe API makes use of query parameters to sort and filter responses. The parameter names and values must be URI encoded according to [RFC2396](https://datatracker.ietf.org/doc/html/rfc2396). Query parameters of type `array` can be used multiple times:\n\n**Example query parameters for pagination**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?page=1&page_size=12\n```\n\n**Example use of multiple values for a parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?type=uploaded&type=managed\n```\n\n**Example use of an encoded parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?label_selector=key%3Dvalue\n```\n\n## Errors\n\nErrors are indicated by HTTP status codes. Further, the response of the request which generated the error contains an error code, an error message, and, optionally, error details. The schema of the error details object depends on the error code.\n\nThe error response contains the following keys:\n\n| Keys      | Meaning                                                               |\n| --------- | --------------------------------------------------------------------- |\n| `code`    | Short string indicating the type of error (machine-parsable)          |\n| `message` | Textual description on what has gone wrong                            |\n| `details` | An object providing for details on the error (schema depends on code) |\n\n**Example response**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n### Error Codes\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `400` | `json_error` | Invalid JSON input in your request. |\n| `401` | `unauthorized` | Request was made with an invalid or unknown token. |\n| `401` | `token_readonly` | The token is only allowed to perform GET requests. |\n| `403` | `forbidden` | Insufficient permissions for this request. |\n| `403` | `maintenance` | Cannot perform operation due to maintenance. |\n| `403` | `resource_limit_exceeded` | Error when exceeding the maximum quantity of a resource for an account. |\n| `404` | `not_found` | Entity not found. |\n| `405` | `method_not_allowed` | The request method is not allowed |\n| `409` | `uniqueness_error` | One or more of the objects fields must be unique. |\n| `409` | `conflict` | The resource has changed during the request, please retry. |\n| `410` | `deprecated_api_endpoint` | The API endpoint functionality was removed. |\n| `412` | `resource_unavailable` | The requested resource is currently unavailable (e.g. not available for order). |\n| `422` | `invalid_input` | Error while parsing or processing the input. |\n| `422` | `service_error` | Error within a service. |\n| `422` | `unsupported_error` | The corresponding resource does not support the Action. |\n| `423` | `locked` | The item you are trying to access is locked (there is already an Action running). |\n| `423` | `protected` | The Action you are trying to start is protected for this resource. |\n| `429` | `rate_limit_exceeded` | Error when sending too many requests. |\n| `500` | `server_error` | Error within the API backend. |\n| `503` | `unavailable` | A service or product is currently not available. |\n| `504` | `timeout` | The request could not be answered in time, please retry. |\n\n**invalid_input**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n**uniqueness_error**\n\n```json\n{\n  \"error\": {\n    \"code\": \"uniqueness_error\",\n    \"message\": \"SSH key with the same fingerprint already exists\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"public_key\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**resource_limit_exceeded**\n\n```json\n{\n  \"error\": {\n    \"code\": \"resource_limit_exceeded\",\n    \"message\": \"project limit exceeded\",\n    \"details\": {\n      \"limits\": [\n        {\n          \"name\": \"project_limit\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**deprecated_api_endpoint**\n\n```json\n{\n  \"error\": {\n    \"code\": \"deprecated_api_endpoint\",\n    \"message\": \"API functionality was removed\",\n    \"details\": {\n      \"announcement\": \"https://docs.hetzner.cloud/changelog#2023-07-20-foo-endpoint-is-deprecated\"\n    }\n  }\n}\n```\n\n## Actions\n\nActions represent asynchronous tasks within the API, targeting one or more resources. Triggering changes in the API may return a `running` action.\n\nAn action should be waited upon, until it reaches either the `success` or `error` state. Avoid polling the action's state too frequently to reduce the risk of exhausting your API requests and hitting the [rate limit](#description/rate-limiting).\n\nIf an action fails, it will contain details about the underlying error.\n\nOnce the asynchronous tasks have completed and the targeted resources are in a consistent state, the action is marked as succeeded.\n\nIn some cases, you may trigger multiple changes at once, and only wait for the returned actions at a later stage.\n\n## Labels\n\nLabels are `key/value` pairs that can be attached to all resources.\n\nValid label keys have two segments: an optional prefix and name, separated by a slash (`/`). The name segment is required and must be a string of 63 characters or less, beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between. The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots (`.`), not longer than 253 characters in total, followed by a slash (`/`).\n\nValid label values must be a string of 63 characters or less and must be empty or begin and end with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.\n\nThe `hetzner.cloud/` prefix is reserved and cannot be used.\n\n**Example Labels**\n\n```json\n{\n  \"labels\": {\n    \"environment\": \"development\",\n    \"service\": \"backend\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}\n```\n\n## Label Selector\n\nFor resources with labels, you can filter resources by their labels using the label selector query language.\n\n| Expression           | Meaning                                              |\n| -------------------- | ---------------------------------------------------- |\n| `k==v` / `k=v`       | Value of key `k` does equal value `v`                |\n| `k!=v`               | Value of key `k` does not equal value `v`            |\n| `k`                  | Key `k` is present                                   |\n| `!k`                 | Key `k` is not present                               |\n| `k in (v1,v2,v3)`    | Value of key `k` is `v1`, `v2`, or `v3`              |\n| `k notin (v1,v2,v3)` | Value of key `k` is neither `v1`, nor `v2`, nor `v3` |\n| `k1==v,!k2`          | Value of key `k1` is `v` and key `k2` is not present |\n\n### Examples\n\n- Returns all resources that have a `env=production` label and that don't have a `type=database` label:\n\n  `env=production,type!=database`\n\n- Returns all resources that have a `env=testing` or `env=staging` label:\n\n  `env in (testing,staging)`\n\n- Returns all resources that don't have a `type` label:\n\n  `!type`\n\n## Pagination\n\nResponses which return multiple items support pagination. If they do support pagination, it can be controlled with following query string parameters:\n\n- A `page` parameter specifies the page to fetch. The number of the first page is 1.\n- A `per_page` parameter specifies the number of items returned per page. The default value is 25, the maximum value is 50 except otherwise specified in the documentation.\n\nResponses contain a `Link` header with pagination information.\n\nAdditionally, if the response body is JSON and the root object is an object, that object has a `pagination` object inside the `meta` object with pagination information:\n\n**Example Pagination**\n\n```json\n{\n    \"servers\": [...],\n    \"meta\": {\n        \"pagination\": {\n            \"page\": 2,\n            \"per_page\": 25,\n            \"previous_page\": 1,\n            \"next_page\": 3,\n            \"last_page\": 4,\n            \"total_entries\": 100\n        }\n    }\n}\n```\n\nThe keys `previous_page`, `next_page`, `last_page`, and `total_entries` may be `null` when on the first page, last page, or when the total number of entries is unknown.\n\n**Example Pagination Link header**\n\n```http\nLink: <https://api.hetzner.cloud/v1/actions?page=2&per_page=5>; rel=\"prev\",\n      <https://api.hetzner.cloud/v1/actions?page=4&per_page=5>; rel=\"next\",\n      <https://api.hetzner.cloud/v1/actions?page=6&per_page=5>; rel=\"last\"\n```\n\nLine breaks have been added for display purposes only and responses may only contain some of the above `rel` values.\n\n## Rate Limiting\n\nAll requests, whether they are authenticated or not, are subject to rate limiting. If you have reached your limit, your requests will be handled with a `429 Too Many Requests` error. Burst requests are allowed. Responses contain several headers which provide information about your current rate limit status.\n\n- The `RateLimit-Limit` header contains the total number of requests you can perform per hour.\n- The `RateLimit-Remaining` header contains the number of requests remaining in the current rate limit time frame.\n- The `RateLimit-Reset` header contains a UNIX timestamp of the point in time when your rate limit will have recovered, and you will have the full number of requests available again.\n\nThe default limit is 3600 requests per hour and per Project. The number of remaining requests increases gradually. For example, when your limit is 3600 requests per hour, the number of remaining requests will increase by 1 every second.\n\n## Server Metadata\n\nYour Server can discover metadata about itself by doing a HTTP request to specific URLs. The following data is available:\n\n| Data              | Format | Contents                                                     |\n| ----------------- | ------ | ------------------------------------------------------------ |\n| hostname          | text   | Name of the Server as set in the api                         |\n| instance-id       | number | ID of the server                                             |\n| public-ipv4       | text   | Primary public IPv4 address                                  |\n| private-networks  | yaml   | Details about the private networks the Server is attached to |\n| availability-zone | text   | Name of the availability zone that Server runs in            |\n| region            | text   | Network zone, e.g. eu-central                                |\n\n**Example: Summary**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata\n```\n\n```yaml\navailability-zone: hel1-dc2\nhostname: my-server\ninstance-id: 42\npublic-ipv4: 1.2.3.4\nregion: eu-central\n```\n\n**Example: Hostname**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/hostname\nmy-server\n```\n\n**Example: Instance ID**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/instance-id\n42\n```\n\n**Example: Public IPv4**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4\n1.2.3.4\n```\n\n**Example: Private Networks**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/private-networks\n```\n\n```yaml\n- ip: 10.0.0.2\n  alias_ips: [10.0.0.3, 10.0.0.4]\n  interface_num: 1\n  mac_address: 86:00:00:2a:7d:e0\n  network_id: 1234\n  network_name: nw-test1\n  network: 10.0.0.0/8\n  subnet: 10.0.0.0/24\n  gateway: 10.0.0.1\n- ip: 192.168.0.2\n  alias_ips: []\n  interface_num: 2\n  mac_address: 86:00:00:2a:7d:e1\n  network_id: 4321\n  network_name: nw-test2\n  network: 192.168.0.0/16\n  subnet: 192.168.0.0/24\n  gateway: 192.168.0.1\n```\n\n**Example: Availability Zone**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/availability-zone\nhel1-dc2\n```\n\n**Example: Region**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/region\neu-central\n```\n\n## Sorting\n\nSome responses which return multiple items support sorting. If they do support sorting the documentation states which fields can be used for sorting. You specify sorting with the `sort` query string parameter. You can sort by multiple fields. You can set the sort direction by appending `:asc` or `:desc` to the field name. By default, ascending sorting is used.\n\n**Example: Sorting**\n\n```\nhttps://api.hetzner.cloud/v1/actions?sort=status\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc\nhttps://api.hetzner.cloud/v1/actions?sort=status:desc\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc&sort=command:desc\n```\n\n## Deprecation Notices\n\nYou can find all announced deprecations in our [Changelog](/changelog).\n",
+      "type": "text/plain"
+    }
+  }
+}

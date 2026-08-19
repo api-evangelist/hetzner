@@ -1,0 +1,192 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Zones API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Zones",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Zones",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/zones",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "mode",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their mode.\n\nThe response will only contain the resources matching exactly the specified mode.\n"
+              },
+              {
+                "name": "label_selector",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all [Zones](#tag/zones).\n\nUse the provided URI parameters to modify the result.\n"
+        },
+        {
+          "info": {
+            "name": "Create a Zone",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a [Zone](#tag/zones).\n\nA default `SOA` and three `NS` resource records with the assigned Hetzner\nnameservers are created automatically.\n"
+        },
+        {
+          "info": {
+            "name": "Get a Zone",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single [Zone](#tag/zones).\n"
+        },
+        {
+          "info": {
+            "name": "Update a Zone",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a [Zone](#tag/zones).\n\nTo modify resource record sets ([RRSets](#tag/zone-rrsets)), use the [RRSet Actions\nendpoints](#tag/zone-rrset-actions).\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Zone",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a [Zone](#tag/zones).\n"
+        },
+        {
+          "info": {
+            "name": "Export a Zone file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/zonefile",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a generated [Zone](#tag/zones) file in BIND (RFC [1034](https://datatracker.ietf.org/doc/html/rfc1034)/[1035](https://datatracker.ietf.org/doc/html/rfc1035)) format.\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`. |\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

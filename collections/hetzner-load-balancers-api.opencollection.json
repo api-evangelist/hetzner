@@ -1,0 +1,210 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Load Balancers API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Load Balancers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Load Balancers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/load_balancers",
+            "params": [
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort resources by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by their name.\n\nThe response will only contain the resources\nmatching exactly the specified name.\n"
+              },
+              {
+                "name": "label_selector",
+                "value": "",
+                "type": "query",
+                "description": "Filter resources by labels.\n\nThe response will only contain resources matching the label selector.\nFor more information, see \"[Label Selector](#description/label-selector)\".\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets all existing Load Balancers that you have available.\n"
+        },
+        {
+          "info": {
+            "name": "Create a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/load_balancers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Load Balancer.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `412` | `source_port_already_used` | The source port you are trying to add is already in use |\n| `422` | `ip_not_owned` | The IP is not owned by the owner of the project of the Load Balancer |\n| `422` | `load_balancer_not_attached_to_network` | The Load Balancer is not attached to a network |\n| `422` | `resolve_cloud_private_targets_error` | The server you are trying to add as a target"
+        },
+        {
+          "info": {
+            "name": "Get a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/load_balancers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Load Balancer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets a specific Load Balancer object.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hetzner.cloud/v1/load_balancers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Load Balancer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a Load Balancer. You can update a Load Balancer’s name and a Load Balancer’s labels.\n\nNote: if the Load Balancer object changes during the request, the response will be a “conflict” error.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hetzner.cloud/v1/load_balancers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Load Balancer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Load Balancer.\n"
+        },
+        {
+          "info": {
+            "name": "Get Metrics for a LoadBalancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/load_balancers/:id/metrics",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Load Balancer."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of metrics to get."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Start of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format)."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "End of period to get Metrics for (must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format)."
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Resolution of results in seconds."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "You must specify the type of metric to get: `open_connections`, `connections_per_second`, `requests_per_second` or `bandwidth`. You can also specify more than one type by comma separation, e.g. `requests_per_second,bandwidth`.\n\nDepending on the type you will get different time series data:\n\n|Type | Timeseries | Unit | Description |\n|---- |------------|------|-------------|\n| open_connections | open_connections | number | Open connections |\n| connections_per_second | connections_per_second | conn"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

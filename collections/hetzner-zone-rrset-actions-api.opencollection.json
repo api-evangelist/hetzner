@@ -1,0 +1,246 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Zone RRSet Actions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Zone RRSet Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Change an RRSet's Protection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/rrsets/:rr_name/:rr_type/actions/change_protection",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              },
+              {
+                "name": "rr_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "rr_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Changes the protection of an [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`. |\n"
+        },
+        {
+          "info": {
+            "name": "Change an RRSet's TTL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/rrsets/:rr_name/:rr_type/actions/change_ttl",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              },
+              {
+                "name": "rr_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "rr_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Changes the Time To Live (TTL) of an [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`. |\n"
+        },
+        {
+          "info": {
+            "name": "Set Records of an RRSet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/rrsets/:rr_name/:rr_type/actions/set_records",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              },
+              {
+                "name": "rr_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "rr_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Overwrites the resource records (RRs) of an existing [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`. |\n"
+        },
+        {
+          "info": {
+            "name": "Add Records to an RRSet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/rrsets/:rr_name/:rr_type/actions/add_records",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              },
+              {
+                "name": "rr_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "rr_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds resource records (RRs) to an [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).\n\nFor convenience, the [RRSet](#tag/zone-rrsets) will be automatically created if it doesn't exist. Otherwise, the new\nrecords are appended to the existing [RRSet](#tag/zone-rrsets).\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`"
+        },
+        {
+          "info": {
+            "name": "Remove Records from an RRSet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/rrsets/:rr_name/:rr_type/actions/remove_records",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              },
+              {
+                "name": "rr_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "rr_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes resource records (RRs) from an existing [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).\n\nFor convenience, the [RRSet](#tag/zone-rrsets) will be automatically deleted if it doesn't contain any RRs afterwards.\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`. |\n"
+        },
+        {
+          "info": {
+            "name": "Update Records of an RRSet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/zones/:id_or_name/rrsets/:rr_name/:rr_type/actions/update_records",
+            "params": [
+              {
+                "name": "id_or_name",
+                "value": "",
+                "type": "path",
+                "description": "ID or Name of the Zone."
+              },
+              {
+                "name": "rr_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "rr_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates resource records' (RRs) comments of an existing [RRSet](#tag/zone-rrsets) in the [Zone](#tag/zones).\n\nOnly applicable for [Zones](#tag/zones) in primary mode.\n\n#### Operation specific errors\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `422` | `incorrect_zone_mode` | This operation is not supported for this Zone's `mode`. |\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

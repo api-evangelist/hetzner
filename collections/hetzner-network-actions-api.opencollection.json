@@ -1,0 +1,332 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hetzner Cloud Actions Network Actions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Network Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/networks/actions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by ID. May be used multiple times.\n\nThe response will only contain actions matching the specified IDs.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort actions by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by status. May be used multiple times.\n\nThe response will only contain actions matching the specified statuses.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists multiple [Actions](#tag/actions).\n\nUse the provided URI parameters to modify the result.\n"
+        },
+        {
+          "info": {
+            "name": "Get an Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/networks/actions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single [Action](#tag/actions).\n"
+        },
+        {
+          "info": {
+            "name": "List Actions for a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort actions by field and direction. May be used multiple times.\n\nFor more information, see \"[Sorting](#description/sorting)\".\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the actions by status. May be used multiple times.\n\nThe response will only contain actions matching the specified statuses.\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return. For more information, see \"[Pagination](#description/pagination)\"."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of entries returned per page. For more information, see \"[Pagination](#description/pagination)\"."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists [Actions](#tag/actions) for a [Network](#tag/networks).\n\nUse the provided URI parameters to modify the result.\n"
+        },
+        {
+          "info": {
+            "name": "Add a route to a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/add_route",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds a route entry to a [Network](#tag/networks).\n\nIf a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "Add a subnet to a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/add_subnet",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds a new subnet to the [Network](#tag/networks).\n\nIf the subnet `ip_range` is not provided, the first available `/24` IP range will be used.\n\nIf a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "Change IP range of a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/change_ip_range",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Changes the IP range of a [Network](#tag/networks).\n\nThe following restrictions apply to changing the IP range:\n- IP ranges can only be extended and never shrunk.\n- IPs can only be added to the end of the existing range, therefore only the netmask is allowed to be changed.\n\nTo update the routes on the connected [Servers](#tag/servers), they need to be rebooted or the routes to be updated manually.\n\nFor example if the [Network](#tag/networks) has a range of `10.0.0.0/16` to extend it the new rang"
+        },
+        {
+          "info": {
+            "name": "Change Network Protection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/change_protection",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Changes the protection settings of a [Network](#tag/networks).\n\nIf a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a route from a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/delete_route",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a route entry from a [Network](#tag/networks).\n\nIf a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a subnet from a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/delete_subnet",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a single subnet entry from a [Network](#tag/networks).\n\nSubnets containing attached resources can not be deleted, they must be detached beforehand.\n\nIf a change is currently being performed on this [Network](#tag/networks), a error response with code `conflict` will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "Get an Action for a Network",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hetzner.cloud/v1/networks/:id/actions/:action_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Network."
+              },
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "**Deprecated**: This operation is deprecated, see our [changelog](https://docs.hetzner.cloud/changelog#2026-04-30-deprecate-get-resource-action-endpoints) for more details.\n\nReturns a specific [Action](#tag/actions) for a [Network](#tag/networks).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
