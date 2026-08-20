@@ -248,6 +248,8 @@ apis:
   humanURL: https://docs.hetzner.cloud/
   baseURL: https://api.hetzner.cloud/v1
   tags:
+  - Image
+  tags_raw:
   - Images
   properties:
   - type: OpenAPI
@@ -319,6 +321,8 @@ apis:
   humanURL: https://docs.hetzner.cloud/
   baseURL: https://api.hetzner.cloud/v1
   tags:
+  - Load Balancer
+  tags_raw:
   - Load Balancers
   properties:
   - type: OpenAPI
