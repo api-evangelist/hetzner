@@ -1,0 +1,144 @@
+slug: hetzner
+provider: Hetzner
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Telecommunications
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 14
+edges:
+- tag: Server Actions
+  spec_file: hetzner-server-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: POST /servers/{id}/actions/attach_iso  Attach an ISO to a Server; POST /servers/{id}/actions/change_type  Change
+    the Type of a Server
+  reason: Operational actions on cloud compute instances (attach ISO/network, change type, create image)
+    — clearly cloud compute infrastructure management.
+- tag: Servers
+  spec_file: hetzner-servers-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: POST /servers  create_server  Create a Server; GET /servers/{id}/metrics  Get Metrics for
+    a Server
+  reason: Provisioning and lifecycle of cloud servers with metrics — compute infrastructure management.
+- tag: Volume Actions
+  spec_file: hetzner-volume-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.82
+  evidence: POST /volumes/{id}/actions/attach  attach_volume  Attach Volume to a Server; resize_volume  Resize
+    Volume
+  reason: Block storage volume attach/detach/resize operations — cloud storage infrastructure management.
+- tag: Volumes
+  spec_file: hetzner-volumes-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.82
+  evidence: POST /volumes  create_volume  Create a Volume
+  reason: Lifecycle of cloud block storage volumes; IT Infrastructure Management (storage).
+- tag: Load Balancers
+  spec_file: hetzner-load-balancers-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: POST /load_balancers  create_load_balancer  Create a Load Balancer; GET /load_balancers/{id}/metrics
+  reason: Full lifecycle plus metrics for cloud load balancer resources — clearly provisioning and operating
+    network infrastructure in a hosting provider's cloud.
+- tag: Network Actions
+  spec_file: hetzner-network-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: POST /networks/{id}/actions/add_subnet  add_network_subnet  Add a subnet to a Network; change_network_ip_range  Change
+    IP range of a Network
+  reason: Operations manage virtual cloud networks (subnets, routes, IP ranges) in a hosting provider's
+    cloud — this is IT infrastructure (compute/storage/network/cloud) management, not telecom network
+    operations.
+- tag: Networks
+  spec_file: hetzner-networks-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: POST /networks  create_network  Create a Network
+  reason: CRUD over cloud private networks; realises IT Infrastructure Management (cloud network resources),
+    not carrier network operations.
+- tag: Load Balancer Actions
+  spec_file: hetzner-load-balancer-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /load_balancers/{id}/actions/add_target  add_load_balancer_target; POST /load_balancers/{id}/actions/attach_to_network
+  reason: Configuring load balancer services, targets, algorithms and network attachment — operation of
+    cloud network infrastructure components.
+- tag: Primary IP Actions
+  spec_file: hetzner-primary-ip-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /primary_ips/{id}/actions/assign  assign_primary_ip  Assign a Primary IP to a resource
+  reason: Assignment and reverse-DNS configuration of cloud IP addresses — infrastructure resource management
+    within a hosting platform.
+- tag: Primary IPs
+  spec_file: hetzner-primary-ips-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /primary_ips  create_primary_ip  Create a Primary IP
+  reason: Lifecycle of cloud IP address resources; IT infrastructure (cloud networking) management rather
+    than telecom numbering.
+- tag: Placement Groups
+  spec_file: hetzner-placement-groups-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: POST /placement_groups  create_placement_group  Create a PlacementGroup
+  reason: Placement groups control how cloud servers are distributed across hosts — cloud infrastructure
+    provisioning construct.
+- tag: Floating IPs
+  spec_file: hetzner-floating-ips-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: POST /floating_ips  create_floating_ip  Create a Floating IP
+  reason: Lifecycle of IP address resources in a hosting provider's cloud — IT infrastructure (network)
+    provisioning. Deliberately not mapped to telecom numbering resources, which concern regulator-granted
+    phone numbers.
+- tag: Floating IP Actions
+  spec_file: hetzner-floating-ip-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: POST /floating_ips/{id}/actions/assign  assign_floating_ip  Assign a Floating IP to a Server
+  reason: Assigning/unassigning floating IPs and reverse DNS to cloud servers is cloud network infrastructure
+    operation, not telecom numbering or subscriber management.
+- tag: Server Types
+  spec_file: hetzner-server-types-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: GET /server_types  list_server_types  List Server Types
+  reason: Reference lookup of available cloud compute instance types; supports infrastructure provisioning
+    decisions.

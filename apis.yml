@@ -778,6 +778,9 @@ apis:
   - type: GettingStarted
     url: https://docs.hetzner.cloud/#getting-started
 common:
+  - type: CapabilityMap
+    url: capabilities/hetzner-capability-edges.yml
+    name: Hetzner Business Capability Map
   - type: AgenticAccess
     url: agentic-access/hetzner-agentic-access.yml
   - type: VulnerabilityDisclosure
