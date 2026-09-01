@@ -333,7 +333,7 @@ apis:
   humanURL: https://docs.hetzner.cloud/
   baseURL: https://api.hetzner.cloud/v1
   tags:
-  - Load Balancers
+  - Load Balancer
   tags_raw:
   - Load Balancers
   properties:
