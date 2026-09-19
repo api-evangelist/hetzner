@@ -116,6 +116,8 @@ apis:
   humanURL: https://docs.hetzner.cloud/
   baseURL: https://api.hetzner.cloud/v1
   tags:
+  - Data-Center
+  tags_raw:
   - Data Centers
   properties:
   - type: OpenAPI
@@ -352,6 +354,8 @@ apis:
   humanURL: https://docs.hetzner.cloud/
   baseURL: https://api.hetzner.cloud/v1
   tags:
+  - Location
+  tags_raw:
   - Locations
   properties:
   - type: OpenAPI
