@@ -783,6 +783,8 @@ apis:
   - type: GettingStarted
     url: https://docs.hetzner.cloud/#getting-started
 common:
+  - type: Plans
+    url: plans/hetzner-plans-pricing.yml
   - type: CapabilityMap
     url: capabilities/hetzner-capability-edges.yml
     name: Hetzner Business Capability Map
