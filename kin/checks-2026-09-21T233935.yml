@@ -2,16 +2,16 @@
 kin_checks:
   slug: hetzner
   schema_version: 0.22.0
-  scored_at: '2026-09-19'
-  run_ts: 2026-09-19T193153
+  scored_at: '2026-09-21'
+  run_ts: 2026-09-21T233935
   note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
     apply in `na`. Everything else in rubric/scoring-0.22.0.yml was earned; counts
     below let you verify that.
   counts:
     total: 136
     earned: 40
-    partial: 11
-    missed: 59
+    partial: 9
+    missed: 61
     na: 26
   checks:
   - id: tags_present
@@ -96,6 +96,10 @@ kin_checks:
     status: missed
   - id: agent_skill_present
     status: missed
+  - id: plans_present
+    status: missed
+  - id: plans_multiple
+    status: missed
   - id: compliance_published
     status: missed
   - id: trust_center
@@ -152,12 +156,6 @@ kin_checks:
     status: partial
     earned: 2.5
     detail: pointer liveness 0.5
-  - id: plans_present
-    status: partial
-    earned: 2.0
-  - id: plans_multiple
-    status: partial
-    earned: 1.0
   - id: sign_up_present
     status: partial
     earned: 2.5
