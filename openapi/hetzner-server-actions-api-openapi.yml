@@ -1,11 +1,14 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Hetzner Cloud Actions Server Actions API
+  title: Hetzner Cloud Server Actions API
   version: 1.0.0
   x-summary: 'Manage Hetzner Cloud services and resources linked to them, such as Floating IPs, Volumes and Load Balancers.
 
     '
-  description: "# Overview\n\nThis is the official documentation for the Hetzner Cloud API.\n\n## Introduction\n\nThe Hetzner Cloud API operates over HTTPS and uses JSON as its data format. The API is a RESTful API and utilizes HTTP methods and HTTP status codes to specify requests and responses.\n\nAs an alternative to working directly with our API you may also consider to use:\n\n- Our CLI program [hcloud](https://github.com/hetznercloud/cli)\n- Our [library for Go](https://github.com/hetznercloud/hcloud-go)\n- Our [library for Python](https://github.com/hetznercloud/hcloud-python)\n\nYou can find even more libraries, tools and integrations on our [Awesome List on GitHub](https://github.com/hetznercloud/awesome-hcloud).\n\n### Open source credits\n\nIf you are developing an open-source project that supports or intends to add support for Hetzner APIs, you may be eligible for a free one-time credit of up to € 50 / $ 50 on your account. Please contact us via the support page on your [Hetzner Console](https://console.hetzner.cloud/support) and let us know the following:\n\n- The name of the project you are working on\n- A short description of the project\n- Link to the project website or repo where the project is hosted\n- Affiliation with / role in the project (e.g. project maintainer)\n- Link to some other open-source work you have already done (if you have done so)\n\n**Note:** We only consider rewards for projects that provide Hetzner-specific functionality or integrations. For example, our Object Storage exposes a standard S3 API without any Hetzner-specific extensions. Projects that focus solely on generic S3 capabilities (e.g., general S3 clients or SDKs) are not Hetzner-specific and are therefore not eligible for Hetzner Rewards.\n\n## Getting Started\n\nTo get started using the API you first need an API token. Sign in into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token. Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project. Let’s say your new token is `LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj`.\n\nYou’re now ready to do your first request against the API. To get a list of all Servers in your Project, issue the example request on the right side using [curl](https://curl.se/).\n\nMake sure to replace the token in the example command with the token you have just created. Since your Project probably does not contain any Servers yet, the example response will look like the response on the right side. We will almost always provide a resource root like `servers` inside the example response. A response can also contain a `meta` object with information like [Pagination](#description/pagination).\n\n**Example Request**\n\n```shell\ncurl -H \"Authorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\" \\\n  https://api.hetzner.cloud/v1/servers\n```\n\n**Example Response**\n\n```json\n{\n  \"servers\": [],\n  \"meta\": {\n    \"pagination\": {\n      \"page\": 1,\n      \"per_page\": 25,\n      \"previous_page\": null,\n      \"next_page\": null,\n      \"last_page\": 1,\n      \"total_entries\": 0\n    }\n  }\n}\n```\n\n## Authentication\n\nAll requests to the Hetzner Cloud API must be authenticated via a API token. Include your secret API token in every request you send to the API with the `Authorization` HTTP header.\n\nTo create a new API token for your Project, switch into the [Hetzner Console](https://console.hetzner.com/) choose a Project, go to `Security` → `API Tokens`, and generate a new token.\n\n**Example Authorization header**\n\n```http\nAuthorization: Bearer LRK9DAWQ1ZAEFSrCNEEzLCUwhYX1U3g7wMg4dTlkkDC96fyDuyJ39nVbVjCKSDfj\n```\n\n## Query Parameters\n\nThe API makes use of query parameters to sort and filter responses. The parameter names and values must be URI encoded according to [RFC2396](https://datatracker.ietf.org/doc/html/rfc2396). Query parameters of type `array` can be used multiple times:\n\n**Example query parameters for pagination**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?page=1&page_size=12\n```\n\n**Example use of multiple values for a parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?type=uploaded&type=managed\n```\n\n**Example use of an encoded parameter**\n\n```\nhttps://api.hetzner.cloud/v1/certificates?label_selector=key%3Dvalue\n```\n\n## Errors\n\nErrors are indicated by HTTP status codes. Further, the response of the request which generated the error contains an error code, an error message, and, optionally, error details. The schema of the error details object depends on the error code.\n\nThe error response contains the following keys:\n\n| Keys      | Meaning                                                               |\n| --------- | --------------------------------------------------------------------- |\n| `code`    | Short string indicating the type of error (machine-parsable)          |\n| `message` | Textual description on what has gone wrong                            |\n| `details` | An object providing for details on the error (schema depends on code) |\n\n**Example response**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n### Error Codes\n\n| Status | Code | Description |\n| --- | --- | --- |\n| `400` | `json_error` | Invalid JSON input in your request. |\n| `401` | `unauthorized` | Request was made with an invalid or unknown token. |\n| `401` | `token_readonly` | The token is only allowed to perform GET requests. |\n| `403` | `forbidden` | Insufficient permissions for this request. |\n| `403` | `maintenance` | Cannot perform operation due to maintenance. |\n| `403` | `resource_limit_exceeded` | Error when exceeding the maximum quantity of a resource for an account. |\n| `404` | `not_found` | Entity not found. |\n| `405` | `method_not_allowed` | The request method is not allowed |\n| `409` | `uniqueness_error` | One or more of the objects fields must be unique. |\n| `409` | `conflict` | The resource has changed during the request, please retry. |\n| `410` | `deprecated_api_endpoint` | The API endpoint functionality was removed. |\n| `412` | `resource_unavailable` | The requested resource is currently unavailable (e.g. not available for order). |\n| `422` | `invalid_input` | Error while parsing or processing the input. |\n| `422` | `service_error` | Error within a service. |\n| `422` | `unsupported_error` | The corresponding resource does not support the Action. |\n| `423` | `locked` | The item you are trying to access is locked (there is already an Action running). |\n| `423` | `protected` | The Action you are trying to start is protected for this resource. |\n| `429` | `rate_limit_exceeded` | Error when sending too many requests. |\n| `500` | `server_error` | Error within the API backend. |\n| `503` | `unavailable` | A service or product is currently not available. |\n| `504` | `timeout` | The request could not be answered in time, please retry. |\n\n**invalid_input**\n\n```json\n{\n  \"error\": {\n    \"code\": \"invalid_input\",\n    \"message\": \"invalid input in field 'broken_field': is too long\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"broken_field\",\n          \"messages\": [\"is too long\"]\n        }\n      ]\n    }\n  }\n}\n```\n\n**uniqueness_error**\n\n```json\n{\n  \"error\": {\n    \"code\": \"uniqueness_error\",\n    \"message\": \"SSH key with the same fingerprint already exists\",\n    \"details\": {\n      \"fields\": [\n        {\n          \"name\": \"public_key\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**resource_limit_exceeded**\n\n```json\n{\n  \"error\": {\n    \"code\": \"resource_limit_exceeded\",\n    \"message\": \"project limit exceeded\",\n    \"details\": {\n      \"limits\": [\n        {\n          \"name\": \"project_limit\"\n        }\n      ]\n    }\n  }\n}\n```\n\n**deprecated_api_endpoint**\n\n```json\n{\n  \"error\": {\n    \"code\": \"deprecated_api_endpoint\",\n    \"message\": \"API functionality was removed\",\n    \"details\": {\n      \"announcement\": \"https://docs.hetzner.cloud/changelog#2023-07-20-foo-endpoint-is-deprecated\"\n    }\n  }\n}\n```\n\n## Actions\n\nActions represent asynchronous tasks within the API, targeting one or more resources. Triggering changes in the API may return a `running` action.\n\nAn action should be waited upon, until it reaches either the `success` or `error` state. Avoid polling the action's state too frequently to reduce the risk of exhausting your API requests and hitting the [rate limit](#description/rate-limiting).\n\nIf an action fails, it will contain details about the underlying error.\n\nOnce the asynchronous tasks have completed and the targeted resources are in a consistent state, the action is marked as succeeded.\n\nIn some cases, you may trigger multiple changes at once, and only wait for the returned actions at a later stage.\n\n## Labels\n\nLabels are `key/value` pairs that can be attached to all resources.\n\nValid label keys have two segments: an optional prefix and name, separated by a slash (`/`). The name segment is required and must be a string of 63 characters or less, beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between. The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots (`.`), not longer than 253 characters in total, followed by a slash (`/`).\n\nValid label values must be a string of 63 characters or less and must be empty or begin and end with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.\n\nThe `hetzner.cloud/` prefix is reserved and cannot be used.\n\n**Example Labels**\n\n```json\n{\n  \"labels\": {\n    \"environment\": \"development\",\n    \"service\": \"backend\",\n    \"example.com/my\": \"label\",\n    \"just-a-key\": \"\"\n  }\n}\n```\n\n## Label Selector\n\nFor resources with labels, you can filter resources by their labels using the label selector query language.\n\n| Expression           | Meaning                                              |\n| -------------------- | ---------------------------------------------------- |\n| `k==v` / `k=v`       | Value of key `k` does equal value `v`                |\n| `k!=v`               | Value of key `k` does not equal value `v`            |\n| `k`                  | Key `k` is present                                   |\n| `!k`                 | Key `k` is not present                               |\n| `k in (v1,v2,v3)`    | Value of key `k` is `v1`, `v2`, or `v3`              |\n| `k notin (v1,v2,v3)` | Value of key `k` is neither `v1`, nor `v2`, nor `v3` |\n| `k1==v,!k2`          | Value of key `k1` is `v` and key `k2` is not present |\n\n### Examples\n\n- Returns all resources that have a `env=production` label and that don't have a `type=database` label:\n\n  `env=production,type!=database`\n\n- Returns all resources that have a `env=testing` or `env=staging` label:\n\n  `env in (testing,staging)`\n\n- Returns all resources that don't have a `type` label:\n\n  `!type`\n\n## Pagination\n\nResponses which return multiple items support pagination. If they do support pagination, it can be controlled with following query string parameters:\n\n- A `page` parameter specifies the page to fetch. The number of the first page is 1.\n- A `per_page` parameter specifies the number of items returned per page. The default value is 25, the maximum value is 50 except otherwise specified in the documentation.\n\nResponses contain a `Link` header with pagination information.\n\nAdditionally, if the response body is JSON and the root object is an object, that object has a `pagination` object inside the `meta` object with pagination information:\n\n**Example Pagination**\n\n```json\n{\n    \"servers\": [...],\n    \"meta\": {\n        \"pagination\": {\n            \"page\": 2,\n            \"per_page\": 25,\n            \"previous_page\": 1,\n            \"next_page\": 3,\n            \"last_page\": 4,\n            \"total_entries\": 100\n        }\n    }\n}\n```\n\nThe keys `previous_page`, `next_page`, `last_page`, and `total_entries` may be `null` when on the first page, last page, or when the total number of entries is unknown.\n\n**Example Pagination Link header**\n\n```http\nLink: <https://api.hetzner.cloud/v1/actions?page=2&per_page=5>; rel=\"prev\",\n      <https://api.hetzner.cloud/v1/actions?page=4&per_page=5>; rel=\"next\",\n      <https://api.hetzner.cloud/v1/actions?page=6&per_page=5>; rel=\"last\"\n```\n\nLine breaks have been added for display purposes only and responses may only contain some of the above `rel` values.\n\n## Rate Limiting\n\nAll requests, whether they are authenticated or not, are subject to rate limiting. If you have reached your limit, your requests will be handled with a `429 Too Many Requests` error. Burst requests are allowed. Responses contain several headers which provide information about your current rate limit status.\n\n- The `RateLimit-Limit` header contains the total number of requests you can perform per hour.\n- The `RateLimit-Remaining` header contains the number of requests remaining in the current rate limit time frame.\n- The `RateLimit-Reset` header contains a UNIX timestamp of the point in time when your rate limit will have recovered, and you will have the full number of requests available again.\n\nThe default limit is 3600 requests per hour and per Project. The number of remaining requests increases gradually. For example, when your limit is 3600 requests per hour, the number of remaining requests will increase by 1 every second.\n\n## Server Metadata\n\nYour Server can discover metadata about itself by doing a HTTP request to specific URLs. The following data is available:\n\n| Data              | Format | Contents                                                     |\n| ----------------- | ------ | ------------------------------------------------------------ |\n| hostname          | text   | Name of the Server as set in the api                         |\n| instance-id       | number | ID of the server                                             |\n| public-ipv4       | text   | Primary public IPv4 address                                  |\n| private-networks  | yaml   | Details about the private networks the Server is attached to |\n| availability-zone | text   | Name of the availability zone that Server runs in            |\n| region            | text   | Network zone, e.g. eu-central                                |\n\n**Example: Summary**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata\n```\n\n```yaml\navailability-zone: hel1-dc2\nhostname: my-server\ninstance-id: 42\npublic-ipv4: 1.2.3.4\nregion: eu-central\n```\n\n**Example: Hostname**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/hostname\nmy-server\n```\n\n**Example: Instance ID**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/instance-id\n42\n```\n\n**Example: Public IPv4**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4\n1.2.3.4\n```\n\n**Example: Private Networks**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/private-networks\n```\n\n```yaml\n- ip: 10.0.0.2\n  alias_ips: [10.0.0.3, 10.0.0.4]\n  interface_num: 1\n  mac_address: 86:00:00:2a:7d:e0\n  network_id: 1234\n  network_name: nw-test1\n  network: 10.0.0.0/8\n  subnet: 10.0.0.0/24\n  gateway: 10.0.0.1\n- ip: 192.168.0.2\n  alias_ips: []\n  interface_num: 2\n  mac_address: 86:00:00:2a:7d:e1\n  network_id: 4321\n  network_name: nw-test2\n  network: 192.168.0.0/16\n  subnet: 192.168.0.0/24\n  gateway: 192.168.0.1\n```\n\n**Example: Availability Zone**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/availability-zone\nhel1-dc2\n```\n\n**Example: Region**\n\n```shell\n$ curl http://169.254.169.254/hetzner/v1/metadata/region\neu-central\n```\n\n## Sorting\n\nSome responses which return multiple items support sorting. If they do support sorting the documentation states which fields can be used for sorting. You specify sorting with the `sort` query string parameter. You can sort by multiple fields. You can set the sort direction by appending `:asc` or `:desc` to the field name. By default, ascending sorting is used.\n\n**Example: Sorting**\n\n```\nhttps://api.hetzner.cloud/v1/actions?sort=status\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc\nhttps://api.hetzner.cloud/v1/actions?sort=status:desc\nhttps://api.hetzner.cloud/v1/actions?sort=status:asc&sort=command:desc\n```\n\n## Deprecation Notices\n\nYou can find all announced deprecations in our [Changelog](/changelog).\n"
+  description: '# Overview
+
+
+    This is the official documentation for the Hetzner Cloud API.'
 servers:
 - url: https://api.hetzner.cloud/v1
 security:
@@ -17,9 +20,7 @@ paths:
     get:
       operationId: list_servers_actions
       summary: List Actions
-      description: 'Returns all Action objects. You can `sort` the results by using the sort URI parameter, and filter them with the `status` and `id` parameter.
-
-        '
+      description: Returns all Action objects. You can `sort` the results by using the sort URI parameter, and filter them with the `status` and `id` parameter.
       tags:
       - Server Actions
       parameters:
@@ -146,10 +147,11 @@ paths:
                           example: '2016-01-30T23:55:00Z'
                         finished:
                           description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                          type: string
+                          type:
+                          - string
+                          - 'null'
                           format: date-time
                           example: '2016-01-30T23:55:00Z'
-                          nullable: true
                         progress:
                           description: Progress of the Action in percent.
                           type: integer
@@ -177,8 +179,9 @@ paths:
                             - type
                         error:
                           description: Error message for the Action if an error occurred, otherwise null.
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             code:
                               description: Fixed error code for machines.
@@ -220,27 +223,31 @@ paths:
                             example: 25
                           previous_page:
                             description: Page number of the previous page. Can be null if the current page is the first one.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 2
                           next_page:
                             description: Page number of the next page. Can be null if the current page is the last one.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 4
                           last_page:
                             description: Page number of the last page available. Can be null if the current page is the last one.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 4
                           total_entries:
                             description: Total number of entries that exist for this query. Can be null if unknown.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 100
                         required:
                         - page
@@ -272,8 +279,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -302,8 +310,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -341,9 +350,7 @@ paths:
     get:
       operationId: get_servers_action
       summary: Get an Action
-      description: 'Returns a specific Action object.
-
-        '
+      description: Returns a specific Action object.
       tags:
       - Server Actions
       parameters:
@@ -396,10 +403,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -427,8 +435,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -470,8 +479,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -500,8 +510,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -539,9 +550,7 @@ paths:
     get:
       operationId: list_server_actions
       summary: List Actions for a Server
-      description: 'Returns all Action objects for a Server. You can `sort` the results by using the sort URI parameter, and filter them with the `status` parameter.
-
-        '
+      description: Returns all Action objects for a Server. You can `sort` the results by using the sort URI parameter, and filter them with the `status` parameter.
       tags:
       - Server Actions
       parameters:
@@ -661,10 +670,11 @@ paths:
                           example: '2016-01-30T23:55:00Z'
                         finished:
                           description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                          type: string
+                          type:
+                          - string
+                          - 'null'
                           format: date-time
                           example: '2016-01-30T23:55:00Z'
-                          nullable: true
                         progress:
                           description: Progress of the Action in percent.
                           type: integer
@@ -692,8 +702,9 @@ paths:
                             - type
                         error:
                           description: Error message for the Action if an error occurred, otherwise null.
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             code:
                               description: Fixed error code for machines.
@@ -735,27 +746,31 @@ paths:
                             example: 25
                           previous_page:
                             description: Page number of the previous page. Can be null if the current page is the first one.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 2
                           next_page:
                             description: Page number of the next page. Can be null if the current page is the last one.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 4
                           last_page:
                             description: Page number of the last page available. Can be null if the current page is the last one.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 4
                           total_entries:
                             description: Total number of entries that exist for this query. Can be null if unknown.
-                            type: integer
+                            type:
+                            - integer
+                            - 'null'
                             format: int64
-                            nullable: true
                             example: 100
                         required:
                         - page
@@ -811,8 +826,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -841,8 +857,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -874,9 +891,7 @@ paths:
 
         | `422` | `server_not_stopped` | The action requires a stopped server |
 
-        | `422` | `already_in_placement_group` | The server is already part of a placement group |
-
-        '
+        | `422` | `already_in_placement_group` | The server is already part of a placement group |'
       tags:
       - Server Actions
       parameters:
@@ -950,10 +965,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -981,8 +997,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -1040,8 +1057,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1070,8 +1088,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1101,9 +1120,7 @@ paths:
       description: 'Attaches an ISO to a Server. The Server will immediately see it as a new disk. An already attached ISO will automatically be detached before the new ISO is attached.
 
 
-        Servers with attached ISOs have a modified boot order: They will try to boot from the ISO first before falling back to hard disk.
-
-        '
+        Servers with attached ISOs have a modified boot order: They will try to boot from the ISO first before falling back to hard disk.'
       tags:
       - Server Actions
       parameters:
@@ -1175,10 +1192,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -1206,8 +1224,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -1265,8 +1284,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1295,8 +1315,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1345,9 +1366,7 @@ paths:
 
         | `422` | `no_subnet_available` | No Subnet or IP is available for the Server within the network |
 
-        | `422` | `networks_overlap` | The network IP range overlaps with one of the server networks |
-
-        '
+        | `422` | `networks_overlap` | The network IP range overlaps with one of the server networks |'
       tags:
       - Server Actions
       parameters:
@@ -1443,10 +1462,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -1474,8 +1494,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -1535,8 +1556,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1565,8 +1587,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1593,9 +1616,7 @@ paths:
     post:
       operationId: change_server_alias_ips
       summary: Change alias IPs of a Network
-      description: 'Changes the alias IPs of an already attached Network. Note that the existing aliases for the specified Network will be replaced with these provided in the request body. So if you want to add an alias IP, you have to provide the existing ones from the Network plus the new alias IP in the request body.
-
-        '
+      description: Changes the alias IPs of an already attached Network. Note that the existing aliases for the specified Network will be replaced with these provided in the request body. So if you want to add an alias IP, you have to provide the existing ones from the Network plus the new alias IP in the request body.
       tags:
       - Server Actions
       parameters:
@@ -1676,10 +1697,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -1707,8 +1729,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -1768,8 +1791,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1798,8 +1822,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -1829,9 +1854,7 @@ paths:
       description: 'Changes the hostname that will appear when getting the hostname belonging to the primary IPs (IPv4 and IPv6) of this Server.
 
 
-        Floating IPs assigned to the Server are not affected by this.
-
-        '
+        Floating IPs assigned to the Server are not affected by this.'
       tags:
       - Server Actions
       parameters:
@@ -1867,8 +1890,9 @@ paths:
                     PTR record content used for reverse DNS. Set to null to reset (IPv4) to the default value or remove (IPv6) the record.
 
                     '
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   example: server.example.com
               required:
               - ip
@@ -1916,10 +1940,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -1947,8 +1972,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -2006,8 +2032,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2036,8 +2063,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2064,9 +2092,7 @@ paths:
     post:
       operationId: change_server_protection
       summary: Change Server Protection
-      description: 'Changes the protection configuration of the Server.
-
-        '
+      description: Changes the protection configuration of the Server.
       tags:
       - Server Actions
       parameters:
@@ -2140,10 +2166,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -2171,8 +2198,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -2230,8 +2258,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2260,8 +2289,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2314,9 +2344,7 @@ paths:
 
         | `422` | `invalid_server_type` | The server type does not fit for the given server or is deprecated |
 
-        | `422` | `server_not_stopped` | The action requires a stopped server |
-
-        '
+        | `422` | `server_not_stopped` | The action requires a stopped server |'
       tags:
       - Server Actions
       parameters:
@@ -2393,10 +2421,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -2424,8 +2453,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -2483,8 +2513,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2513,8 +2544,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2547,9 +2579,7 @@ paths:
         To make sure disk content is consistent, we recommend to shut down the Server prior to creating an Image.
 
 
-        You can either create a `backup` Image that is bound to the Server and therefore will be deleted when the Server is deleted, or you can create a `snapshot` Image which is completely independent of the Server it was created from and will survive Server deletion. Backup Images are only available when the backup option is enabled for the Server. Snapshot Images are billed on a per GB basis.
-
-        '
+        You can either create a `backup` Image that is bound to the Server and therefore will be deleted when the Server is deleted, or you can create a `snapshot` Image which is completely independent of the Server it was created from and will survive Server deletion. Backup Images are only available when the backup option is enabled for the Server. Snapshot Images are billed on a per GB basis.'
       tags:
       - Server Actions
       parameters:
@@ -2634,8 +2664,9 @@ paths:
                         example: available
                       name:
                         description: Unique identifier of the Image. This value is only set for system Images.
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                         example: ubuntu-24.04
                       description:
                         description: Description of the Image.
@@ -2643,8 +2674,9 @@ paths:
                         example: Ubuntu 24.04 Standard 64 bit
                       image_size:
                         description: Size of the Image file in our storage in GB. For snapshot Images this is the value relevant for calculating costs for the Image.
-                        type: number
-                        nullable: true
+                        type:
+                        - number
+                        - 'null'
                         example: 2.3
                       disk_size:
                         description: Size of the disk contained in the Image in GB.
@@ -2657,8 +2689,9 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       created_from:
                         description: Information about the Server the Image was created from.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           id:
                             description: ID of the Server the Image was created from.
@@ -2674,9 +2707,10 @@ paths:
                         - name
                       bound_to:
                         description: ID of Server the Image is bound to. Only set for Images of type `backup`.
-                        type: integer
+                        type:
+                        - integer
+                        - 'null'
                         format: int64
-                        nullable: true
                         example: null
                       os_flavor:
                         description: Flavor of operating system contained in the Image.
@@ -2693,8 +2727,9 @@ paths:
                         example: ubuntu
                       os_version:
                         description: Operating system version.
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                         example: '24.04'
                       rapid_deploy:
                         description: Indicates that rapid deploy of the Image is available.
@@ -2712,14 +2747,16 @@ paths:
                         - delete
                       deprecated:
                         description: Point in time when the Image is considered to be deprecated (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
-                        nullable: true
                         example: '2018-02-28T00:00:00Z'
                       deleted:
                         description: Point in time where the Image was deleted (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format).
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                         example: null
                       labels:
                         description: 'User-defined labels (`key/value` pairs) for the Resource.
@@ -2790,10 +2827,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -2821,8 +2859,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -2901,8 +2940,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2931,8 +2971,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -2959,9 +3000,7 @@ paths:
     post:
       operationId: detach_server_from_network
       summary: Detach a Server from a Network
-      description: 'Detaches a Server from a network. The interface for this network will vanish.
-
-        '
+      description: Detaches a Server from a network. The interface for this network will vanish.
       tags:
       - Server Actions
       parameters:
@@ -3035,10 +3074,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -3066,8 +3106,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -3127,8 +3168,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3157,8 +3199,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3185,9 +3228,7 @@ paths:
     post:
       operationId: detach_server_iso
       summary: Detach an ISO from a Server
-      description: 'Detaches an ISO from a Server. In case no ISO Image is attached to the Server, the status of the returned Action is immediately set to `success`.
-
-        '
+      description: Detaches an ISO from a Server. In case no ISO Image is attached to the Server, the status of the returned Action is immediately set to `success`.
       tags:
       - Server Actions
       parameters:
@@ -3246,10 +3287,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -3277,8 +3319,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -3336,8 +3379,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3366,8 +3410,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3397,9 +3442,7 @@ paths:
       description: 'Disables the automatic backup option and deletes all existing Backups for a Server. No more additional charges for backups will be made.
 
 
-        Caution: This immediately removes all existing backups for the Server!
-
-        '
+        Caution: This immediately removes all existing backups for the Server!'
       tags:
       - Server Actions
       parameters:
@@ -3458,10 +3501,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -3489,8 +3533,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -3548,8 +3593,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3578,8 +3624,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3612,9 +3659,7 @@ paths:
         Rescue Mode is automatically disabled when you first boot into it or if you do not use it for 60 minutes.
 
 
-        Disabling rescue mode will not reboot your Server — you will have to do this yourself.
-
-        '
+        Disabling rescue mode will not reboot your Server — you will have to do this yourself.'
       tags:
       - Server Actions
       parameters:
@@ -3673,10 +3718,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -3704,8 +3750,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -3763,8 +3810,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3793,8 +3841,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -3824,9 +3873,7 @@ paths:
       description: 'Enables and configures the automatic daily backup option for the Server. Enabling automatic backups will increase the price of the Server by 20%. In return, you will get seven slots where Images of type backup can be stored.
 
 
-        Backups are automatically created daily.
-
-        '
+        Backups are automatically created daily.'
       tags:
       - Server Actions
       parameters:
@@ -3885,10 +3932,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -3916,8 +3964,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -3975,8 +4024,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4005,8 +4055,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4042,9 +4093,7 @@ paths:
         Rescue Mode is automatically disabled when you first boot into it or if you do not use it for 60 minutes.
 
 
-        Enabling rescue mode will not [reboot](https://docs.hetzner.cloud/#server-actions-soft-reboot-a-server) your Server — you will have to do this yourself.
-
-        '
+        Enabling rescue mode will not reboot your Server — you will have to do this yourself.'
       tags:
       - Server Actions
       parameters:
@@ -4124,10 +4173,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -4155,8 +4205,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -4213,8 +4264,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4243,8 +4295,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4271,9 +4324,7 @@ paths:
     post:
       operationId: poweroff_server
       summary: Power off a Server
-      description: 'Cuts power to the Server. This forcefully stops it without giving the Server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
-
-        '
+      description: Cuts power to the Server. This forcefully stops it without giving the Server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
       tags:
       - Server Actions
       parameters:
@@ -4332,10 +4383,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -4363,8 +4415,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -4422,8 +4475,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4452,8 +4506,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4480,9 +4535,7 @@ paths:
     post:
       operationId: poweron_server
       summary: Power on a Server
-      description: 'Starts a Server by turning its power on.
-
-        '
+      description: Starts a Server by turning its power on.
       tags:
       - Server Actions
       parameters:
@@ -4541,10 +4594,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -4572,8 +4626,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -4631,8 +4686,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4661,8 +4717,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4689,9 +4746,7 @@ paths:
     post:
       operationId: reboot_server
       summary: Soft-reboot a Server
-      description: 'Reboots a Server gracefully by sending an ACPI request. The Server operating system must support ACPI and react to the request, otherwise the Server will not reboot.
-
-        '
+      description: Reboots a Server gracefully by sending an ACPI request. The Server operating system must support ACPI and react to the request, otherwise the Server will not reboot.
       tags:
       - Server Actions
       parameters:
@@ -4750,10 +4805,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -4781,8 +4837,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -4840,8 +4897,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4870,8 +4928,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -4904,9 +4963,7 @@ paths:
         The Image can either be one you have created earlier (`backup` or `snapshot` Image) or it can be a completely fresh `system` Image provided by us. You can get a list of all available Images with `GET /images`.
 
 
-        Your Server will automatically be powered off before the rebuild command executes.
-
-        '
+        Your Server will automatically be powered off before the rebuild command executes.'
       tags:
       - Server Actions
       parameters:
@@ -4956,8 +5013,9 @@ paths:
                 properties:
                   root_password:
                     description: New root password when not using SSH keys.
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                   action:
                     title: Action
                     type: object
@@ -4987,10 +5045,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -5018,8 +5077,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -5076,8 +5136,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5106,8 +5167,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5155,9 +5217,7 @@ paths:
     post:
       operationId: remove_server_from_placement_group
       summary: Remove from Placement Group
-      description: 'Removes a Server from a Placement Group.
-
-        '
+      description: Removes a Server from a Placement Group.
       tags:
       - Server Actions
       parameters:
@@ -5216,10 +5276,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -5247,8 +5308,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -5306,8 +5368,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5336,8 +5399,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5364,9 +5428,7 @@ paths:
     post:
       operationId: request_server_console
       summary: Request Console for a Server
-      description: 'Requests credentials for remote access via VNC over websocket to keyboard, monitor, and mouse for a Server. The provided URL is valid for 1 minute, after this period a new url needs to be created to connect to the Server. How long the connection is open after the initial connect is not subject to this timeout.
-
-        '
+      description: Requests credentials for remote access via VNC over websocket to keyboard, monitor, and mouse for a Server. The provided URL is valid for 1 minute, after this period a new url needs to be created to connect to the Server. How long the connection is open after the initial connect is not subject to this timeout.
       tags:
       - Server Actions
       parameters:
@@ -5426,10 +5488,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -5457,8 +5520,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -5520,8 +5584,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5550,8 +5615,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5578,9 +5644,7 @@ paths:
     post:
       operationId: reset_server
       summary: Reset a Server
-      description: 'Cuts power to a Server and starts it again. This forcefully stops it without giving the Server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
-
-        '
+      description: Cuts power to a Server and starts it again. This forcefully stops it without giving the Server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
       tags:
       - Server Actions
       parameters:
@@ -5639,10 +5703,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -5670,8 +5735,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -5729,8 +5795,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5759,8 +5826,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5793,9 +5861,7 @@ paths:
         This will generate a new password for this Server and return it.
 
 
-        If this does not succeed you can use the rescue system to netboot the Server and manually change your Server password by hand.
-
-        '
+        If this does not succeed you can use the rescue system to netboot the Server and manually change your Server password by hand.'
       tags:
       - Server Actions
       parameters:
@@ -5854,10 +5920,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -5885,8 +5952,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -5943,8 +6011,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -5973,8 +6042,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -6007,9 +6077,7 @@ paths:
 
         only reflects whether the action was sent to the server. It does not mean that the server actually shut down
 
-        successfully. If you need to ensure that the server is off, use the `poweroff` action.
-
-        '
+        successfully. If you need to ensure that the server is off, use the `poweroff` action.'
       tags:
       - Server Actions
       parameters:
@@ -6068,10 +6136,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -6099,8 +6168,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -6158,8 +6228,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -6188,8 +6259,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -6217,12 +6289,10 @@ paths:
       deprecated: true
       operationId: get_server_action
       summary: Get an Action for a Server
-      description: '**Deprecated**: This operation is deprecated, see our [changelog](https://docs.hetzner.cloud/changelog#2026-04-30-deprecate-get-resource-action-endpoints) for more details.
+      description: '**Deprecated**: This operation is deprecated, see our changelog for more details.
 
 
-        Returns a specific Action object for a Server.
-
-        '
+        Returns a specific Action object for a Server.'
       tags:
       - Server Actions
       parameters:
@@ -6286,10 +6356,11 @@ paths:
                         example: '2016-01-30T23:55:00Z'
                       finished:
                         description: Point in time when the Action was finished (in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format). Only set if the Action is finished otherwise null.
-                        type: string
+                        type:
+                        - string
+                        - 'null'
                         format: date-time
                         example: '2016-01-30T23:55:00Z'
-                        nullable: true
                       progress:
                         description: Progress of the Action in percent.
                         type: integer
@@ -6317,8 +6388,9 @@ paths:
                           - type
                       error:
                         description: Error message for the Action if an error occurred, otherwise null.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                         properties:
                           code:
                             description: Fixed error code for machines.
@@ -6376,8 +6448,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
@@ -6406,8 +6479,9 @@ paths:
                         type: string
                       details:
                         description: Details about the error.
-                        type: object
-                        nullable: true
+                        type:
+                        - object
+                        - 'null'
                     required:
                     - code
                     - message
