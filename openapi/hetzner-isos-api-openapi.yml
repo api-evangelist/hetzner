@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Hetzner Cloud IS Os API
+  title: Hetzner Cloud ISOs API
   version: 1.0.0
   x-summary: 'Manage Hetzner Cloud services and resources linked to them, such as Floating IPs, Volumes and Load Balancers.
 
