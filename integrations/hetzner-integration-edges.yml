@@ -1,0 +1,20 @@
+edges:
+- partner_name: Amazon Web Services
+  partner: amazon-web-services
+  partner_match: shape-anchor
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  shape: aws-s3
+  type: docs
+  degree: declared-unqualified
+  evidence: https://docs.hetzner.com/storage/object-storage/overview
+  evidence_kind: own-docs
+  evidence_file: https://github.com/api-evangelist/hetzner/blob/main/evidence/compatibility/hetzner-aws-s3-1.md
+  quote: Our S3-compatible Object Storage provides you with storage capacity for saving data in "Buckets". Any data
+    you save in your Bucket is saved in a Ceph cluster. If you set the visibility of your Bucket to public , everyone
+    can access the Buck
+  detected_by: sweep-shape-compat.py
+  first_seen: '2026-10-13'
+generated: '2026-10-13'
+method: searched

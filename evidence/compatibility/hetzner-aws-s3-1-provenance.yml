@@ -1,0 +1,14 @@
+fetched: '2026-10-13'
+method: fetched
+source: https://docs.hetzner.com/storage/object-storage/overview
+page: https://docs.hetzner.com/storage/object-storage/overview
+file: hetzner-aws-s3-1.md
+bytes: 6564
+sha256: 1ffb216929ca1216bdeca039593a4ea35f8d32084521dc8f938587e94197d056
+anchor: amazon-web-services
+shape: aws-s3
+classification: declares-compatibility
+quote: Our S3-compatible Object Storage provides you with storage capacity for saving data in "Buckets". Any data
+  you save in your Bucket is saved in a Ceph cluster. If you set the visibility of your Bucket to public , everyone
+  can access the Bucket to view or download files via a URL that follows this for
+note: text extracted from the provider's own page (tags stripped), saved for evidence
