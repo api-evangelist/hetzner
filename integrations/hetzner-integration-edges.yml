@@ -16,5 +16,44 @@ edges:
     can access the Buck
   detected_by: sweep-shape-compat.py
   first_seen: '2026-10-13'
+- partner_name: ICANN (accredited registrar)
+  partner: null
+  partner_match: register
+  type: contract
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars
+  category: ICANN-accredited domain registrar
+  contract_reference:
+    register: ICANN Accredited Registrars (icann.org list-of-accredited-registrars)
+    standard: ICANN Registrar Accreditation Agreement
+    spec_file: null
+    role: icann-accredited-registrar
+    registered_name: Hetzner Online GmbH
+    register_id: IANA 828
+    matched_domain: hetzner.com
+    matched_by: domain
+    domain_source: contact-email
+    country: Germany
+    accreditations_in_family: 1
+    other_iana_ids: []
+    signal_note: 'participation only: an ICANN accreditation is a licence to sell names, not a conformance result
+      (no certified_products); the number of accreditations a family holds (drop-catch shells) is breadth, context
+      only, never counted'
+    detected_by: sweep-domains-dns.py
+    detected: '2026-10-18'
+  detected_by: sweep-domains-dns.py
+  first_seen: '2026-10-18'
 generated: '2026-10-13'
 method: searched
+source:
+- https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars
+- https://www.icann.org/resources/registries/gtlds/v2/gtlds.json
+- https://data.iana.org/rdap/dns.json
+- https://www.iana.org/assignments/registrar-ids/registrar-ids.xml
+checked:
+- https://data.iana.org/rdap/dns.json
+- https://www.iana.org/assignments/registrar-ids/registrar-ids.xml
+- https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars
+- https://www.icann.org/resources/registries/gtlds/v2/gtlds.json
